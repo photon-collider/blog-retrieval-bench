@@ -13,6 +13,7 @@ dependencies = [
 [project.scripts]
 check-eval-set = "retrieval_bench.check_eval_set:main"
 select-subset = "retrieval_bench.select_subset:main"
+run-eval = "retrieval_bench.run_eval:main"
 
 [build-system]
 requires = ["uv_build>=0.12,<0.13"]

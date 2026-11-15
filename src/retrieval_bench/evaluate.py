@@ -4,10 +4,12 @@ Any object with a `name` and a `rank` method is a retriever. The harness asks it
 to rank every post for every question, then scores each ranking against the
 question's labels:
 
-- Hit@k:    is a source or acceptable post in the top k?
-- Recall@k: what share of the source posts is in the top k? A multi_post
-            question with 3 source posts can't reach 1.0 below k = 3.
-- MRR:      the mean of 1 / (rank of the first source or acceptable post).
+- Hit@k:    is any source post in the top k?
+- MRR:      the mean of 1 / (rank of the first source post).
+- Recall@k: multi_post questions only. What share of the source posts is in
+            the top k? A question with 3 source posts can't reach 1.0 below
+            k = 3. For other types any one source post answers the question,
+            so Hit@k already says everything.
 
 Unanswerable questions are left out: with no source posts, there's nothing to
 find. Results are summarized per question type and over all questions, since
@@ -37,18 +39,29 @@ class Retriever(Protocol):
 
 
 def score(retriever: str, q: Question, ranking: list[Slug], ks: Sequence[int] = KS) -> QuestionResult:
-    """Score one ranking against one question's labels."""
-    relevant = set(q.source_posts) | set(q.acceptable_posts)
-    sources = set(q.source_posts)
-    first = next((i for i, slug in enumerate(ranking, start=1) if slug in relevant), None)
+    """Score one ranking against one question's labels.
+
+    Ranks start at 1: ranking[0] is rank 1.
+    """
+    # TODO: the rank of the first post in `ranking` that's one of
+    #       q.source_posts, or None if none of them appears.
+    first_source_rank: int | None = None
+
+    # TODO: for each k in ks, is a source post in the top k?
+    hit_at: dict[int, bool] = {}
+
+    # TODO: for multi_post questions only: for each k in ks, the share of
+    #       q.source_posts in the top k. For every other type, leave it None.
+    recall_at: dict[int, float] | None = None
+
     return QuestionResult(
         retriever=retriever,
         question_id=q.id,
         type=q.type,
         ranking=ranking,
-        first_relevant_rank=first,
-        hit_at={k: first is not None and first <= k for k in ks},
-        recall_at={k: len(sources & set(ranking[:k])) / len(sources) for k in ks},
+        first_source_rank=first_source_rank,
+        hit_at=hit_at,
+        recall_at=recall_at,
     )
 
 
@@ -63,15 +76,22 @@ def evaluate(retriever: Retriever, questions: list[Question], ks: Sequence[int] 
 
 
 def _summary(retriever: str, group: str, results: list[QuestionResult]) -> Summary:
+    """Average one retriever's results over one group of questions."""
     ks = results[0].hit_at.keys()
-    return Summary(
-        retriever=retriever,
-        group=group,
-        n=len(results),
-        hit_at={k: statistics.mean(r.hit_at[k] for r in results) for k in ks},
-        recall_at={k: statistics.mean(r.recall_at[k] for r in results) for k in ks},
-        mrr=statistics.mean(r.reciprocal_rank for r in results),
-    )
+
+    # TODO: for each k, the share of results with a hit in the top k.
+    hit_at: dict[int, float] = {}
+
+    # TODO: if every result has a recall_at (a multi_post group), the mean of
+    #       their recall at each k. Otherwise None: the "all" row mixes types,
+    #       so it gets no recall.
+    recall_at: dict[int, float] | None = None
+
+    # TODO: the mean reciprocal rank (QuestionResult.reciprocal_rank).
+    mrr: float = 0.0
+
+    return Summary(retriever=retriever, group=group, n=len(results),
+                   hit_at=hit_at, recall_at=recall_at, mrr=mrr)
 
 
 def summarize(results: list[QuestionResult]) -> list[Summary]:
@@ -99,6 +119,7 @@ def print_summaries(summaries: list[Summary]) -> None:
               + "".join(f" {'R@' + str(k):>6}" for k in ks) + f" {'MRR':>6}")
     print(header)
     for s in summaries:
+        recall = (f" {s.recall_at[k]:>6.2f}" if s.recall_at else f" {'-':>6}" for k in ks)
         print(f"{s.retriever:16} {s.group:14} {s.n:>3}"
               + "".join(f" {s.hit_at[k]:>7.2f}" for k in ks)
-              + "".join(f" {s.recall_at[k]:>6.2f}" for k in ks) + f" {s.mrr:>6.2f}")
+              + "".join(recall) + f" {s.mrr:>6.2f}")
