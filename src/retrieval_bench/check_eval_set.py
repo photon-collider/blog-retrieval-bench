@@ -1,8 +1,10 @@
 """Validate an eval set against the blog posts and report coverage.
 
 Checks the schema (the Question model below), post slugs, and that each required
-source post has an evidence quote found in that post. A found quote shows the post
-has the text, not that the reference answer is right.
+source post has an evidence quote found in that post. Quotes are looked up in
+retrieval.post_text, the text the retrievers index, so an answer that exists only
+in dropped markup is caught. A found quote shows the post has the text, not that
+the reference answer is right.
 
 Deliberately reports nothing about how a retriever would do: this runs while
 questions are being written, and a number shown then would shape the wording.
@@ -25,7 +27,7 @@ from typing import Any, Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, strip_links
+from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, post_text, strip_links
 
 Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
 
@@ -155,7 +157,7 @@ def main() -> None:
     ap.add_argument("--file", default=str(ROOT / "dataset" / "eval-set-v2-shortlist.yaml"))
     ap.add_argument("--post-cap", type=int, default=3, help="warn when a post is required by more questions than this")
     a = ap.parse_args()
-    posts = load_posts(a.blog)
+    posts = {slug: post_text(raw) for slug, raw in load_posts(a.blog).items()}
     items = load_items(a.file)
     filled = [item for item in items if not is_blank(item)]
     qs, parse_errs = parse_questions(filled)
@@ -172,7 +174,7 @@ def main() -> None:
         print(f"\nERRORS ({len(errs)}):")
         print("\n".join("  " + e for e in errs))
         sys.exit(1)
-    print("\nOK: schema valid, all slugs exist, every evidence quote was found.")
+    print("\nOK: schema valid, all slugs exist, every evidence quote was found in the indexed post text.")
 
 if __name__ == "__main__":
     main()
