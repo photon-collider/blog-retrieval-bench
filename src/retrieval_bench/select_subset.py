@@ -1,5 +1,6 @@
-#!/usr/bin/env -S uv run --quiet --with pyyaml python
 """Pick a stratified eval subset from eval-set.yaml. Never looks at retriever results.
+
+v1 only: the v2 eval set is hand-picked and doesn't use this sampler.
 
 Strata:
   type   fixed shares, so each question type has enough questions to read
@@ -13,11 +14,13 @@ because top-k retrieval can't reach full recall on them at the k values planned.
 A fixed seed makes the pick reproducible. Choose --seed and --n once, before the
 first retrieval run, and don't change them after seeing results.
 
-Usage: ./select_subset.py [--n 40] [--seed 20261105] [--post-cap 3]
+Usage: uv run select-subset [--n 40] [--seed 20261105] [--post-cap 3]
 """
 import argparse, collections, random
 from pathlib import Path
 import yaml
+
+ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
 
 TYPE_SHARE = {"single_fact": .35, "current_state": .175, "multi_post": .175, "opinion": .15, "unanswerable": .15}
 POST_TOPIC = {
@@ -58,10 +61,10 @@ def main():
     ap.add_argument("--max-sources", type=int, default=5)
     ap.add_argument("--restarts", type=int, default=60)
     ap.add_argument("--steps", type=int, default=4000)
-    ap.add_argument("--out", default="eval-subset.yaml")
+    ap.add_argument("--out", default=str(ROOT / "dataset" / "eval-subset.yaml"))
     a = ap.parse_args()
 
-    data = yaml.safe_load(open("eval-set.yaml", encoding="utf-8"))
+    data = yaml.safe_load((ROOT / "dataset" / "eval-set.yaml").read_text(encoding="utf-8"))
     pool, held = [], []
     for q in data["questions"]:
         (held if len(q.get("source_posts") or []) > a.max_sources else pool).append(q)

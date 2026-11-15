@@ -1,0 +1,19 @@
+[project]
+name = "retrieval-bench"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "bm25s>=0.3.16",
+    "numpy>=2.5.4",
+    "pydantic>=2.14.3",
+    "pystemmer>=3.1.0",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+check-eval-set = "retrieval_bench.check_eval_set:main"
+select-subset = "retrieval_bench.select_subset:main"
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
