@@ -1,0 +1,121 @@
+"""Pydantic models for the project, and loading the eval set into them.
+
+Used by check_eval_set.py, which validates the eval-set files, and by the
+evaluation harness and notebooks, which run retrievers over the questions.
+"""
+import collections
+from pathlib import Path
+from typing import Any, Literal
+
+import yaml
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
+
+QuestionType = Literal["single_fact", "multi_post", "current_state", "opinion", "unanswerable"]
+Topic = Literal["ai-llm", "ml-nlp", "backend", "web-design", "homelab", "self-hosting",
+                "computing", "personal", "writing-productivity", "cross-topic"]
+Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "near_miss",
+                "caption_only", "alt_text_only", "table_only", "code_only", "callout_only",
+                "buried_detail", "short_post", "long_post", "recency", "false_premise",
+                "aggregation", "multi_hop"]
+
+POST_FIELDS = ("source_posts", "acceptable_posts", "superseded_posts", "related_posts")
+ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
+EVAL_SET = ROOT / "dataset" / "eval-set-v2-shortlist.yaml"
+
+
+class Question(BaseModel):
+    """One eval-set item, as written in the YAML. The field meanings are in the
+    YAML file's header comment.
+
+    Parsing checks each field on its own: required fields are present, `type`,
+    `topic` and `probe` use an allowed value, and lists hold strings.
+    check_eval_set.validate() checks the rules that span fields or need the posts.
+    """
+    model_config = ConfigDict(extra="forbid")  # a misspelled field name is an error
+
+    id: str
+    type: QuestionType
+    topic: Topic
+    probe: Probe | None = None
+    question: str
+    source_posts: list[Slug] = []
+    acceptable_posts: list[Slug] = []
+    superseded_posts: list[Slug] = []
+    related_posts: list[Slug] = []
+    evidence: dict[Slug, str] = {}
+    reference_answer: str = Field(min_length=1)
+    key_facts: list[str] = []
+    notes: str | None = None
+
+    # Reference only; not used by any check
+    v1_question: str | None = None
+    v1_paraphrase: str | None = None
+    paraphrase: str | None = None
+    in_v1_subset: bool = False
+
+
+def load_items(path: str | Path) -> list[dict[str, Any]]:
+    """Every item in the file as a plain dict, blank `question` or not."""
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8"))["questions"]
+
+def is_blank(item: dict[str, Any]) -> bool:
+    """A blank `question` marks a workbook item that wasn't chosen."""
+    return not (item.get("question") or "").strip()
+
+def parse_questions(items: list[dict[str, Any]]) -> tuple[list[Question], dict[str, list[str]]]:
+    """Parse each item into a Question. Returns the ones that parsed, and for the
+    ones that didn't, id -> one "field: problem" message per problem."""
+    questions, errors = [], collections.defaultdict(list)
+    for item in items:
+        try:
+            questions.append(Question.model_validate(item))
+        except ValidationError as e:
+            qid = str(item.get("id", "?"))
+            for err in e.errors():
+                field = ".".join(str(part) for part in err["loc"])
+                errors[qid].append(f"{field}: {err['msg']}")
+    return questions, dict(errors)
+
+def load_questions(path: str | Path = EVAL_SET) -> list[Question]:
+    """The non-blank questions in `path`. Raises ValueError if any fail to parse;
+    run `uv run check-eval-set` to see every problem."""
+    questions, errors = parse_questions([i for i in load_items(path) if not is_blank(i)])
+    if errors:
+        raise ValueError(f"{len(errors)} questions in {path} failed to parse: {sorted(errors)}")
+    return questions
+
+
+class QuestionResult(BaseModel):
+    """How one retriever did on one question. Made by evaluate.evaluate().
+
+    A post is *relevant* if it's a source or acceptable post. Hits and the
+    reciprocal rank count any relevant post; recall counts source posts only.
+    """
+    model_config = ConfigDict(frozen=True)
+
+    retriever: str
+    question_id: str
+    type: QuestionType
+    ranking: list[Slug]               # the retriever's ranking, best first
+    first_relevant_rank: int | None   # 1 = top; None if no relevant post was ranked
+    hit_at: dict[int, bool]           # k -> is a relevant post in the top k?
+    recall_at: dict[int, float]       # k -> share of source posts in the top k
+
+    @property
+    def reciprocal_rank(self) -> float:
+        """1 / first_relevant_rank, or 0 if no relevant post was ranked."""
+        return 1 / self.first_relevant_rank if self.first_relevant_rank else 0.0
+
+
+class Summary(BaseModel):
+    """One retriever's averages over a group of questions. Made by evaluate.summarize()."""
+    model_config = ConfigDict(frozen=True)
+
+    retriever: str
+    group: str                        # a question type, or "all"
+    n: int                            # questions in the group
+    hit_at: dict[int, float]          # k -> Hit@k: share of questions with a hit in the top k
+    recall_at: dict[int, float]       # k -> Recall@k, averaged over the questions
+    mrr: float                        # mean reciprocal rank
