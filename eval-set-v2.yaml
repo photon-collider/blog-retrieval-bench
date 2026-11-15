@@ -55,7 +55,7 @@ questions:
   - id: sf01
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: "In one of Bryan's blog posts he timed how long it takes to process input tokens and output tokens. How much longer did it take for his laptop to generate output tokens than input tokens?"
     v1_question: In Bryan's experiment, how much more time did an output token take than an input token?
     v1_paraphrase: When he timed a tiny model on his laptop, how big was the gap between reading a prompt
       and writing a reply?
@@ -74,7 +74,7 @@ questions:
   - id: sf02
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: 'What metrics did Bryan use to characterize how quickly an LLM starts replying and how long it take for a complete answer to be generated?'
     v1_question: What do TTFT and TPOT measure?
     v1_paraphrase: Which two latency numbers did he use to describe how quickly a reply starts and how quickly
       it streams?
@@ -95,7 +95,7 @@ questions:
     type: single_fact
     topic: ai-llm
     in_v1_subset: true
-    question: ''
+    question: 'What types of queries does Jev support?'
     v1_question: What question types does Jev support?
     v1_paraphrase: What are the three ways you can ask that probability-returning model for a judgment?
     source_posts:
@@ -112,7 +112,7 @@ questions:
   - id: sf04
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: "What's the API price for using Jev?"
     v1_question: How does TypeSafe AI price Jev?
     v1_paraphrase: What's the fee for calling that probability-returning judgment model?
     source_posts:
@@ -127,7 +127,7 @@ questions:
   - id: sf05
     type: single_fact
     topic: backend
-    question: ''
+    question: 'What rate limiting algorithm did Bryan implement?'
     v1_question: Which rate limiting algorithm did Bryan implement, and with what tools?
     v1_paraphrase: How did he stop clients from flooding his API with too many calls?
     source_posts:
@@ -145,7 +145,7 @@ questions:
   - id: sf06
     type: single_fact
     topic: backend
-    question: ''
+    question: 'What caused custom metadata to disappear from Celery and how did Bryan solve it?'
     v1_question: Why did custom metadata disappear from Celery task documents in MongoDB, and how did Bryan
       fix it?
     v1_paraphrase: Why was the extra information he attached to background jobs getting wiped from the database?
@@ -167,7 +167,7 @@ questions:
   - id: sf07
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: 'What model and weather API did Bryan use for his weather chat bot?'
     v1_question: What model and weather API did the AutoGen weather chatbot use?
     v1_paraphrase: Which LLM and which forecast service powered his umbrella-advice agent?
     source_posts:
@@ -182,7 +182,7 @@ questions:
   - id: sf08
     type: single_fact
     topic: computing
-    question: ''
+    question: 'What did Bryan think about the first part of Nand2Tetris?'
     v1_question: What did Bryan build in Part 1 of Nand2Tetris?
     v1_paraphrase: What did he make in the first half of that course where you build a computer from logic
       gates?
@@ -200,7 +200,7 @@ questions:
   - id: sf09
     type: single_fact
     topic: web-design
-    question: ''
+    question: 'What line length is suitable for readable text?'
     v1_question: What line length does Bryan recommend for readable text?
     v1_paraphrase: How many characters wide should a paragraph be for comfortable reading?
     source_posts:
@@ -215,7 +215,7 @@ questions:
   - id: sf10
     type: single_fact
     topic: self-hosting
-    question: ''
+    question: 'What VPS does Bryan use to host Umami on and how much does it cost?'
     v1_question: Which VPS does Bryan host Umami on, and what does it cost?
     v1_paraphrase: Where does his self-run website analytics live, and how much does the server cost per
       month?
@@ -233,7 +233,7 @@ questions:
     type: single_fact
     topic: self-hosting
     in_v1_subset: true
-    question: ''
+    question: 'How does Bryan remotely access his home network?'
     v1_question: What tool and domain registrar does Bryan use for dynamic DNS?
     v1_paraphrase: How does he stay connected back to his house after his provider reassigns its internet
       address?
@@ -251,7 +251,7 @@ questions:
   - id: sf12
     type: single_fact
     topic: homelab
-    question: ''
+    question: "How much did Bryan's new NAS cost, and how much power does it draw at idle?"
     v1_question: How much did Bryan's new NAS cost, and how much power does it draw at idle?
     v1_paraphrase: What did his small file server end up costing, and how much electricity does it use when
       sitting unused?
@@ -270,7 +270,7 @@ questions:
   - id: sf13
     type: single_fact
     topic: homelab
-    question: ''
+    question: 'What should you be aware of when buying a second-hand Ryzen PRO CPU?'
     v1_question: What should you watch out for when buying a used Ryzen PRO CPU?
     v1_paraphrase: What's the catch with second-hand business-line AMD processors pulled from office PCs?
     source_posts:
@@ -288,7 +288,7 @@ questions:
   - id: sf14
     type: single_fact
     topic: homelab
-    question: ''
+    question: "How come Bryan didn't configure his NAS hard drives to spin down?"
     v1_question: Why didn't Bryan configure his NAS hard drives to spin down?
     v1_paraphrase: Why couldn't he save power by letting his disks go to sleep?
     source_posts:
@@ -304,7 +304,7 @@ questions:
   - id: sf15
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: How did Bryan fix the Claude Code errors he encountered?
     v1_question: How did Bryan fix the Claude Code "credential is only authorized for use with Claude Code"
       API 400 error?
     v1_paraphrase: What got his AI coding assistant working again on a Pro subscription when it kept rejecting
@@ -325,7 +325,7 @@ questions:
   - id: sf16
     type: single_fact
     topic: personal
-    question: ''
+    question: What was Bryan's first camera?
     v1_question: What was Bryan's first camera?
     v1_paraphrase: What gear did he start taking pictures with back in grad school?
     source_posts:
@@ -345,7 +345,7 @@ questions:
   - id: sf17
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: What two types of language models did Bryan describe from his reading of Chip Huyen's book on AI engineering?
     v1_question: What's the difference between masked and autoregressive language models in Bryan's notes
       on Chip Huyen's book?
     v1_paraphrase: What two kinds of language models did he describe in his first-chapter takeaways, and
@@ -365,7 +365,7 @@ questions:
   - id: sf18
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: What three approaches for adapting foundation models did Bryan describe?
     v1_question: What three approaches for adapting foundation models did Bryan describe?
     v1_paraphrase: What are the main ways to make a general-purpose AI model fit a specific use case, per
       his book notes?
@@ -384,7 +384,7 @@ questions:
   - id: sf19
     type: single_fact
     topic: self-hosting
-    question: ''
+    question: Why did Bryan switch the operating system on his VPS from Ubuntu to Debian?
     v1_question: Why did Bryan switch his VPS from Ubuntu to Debian?
     v1_paraphrase: What made him change the Linux distribution on his rented cloud server?
     source_posts:
@@ -402,7 +402,7 @@ questions:
   - id: sf20
     type: single_fact
     topic: personal
-    question: ''
+    question: How did Bryan first set up his camera when he first started photography?
     v1_question: Which camera mode did Bryan use when he started photography, and why?
     v1_paraphrase: How did he simplify juggling exposure settings as a beginner?
     source_posts:
@@ -419,7 +419,7 @@ questions:
   - id: sf21
     type: single_fact
     topic: web-design
-    question: ''
+    question: How does the @theme directive in Tailwind CSS work?
     v1_question: What does the @theme directive replace in Tailwind CSS v4?
     v1_paraphrase: How did the new version of that utility CSS framework change where design tokens live?
     source_posts:
@@ -440,7 +440,7 @@ questions:
   - id: sf22
     type: single_fact
     topic: web-design
-    question: ''
+    question: Which page did Bryan remove in his 4th redesign, and why?
     v1_question: Which page did Bryan remove in his 4.0 redesign, and why?
     v1_paraphrase: Which section of his site did he drop because it had gone stale?
     source_posts:
@@ -456,7 +456,7 @@ questions:
   - id: sf23
     type: single_fact
     topic: self-hosting
-    question: ''
+    question: How does Bryan back up the Postgres database used by his Umami analytics server?
     v1_question: How does Bryan back up the Postgres database behind his Umami analytics?
     v1_paraphrase: Where do the dumps of his website stats database end up?
     source_posts:
@@ -474,7 +474,7 @@ questions:
   - id: sf24
     type: single_fact
     topic: self-hosting
-    question: ''
+    question: What reverse proxy does Bryan use on his Umami VPS?
     v1_question: What reverse proxy does Bryan use on his Umami VPS?
     v1_paraphrase: What handles HTTPS certificates for his self-hosted analytics server?
     source_posts:
@@ -490,7 +490,7 @@ questions:
   - id: sf25
     type: single_fact
     topic: self-hosting
-    question: ''
+    question: Why is dynamic DNS necessary for a VPN?
     v1_question: Why does a home VPN need dynamic DNS?
     v1_paraphrase: Why might his connection back to his home network work one day and fail the next?
     source_posts:
@@ -507,7 +507,7 @@ questions:
   - id: sf26
     type: single_fact
     topic: computing
-    question: ''
+    question: How does two's complement work for negative numbers?
     v1_question: How does two's complement represent negative numbers?
     v1_paraphrase: How did he explain storing negative integers in binary?
     source_posts:
@@ -524,7 +524,7 @@ questions:
   - id: sf27
     type: single_fact
     topic: computing
-    question: ''
+    question: How does a computer communicate with its input and output devices?
     v1_question: How do computers interface with keyboards and screens, according to Bryan's Nand2Tetris
       notes?
     v1_paraphrase: How does a computer talk to its input and output devices?
@@ -542,7 +542,7 @@ questions:
   - id: sf28
     type: single_fact
     topic: web-design
-    question: ''
+    question: What's the minimum recommended button size?
     v1_question: How large should buttons be, according to Bryan's takeaways from Practical UI?
     v1_paraphrase: What's the minimum size for something people tap or click?
     source_posts:
@@ -556,7 +556,7 @@ questions:
   - id: sf29
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: Why does Typesafe AI refer to Jev as a System One model?
     v1_question: What does TypeSafe AI mean by calling Jev a System One model?
     v1_paraphrase: What psychology book does the name of that classifier's model category reference, and
       what does it imply?
@@ -573,7 +573,7 @@ questions:
   - id: sf30
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: How did Bryan's weather chatbot decide when to end a conversation?
     v1_question: How did Bryan's AutoGen weather assistant know when to end the conversation?
     v1_paraphrase: How did his agent decide its job was done?
     source_posts:
@@ -590,7 +590,7 @@ questions:
     type: single_fact
     topic: backend
     in_v1_subset: true
-    question: ''
+    question: When Bryan fired 20 rapid calls at his throttled endpoint, why did one late call get through?
     v1_question: In Bryan's rate limiter test, why did the 15th request succeed?
     v1_paraphrase: When he fired 20 rapid calls at his throttled endpoint, why did one late call get through?
     source_posts:
@@ -607,7 +607,7 @@ questions:
   - id: sf32
     type: single_fact
     topic: ai-llm
-    question: ''
+    question: What open question did Bryan end his token-pricing post with?
     v1_question: What open question did Bryan end his token-pricing post with?
     v1_paraphrase: What puzzle did he leave unresolved at the end of his laptop timing experiment?
     source_posts:
@@ -623,7 +623,7 @@ questions:
   - id: sf33
     type: single_fact
     topic: homelab
-    question: ''
+    question: Which NAS cases did Bryan consider besides the Sagittarius, and why did he reject those?
     v1_question: Which NAS cases did Bryan consider besides the Sagittarius, and why did he reject them?
     v1_paraphrase: What other enclosures did he look at for his storage server, and what was wrong with
       each?
