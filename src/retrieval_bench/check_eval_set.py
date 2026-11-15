@@ -1,40 +1,33 @@
-"""Validate an eval set against the blog posts and report coverage and word overlap.
+"""Validate an eval set against the blog posts and report coverage.
 
 Checks the schema (the Question model below), post slugs, and that each required
 source post has an evidence quote found in that post. A found quote shows the post
 has the text, not that the reference answer is right.
 
-Also reports, per question, how much of its wording appears in its source posts,
-weighted by word rarity, since rare words drive BM25. Words are counted after
-retrieval.tokenize (BM25's stopwords and stemmer), so the number reflects what
-BM25 sees. Overlap is measured, not controlled: the notebook plots retrieval
-results against it.
+Deliberately reports nothing about how a retriever would do: this runs while
+questions are being written, and a number shown then would shape the wording.
+Retrieval analysis belongs in the notebook, after the questions are frozen.
 
 Items with a blank `question` are skipped, so the v2 workbook (eval-set-v2.yaml)
 can be checked too.
 
 Usage: uv run check-eval-set [--file dataset/eval-set-v2-shortlist.yaml] [--blog PATH]
-                             [--post-cap 3] [--overlap]
-       uv run check-eval-set --explain cs04    # per-term breakdown for one question
+                             [--post-cap 3]
 """
 import argparse
 import collections
 import functools
-import math
 import re
-import statistics
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, strip_links, tokenize
+from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, strip_links
 
 Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
-Term = str  # one token after retrieval.tokenize: lowercased, stopwords dropped, stemmed
 
 QuestionType = Literal["single_fact", "multi_post", "current_state", "opinion", "unanswerable"]
 Topic = Literal["ai-llm", "ml-nlp", "backend", "web-design", "homelab", "self-hosting",
@@ -46,8 +39,6 @@ Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "nea
 
 POST_FIELDS = ("source_posts", "acceptable_posts", "superseded_posts", "related_posts")
 ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
-
-NAME: set[Term] = set(tokenize("Bryan")[0])  # the name as BM25 sees it, after stemming
 
 
 class Question(BaseModel):
@@ -121,89 +112,6 @@ def parse_questions(items: list[dict[str, Any]]) -> tuple[list[Question], dict[s
     return questions, dict(errors)
 
 
-@dataclass(frozen=True)
-class TermRow:
-    """One line of WordOverlap.explain()."""
-    term: Term
-    df: int                 # how many posts contain the term
-    idf: float
-    found: dict[str, bool]  # group label, such as "current", -> is the term in those posts?
-
-
-class WordOverlap:
-    """How much of a question's wording appears in a given set of posts, as BM25 sees it.
-
-        overlap = sum of IDF over question terms that appear in the posts
-                  / sum of IDF over all question terms
-
-    - Terms come from retrieval.tokenize, the same stopwords and stemmer BM25 uses.
-      Each distinct term counts once, and Bryan's name is dropped because nearly
-      every question uses it.
-    - IDF is BM25's (Lucene variant), so a rare term weighs more than a common one.
-      A term found in no post at all gets the highest weight and can never match.
-    - A term "appears" if it occurs anywhere in any of the posts. Unlike BM25 itself,
-      how often it occurs and how long the post is don't matter.
-
-    The result runs from 0 (no shared terms) to 1 (every term appears).
-    """
-
-    def __init__(self, posts: dict[Slug, str]) -> None:
-        texts = [strip_links(text) for text in posts.values()]
-        self.terms_in_post: dict[Slug, set[Term]] = {
-            slug: set(terms) for slug, terms in zip(posts, tokenize(texts))}
-        self.num_posts = len(posts)
-        self.posts_containing: collections.Counter[Term] = collections.Counter()
-        for terms in self.terms_in_post.values():
-            self.posts_containing.update(terms)
-
-    def idf(self, term: Term) -> float:
-        df = self.posts_containing[term]
-        return math.log(1 + (self.num_posts - df + 0.5) / (df + 0.5))
-
-    def question_terms(self, question: str) -> set[Term]:
-        return set(tokenize(question)[0]) - NAME
-
-    def terms_in(self, slugs: list[Slug]) -> set[Term]:
-        """Every term that appears in at least one of `slugs`."""
-        return set().union(*(self.terms_in_post[s] for s in slugs))
-
-    def score(self, question: str, slugs: list[Slug]) -> float:
-        """Overlap of `question` with the combined terms of `slugs` (0.0 if `slugs` is empty)."""
-        terms = self.question_terms(question)
-        if not terms:
-            return 0.0
-        found = self.terms_in(slugs)
-        matched_weight = sum(self.idf(t) for t in terms & found) #idf for terms that appear in the 
-        total_weight = sum(self.idf(t) for t in terms)
-        return matched_weight / total_weight
-
-    def explain(self, question: str, slug_groups: dict[str, list[Slug]]) -> list[TermRow]:
-        """One row per question term, heaviest first. slug_groups maps a label such
-        as "current" to a list of slugs."""
-        found = {label: self.terms_in(slugs) for label, slugs in slug_groups.items()}
-        # Heaviest first; ties alphabetical, since set order changes from run to run
-        terms = sorted(self.question_terms(question), key=lambda t: (-self.idf(t), t))
-        return [TermRow(t, self.posts_containing[t], self.idf(t),
-                        {label: t in f for label, f in found.items()})
-                for t in terms]
-
-
-@dataclass(frozen=True)
-class Overlap:
-    """One question's word overlap with its posts."""
-    source: float              # with source_posts
-    superseded: float | None   # with superseded_posts; None if the question has none
-
-def word_overlap(qs: list[Question], posts: dict[Slug, str]) -> dict[str, Overlap]:
-    """Question id -> its overlap. Every question in `qs` needs source_posts."""
-    scorer = WordOverlap(posts)
-    out = {}
-    for q in qs:
-        superseded = (scorer.score(q.question, q.superseded_posts)
-                      if q.superseded_posts else None)
-        out[q.id] = Overlap(scorer.score(q.question, q.source_posts), superseded)
-    return out
-
 def validate(qs: list[Question], posts: dict[Slug, str]) -> list[str]:
     """The checks parsing can't do: unique ids, known slugs, rules that span fields,
     and evidence quotes found in their posts. One message per problem."""
@@ -241,90 +149,16 @@ def print_coverage(qs: list[Question], posts: dict[Slug, str], post_cap: int) ->
     no_stale = [q.id for q in qs if q.type == "current_state" and not q.superseded_posts]
     print("current_state without a superseded post:", no_stale or "none")
 
-def percentile(sorted_values: list[float], p: float) -> float:
-    """Nearest-rank percentile: the value at position p of the way through the list."""
-    return sorted_values[min(len(sorted_values) - 1, int(p * len(sorted_values)))]
-
-def print_overlap(qs: list[Question], posts: dict[Slug, str], list_all: bool) -> None:
-    answerable = [q for q in qs if q.source_posts]
-    if not answerable:
-        return
-    overlap = word_overlap(answerable, posts)
-
-    # 1. Distribution across all questions
-    values = sorted(o.source for o in overlap.values())
-    print("\nword overlap with source posts (0 = no shared terms, 1 = all, rarity-weighted):")
-    print(f"  mean {statistics.mean(values):.2f}  min {values[0]:.2f}  25% {percentile(values, .25):.2f}"
-          f"  median {statistics.median(values):.2f}  75% {percentile(values, .75):.2f}  max {values[-1]:.2f}")
-
-    # 2. Average for each question type
-    by_type: dict[QuestionType, list[float]] = collections.defaultdict(list)
-    for q in answerable:
-        by_type[q.type].append(overlap[q.id].source)
-    print("  mean by type:", {t: round(statistics.mean(v), 2) for t, v in by_type.items()})
-
-    # 3. Current vs outdated post. Where the outdated post overlaps at least as much,
-    #    the wording gives BM25 no reason to prefer the current one.
-    stale = [q for q in answerable if overlap[q.id].superseded is not None]
-    if stale:
-        print("  current_state, current vs outdated post (<- means wording gives the current post no edge):")
-        for q in sorted(stale, key=lambda q: overlap[q.id].source - overlap[q.id].superseded):
-            o = overlap[q.id]
-            flag = "  <-" if o.superseded >= o.source else ""
-            print(f"    {q.id}: current {o.source:.2f}  outdated {o.superseded:.2f}{flag}")
-
-    # 4. Individual questions, lowest overlap first
-    ranked = sorted(answerable, key=lambda q: overlap[q.id].source)
-
-    def print_rows(rows: list[Question]) -> None:
-        for q in rows:
-            print(f"    {q.id:5} {overlap[q.id].source:.2f}  {q.question[:80]}")
-
-    if list_all or len(ranked) <= 10:
-        print("  per question:")
-        print_rows(ranked)
-    else:
-        print("  per question (lowest and highest 5; --overlap lists all):")
-        print_rows(ranked[:5])
-        print("    ...")
-        print_rows(ranked[-5:])
-
-def print_explanation(q: Question, posts: dict[Slug, str]) -> None:
-    """Per-term breakdown of one question's overlap scores."""
-    scorer = WordOverlap(posts)
-    groups = {"current": q.source_posts, "outdated": q.superseded_posts}
-    groups = {label: slugs for label, slugs in groups.items() if slugs}
-    print(f"\n{q.id}: {q.question}")
-    for label, slugs in groups.items():
-        print(f"  {label} posts: {', '.join(slugs)}")
-    labels = list(groups)
-    print(f"\n  {'term':12} {'posts with it':>13} {'IDF':>6}" + "".join(f" {'in ' + l:>12}" for l in labels))
-    for row in scorer.explain(q.question, groups):
-        print(f"  {row.term:12} {row.df:>13} {row.idf:>6.2f}"
-              + "".join(f" {'yes' if row.found[l] else '-':>12}" for l in labels))
-    for label, slugs in groups.items():
-        print(f"  overlap with {label} posts: {scorer.score(q.question, slugs):.2f}")
-
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--blog", default=str(DEFAULT_BLOG))
     ap.add_argument("--file", default=str(ROOT / "dataset" / "eval-set-v2-shortlist.yaml"))
     ap.add_argument("--post-cap", type=int, default=3, help="warn when a post is required by more questions than this")
-    ap.add_argument("--overlap", action="store_true", help="list overlap for every question")
-    ap.add_argument("--explain", metavar="ID", help="show the per-term overlap breakdown for one question")
     a = ap.parse_args()
     posts = load_posts(a.blog)
     items = load_items(a.file)
     filled = [item for item in items if not is_blank(item)]
     qs, parse_errs = parse_questions(filled)
-
-    if a.explain:
-        match = [q for q in qs if q.id == a.explain]
-        if not match:
-            sys.exit(f"no valid question with id {a.explain} in {a.file}"
-                     + "".join(f"\n  {e}" for e in parse_errs.get(a.explain, [])))
-        print_explanation(match[0], posts)
-        return
 
     errs = [f"{qid}: {e}" for qid, msgs in parse_errs.items() for e in msgs] + validate(qs, posts)
     skipped = len(items) - len(filled)
@@ -333,7 +167,6 @@ def main() -> None:
           + (f", {failed} failed to parse (left out below)" if failed else "")
           + f", {len(posts)} posts")
     print_coverage(qs, posts, a.post_cap)
-    print_overlap(qs, posts, a.overlap)
 
     if errs:
         print(f"\nERRORS ({len(errs)}):")

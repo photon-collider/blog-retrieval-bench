@@ -1,7 +1,7 @@
 """Shared retrieval code for the blog Q&A benchmark.
 
 Everything that decides what BM25 "sees" lives here, so the BM25 index, the
-notebook, and check_eval_set.py's word-overlap measure all tokenize the same way.
+notebook, and any later analysis prepare and tokenize posts the same way.
 """
 import re
 from pathlib import Path
