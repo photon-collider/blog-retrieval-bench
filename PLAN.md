@@ -20,8 +20,11 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
   prose and code, plus the frontmatter title, description, imgAlt and
   imgCaption, and the alt/caption/title props of components. mp08's answer
   exists only in an image caption.
-- **Metrics:** post-level Hit@k (a source or acceptable post counts), Recall@k
-  (source posts only) and MRR, reported per question type, for k = 1, 3 and 5.
+- **Labels:** one field, `source_posts`: every post that contains the answer
+  (for multi_post, every post with part of it). There are no acceptable posts.
+- **Metrics:** post-level Hit@k (any source post in the top k) and MRR for
+  every question type; Recall@k for multi_post only, the one type that needs
+  every source post. Reported per question type, for k = 1, 3 and 5.
   Random ranking scores Hit@1 0.02, Hit@5 0.11, MRR 0.10 on the shortlist.
 - **Analysis:** for each embedding model, a 2×2 table of BM25 hit/miss against
   embedding hit/miss, then read the questions where they disagree. A per-term

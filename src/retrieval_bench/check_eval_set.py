@@ -69,7 +69,7 @@ def validate(qs: list[Question], posts: dict[Slug, str]) -> list[str]:
         for s in q.source_posts:
             if s not in q.evidence: errs.append(f"{i}: no evidence for {s}")
         for s, quote in q.evidence.items():
-            if s not in q.source_posts and s not in q.acceptable_posts:
+            if s not in q.source_posts:
                 errs.append(f"{i}: evidence for non-source {s}")
             elif s in posts and not contains(posts[s], quote):
                 errs.append(f"{i}: quote not found in {s}: {quote!r}")
@@ -80,10 +80,9 @@ def print_coverage(qs: list[Question], posts: dict[Slug, str], post_cap: int) ->
     print("by topic:", dict(collections.Counter(q.topic for q in qs)))
     print("by probe:", dict(collections.Counter(q.probe for q in qs if q.probe)))
     required = collections.Counter(s for q in qs for s in q.source_posts)
-    targeted = set(required) | {s for q in qs for s in q.acceptable_posts}
     overused = [(s, n) for s, n in required.most_common() if n > post_cap]
     print(f"posts required by more than {post_cap} questions:", overused or "none")
-    print("posts no question targets (distractors only):", sorted(set(posts) - targeted) or "none")
+    print("posts no question targets (distractors only):", sorted(set(posts) - set(required)) or "none")
     no_stale = [q.id for q in qs if q.type == "current_state" and not q.superseded_posts]
     print("current_state without a superseded post:", no_stale or "none")
 

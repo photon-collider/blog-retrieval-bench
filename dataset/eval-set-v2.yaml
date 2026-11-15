@@ -33,10 +33,14 @@
 #                    long_post | recency | aggregation | multi_hop
 #                    (v1's wording probes vocab_mismatch and lexical_collision are dropped)
 #   question         your phrasing; blank = skip
-#   source_posts     posts REQUIRED for a full answer (the recall denominator)
-#   acceptable_posts posts that also contain the answer, or part of it (count as hits)
-#   superseded_posts older posts with outdated info (current_state only)
-#   related_posts    near-miss posts likely to tempt a wrong answer; not relevant
+#   source_posts     every post that contains the answer. For multi_post, every
+#                    post that contains part of it. Retrieving any one counts as a
+#                    hit; Recall@k (multi_post only) asks for all of them.
+#   superseded_posts older posts with an outdated answer (current_state only)
+#   related_posts    near misses: posts on the topic that don't answer the question,
+#                    or answer only part of a non-multi_post question
+#   (Some blank items still have the old acceptable_posts field. If you fill one
+#   in, move those posts into source_posts or related_posts first.)
 #   evidence         slug -> verbatim quote; check_eval_set.py confirms it's in the post
 #   reference_answer short ideal answer
 #   key_facts        atomic facts a correct answer must include
@@ -330,9 +334,9 @@ questions:
     v1_paraphrase: What gear did he start taking pictures with back in grad school?
     source_posts:
     - my-first-steps-in-photography
-    acceptable_posts:
     - 2022-in-review
     evidence:
+      2022-in-review: I started my hobby in photography with the Nikon D3300 camera
       my-first-steps-in-photography: 'the day I bought a used camera: a Nikon D3300'
     reference_answer: A used Nikon D3300 with a 35mm f/1.8G prime lens, bought on October 19, 2019.
     key_facts:
@@ -1733,11 +1737,13 @@ questions:
     v1_paraphrase: What powered his blog when it originally launched in 2020?
     source_posts:
     - hello-world
-    acceptable_posts:
     - 2020-in-review
     - redesign-2
     - simplifying-my-website-css-using-tailwind
     evidence:
+      2020-in-review: I selected Eleventy as my SSG
+      redesign-2: When I first deployed this website, I used the static site generator Eleventy
+      simplifying-my-website-css-using-tailwind: When I created my first website using Eleventy
       hello-world: the static site builder Eleventy
     reference_answer: The static site generator Eleventy.
     key_facts:
@@ -2415,7 +2421,7 @@ questions:
     question: What is in Bryan's current homelab?
     source_posts:
     - building-a-better-nas-for-my-homelab
-    acceptable_posts:
+    related_posts:
     - sagittarius-8-bay-nas-first-impressions
     superseded_posts:
     - my-homelab-setup
