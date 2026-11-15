@@ -20,6 +20,8 @@ import argparse, collections, random
 from pathlib import Path
 import yaml
 
+from retrieval_bench.retrieval import load_posts
+
 ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
 
 TYPE_SHARE = {"single_fact": .35, "current_state": .175, "multi_post": .175, "opinion": .15, "unanswerable": .15}
@@ -123,7 +125,7 @@ def main():
     print(f"\nposts covered as required sources: {len(posts)}/43; most used: {posts.most_common(5)}")
     current = [q for q in best if q["type"] == "current_state"]
     print(f"current_state with a stale competitor: {sum(bool(q.get('superseded_posts')) for q in current)}/{len(current)}")
-    print("posts not required by any pick:", sorted({p.stem for p in Path.home().joinpath("Projects/personal-blog-astro/src/content/blog").glob("*.mdx")} - set(posts)))
+    print("posts not required by any pick:", sorted(set(load_posts()) - set(posts)))
     print("probes:", dict(collections.Counter(q["probe"] for q in best if q.get("probe"))))
     print("from round 3:", sum(q["id"][2:].isdigit() and (
         (q["id"][:2] == "sf" and int(q["id"][2:]) > 35) or (q["id"][:2] == "cs" and int(q["id"][2:]) > 9) or

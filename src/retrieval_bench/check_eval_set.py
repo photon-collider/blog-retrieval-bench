@@ -19,18 +19,19 @@ Usage: uv run check-eval-set [--file dataset/eval-set-v2-shortlist.yaml] [--blog
 """
 import argparse
 import collections
+import functools
 import math
 import re
 import statistics
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal, NamedTuple
+from typing import Any, Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from retrieval_bench.retrieval import tokenize
+from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, strip_links, tokenize
 
 Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
 Term = str  # one token after retrieval.tokenize: lowercased, stopwords dropped, stemmed
@@ -44,10 +45,9 @@ Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "nea
                 "aggregation", "multi_hop"]
 
 POST_FIELDS = ("source_posts", "acceptable_posts", "superseded_posts", "related_posts")
-DEFAULT_BLOG = Path.home() / "Projects/personal-blog-astro/src/content/blog"
 ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
 
-NAME = {"bryan"}  # after tokenizing, "Bryan's" becomes "bryan"
+NAME: set[Term] = set(tokenize("Bryan")[0])  # the name as BM25 sees it, after stemming
 
 
 class Question(BaseModel):
@@ -81,21 +81,22 @@ class Question(BaseModel):
     in_v1_subset: bool = False
 
 
+PUNCTUATION = str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-"})
+
 def norm(s: str) -> str:
-    s = s.translate(str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-"}))
+    s = s.translate(PUNCTUATION)
     s = s.replace("\\", "").replace("`", "").replace("**", "")
     return re.sub(r"\s+", " ", s).lower().strip()
 
-def strip_links(s: str) -> str:
-    return re.sub(r"\[([^\]]*)\]\(\s*<?[^)\s>]*>?\s*\)", r"\1", s)
+@functools.cache
+def normalized_forms(raw: str) -> tuple[str, str]:
+    """A post normalized with and without its links. Cached, since one post is
+    checked against several quotes."""
+    return norm(raw), norm(strip_links(raw))
 
 def contains(raw: str, quote: str) -> bool:
     q = norm(quote)
-    return q in norm(raw) or q in norm(strip_links(raw))
-
-def load_posts(blog: str | Path = DEFAULT_BLOG) -> dict[Slug, str]:
-    """slug -> the post's raw MDX text."""
-    return {p.stem: p.read_text(encoding="utf-8") for p in Path(blog).glob("*.mdx")}
+    return any(q in form for form in normalized_forms(raw))
 
 def load_items(path: str | Path) -> list[dict[str, Any]]:
     """Every item in the file as a plain dict, blank `question` or not."""
@@ -105,24 +106,26 @@ def is_blank(item: dict[str, Any]) -> bool:
     """A blank `question` marks a workbook item that wasn't chosen."""
     return not (item.get("question") or "").strip()
 
-def parse_questions(items: list[dict[str, Any]]) -> tuple[list[Question], list[str]]:
-    """Parse each item into a Question. Returns the ones that parsed, and one error
-    message per problem in the ones that didn't."""
-    questions, errors = [], []
+def parse_questions(items: list[dict[str, Any]]) -> tuple[list[Question], dict[str, list[str]]]:
+    """Parse each item into a Question. Returns the ones that parsed, and for the
+    ones that didn't, id -> one "field: problem" message per problem."""
+    questions, errors = [], collections.defaultdict(list)
     for item in items:
         try:
             questions.append(Question.model_validate(item))
         except ValidationError as e:
-            qid = item.get("id", "?")
+            qid = str(item.get("id", "?"))
             for err in e.errors():
                 field = ".".join(str(part) for part in err["loc"])
-                errors.append(f"{qid}: {field}: {err['msg']}")
-    return questions, errors
+                errors[qid].append(f"{field}: {err['msg']}")
+    return questions, dict(errors)
 
 
-class TermRow(NamedTuple):
+@dataclass(frozen=True)
+class TermRow:
     """One line of WordOverlap.explain()."""
     term: Term
+    df: int                 # how many posts contain the term
     idf: float
     found: dict[str, bool]  # group label, such as "current", -> is the term in those posts?
 
@@ -160,23 +163,28 @@ class WordOverlap:
     def question_terms(self, question: str) -> set[Term]:
         return set(tokenize(question)[0]) - NAME
 
+    def terms_in(self, slugs: list[Slug]) -> set[Term]:
+        """Every term that appears in at least one of `slugs`."""
+        return set().union(*(self.terms_in_post[s] for s in slugs))
+
     def score(self, question: str, slugs: list[Slug]) -> float:
         """Overlap of `question` with the combined terms of `slugs` (0.0 if `slugs` is empty)."""
         terms = self.question_terms(question)
         if not terms:
             return 0.0
-        found = set().union(*(self.terms_in_post[s] for s in slugs))
+        found = self.terms_in(slugs)
         matched_weight = sum(self.idf(t) for t in terms & found) #idf for terms that appear in the 
         total_weight = sum(self.idf(t) for t in terms)
         return matched_weight / total_weight
 
     def explain(self, question: str, slug_groups: dict[str, list[Slug]]) -> list[TermRow]:
         """One row per question term, heaviest first. slug_groups maps a label such
-        as "current" to a list of slugs; groups with no slugs are left out."""
-        found = {label: set().union(*(self.terms_in_post[s] for s in slugs))
-                 for label, slugs in slug_groups.items() if slugs}
-        terms = sorted(self.question_terms(question), key=self.idf, reverse=True)
-        return [TermRow(t, self.idf(t), {label: t in f for label, f in found.items()})
+        as "current" to a list of slugs."""
+        found = {label: self.terms_in(slugs) for label, slugs in slug_groups.items()}
+        # Heaviest first; ties alphabetical, since set order changes from run to run
+        terms = sorted(self.question_terms(question), key=lambda t: (-self.idf(t), t))
+        return [TermRow(t, self.posts_containing[t], self.idf(t),
+                        {label: t in f for label, f in found.items()})
                 for t in terms]
 
 
@@ -242,10 +250,9 @@ def print_overlap(qs: list[Question], posts: dict[Slug, str], list_all: bool) ->
     if not answerable:
         return
     overlap = word_overlap(answerable, posts)
-    source = {qid: o.source for qid, o in overlap.items()}
 
     # 1. Distribution across all questions
-    values = sorted(source.values())
+    values = sorted(o.source for o in overlap.values())
     print("\nword overlap with source posts (0 = no shared terms, 1 = all, rarity-weighted):")
     print(f"  mean {statistics.mean(values):.2f}  min {values[0]:.2f}  25% {percentile(values, .25):.2f}"
           f"  median {statistics.median(values):.2f}  75% {percentile(values, .75):.2f}  max {values[-1]:.2f}")
@@ -253,32 +260,34 @@ def print_overlap(qs: list[Question], posts: dict[Slug, str], list_all: bool) ->
     # 2. Average for each question type
     by_type: dict[QuestionType, list[float]] = collections.defaultdict(list)
     for q in answerable:
-        by_type[q.type].append(source[q.id])
+        by_type[q.type].append(overlap[q.id].source)
     print("  mean by type:", {t: round(statistics.mean(v), 2) for t, v in by_type.items()})
 
     # 3. Current vs outdated post. Where the outdated post overlaps at least as much,
     #    the wording gives BM25 no reason to prefer the current one.
-    pairs = [(qid, o.source, o.superseded) for qid, o in overlap.items() if o.superseded is not None]
-    if pairs:
+    stale = [q for q in answerable if overlap[q.id].superseded is not None]
+    if stale:
         print("  current_state, current vs outdated post (<- means wording gives the current post no edge):")
-        for qid, current, outdated in sorted(pairs, key=lambda p: p[1] - p[2]):
-            flag = "  <-" if outdated >= current else ""
-            print(f"    {qid}: current {current:.2f}  outdated {outdated:.2f}{flag}")
+        for q in sorted(stale, key=lambda q: overlap[q.id].source - overlap[q.id].superseded):
+            o = overlap[q.id]
+            flag = "  <-" if o.superseded >= o.source else ""
+            print(f"    {q.id}: current {o.source:.2f}  outdated {o.superseded:.2f}{flag}")
 
     # 4. Individual questions, lowest overlap first
-    text = {q.id: q.question for q in answerable}
-    ranked = sorted(source.items(), key=lambda item: item[1])
+    ranked = sorted(answerable, key=lambda q: overlap[q.id].source)
+
+    def print_rows(rows: list[Question]) -> None:
+        for q in rows:
+            print(f"    {q.id:5} {overlap[q.id].source:.2f}  {q.question[:80]}")
+
     if list_all or len(ranked) <= 10:
         print("  per question:")
-        sections = [ranked]
+        print_rows(ranked)
     else:
         print("  per question (lowest and highest 5; --overlap lists all):")
-        sections = [ranked[:5], ranked[-5:]]
-    for i, section in enumerate(sections):
-        if i:
-            print("    ...")
-        for qid, value in section:
-            print(f"    {qid:5} {value:.2f}  {text[qid][:80]}")
+        print_rows(ranked[:5])
+        print("    ...")
+        print_rows(ranked[-5:])
 
 def print_explanation(q: Question, posts: dict[Slug, str]) -> None:
     """Per-term breakdown of one question's overlap scores."""
@@ -291,8 +300,7 @@ def print_explanation(q: Question, posts: dict[Slug, str]) -> None:
     labels = list(groups)
     print(f"\n  {'term':12} {'posts with it':>13} {'IDF':>6}" + "".join(f" {'in ' + l:>12}" for l in labels))
     for row in scorer.explain(q.question, groups):
-        df = scorer.posts_containing[row.term]
-        print(f"  {row.term:12} {df:>13} {row.idf:>6.2f}"
+        print(f"  {row.term:12} {row.df:>13} {row.idf:>6.2f}"
               + "".join(f" {'yes' if row.found[l] else '-':>12}" for l in labels))
     for label, slugs in groups.items():
         print(f"  overlap with {label} posts: {scorer.score(q.question, slugs):.2f}")
@@ -313,13 +321,12 @@ def main() -> None:
     if a.explain:
         match = [q for q in qs if q.id == a.explain]
         if not match:
-            problems = [e for e in parse_errs if e.startswith(f"{a.explain}: ")]
             sys.exit(f"no valid question with id {a.explain} in {a.file}"
-                     + "".join(f"\n  {e}" for e in problems))
+                     + "".join(f"\n  {e}" for e in parse_errs.get(a.explain, [])))
         print_explanation(match[0], posts)
         return
 
-    errs = parse_errs + validate(qs, posts)
+    errs = [f"{qid}: {e}" for qid, msgs in parse_errs.items() for e in msgs] + validate(qs, posts)
     skipped = len(items) - len(filled)
     failed = len(filled) - len(qs)
     print(f"{a.file}: {len(qs)} questions" + (f" ({skipped} blank, skipped)" if skipped else "")
