@@ -20,7 +20,7 @@
 #   - If your wording changes what's being asked, update the labels as well
 #     (source_posts, evidence, reference_answer, key_facts).
 #
-# Composition (55): single_fact 37, current_state 7, multi_post 5, opinion 6.
+# Composition (54): single_fact 35, current_state 8, multi_post 5, opinion 6.
 #   Report results per type; single_fact would dominate a pooled score.
 #   No post as a required source (source_posts) for more than 3 questions.
 #   Cover as many of the 44 posts as you can. v1 has no question for
@@ -180,25 +180,6 @@ questions:
     - ARM-based
     - €4.45/month including daily backups
 
-  - id: sf12
-    type: single_fact
-    topic: homelab
-    question: "How much did Bryan's new NAS cost, and how much power does it draw at idle?"
-    v1_question: How much did Bryan's new NAS cost, and how much power does it draw at idle?
-    v1_paraphrase: What did his small file server end up costing, and how much electricity does it use when
-      sitting unused?
-    source_posts:
-    - building-a-better-nas-for-my-homelab
-    evidence:
-      building-a-better-nas-for-my-homelab: In total, I paid $1,090.48
-    reference_answer: $1,090.48 total ($746.50 excluding hard drives). It idles at 30-35 W, versus 55-60
-      W for his previous home server.
-    key_facts:
-    - $1,090.48 total
-    - $746.50 excluding drives
-    - idles at 30-35 W
-    - previous server idled at 55-60 W
-
   - id: sf13
     type: single_fact
     topic: homelab
@@ -216,22 +197,6 @@ questions:
     - vendor locking via Platform Secure Boot (PSB)
     - Lenovo chips are an example of locked CPUs
     - his chip came from an HP system and worked
-
-  - id: sf14
-    type: single_fact
-    topic: homelab
-    question: "How come Bryan didn't configure his NAS hard drives to spin down?"
-    v1_question: Why didn't Bryan configure his NAS hard drives to spin down?
-    v1_paraphrase: Why couldn't he save power by letting his disks go to sleep?
-    source_posts:
-    - building-a-better-nas-for-my-homelab
-    evidence:
-      building-a-better-nas-for-my-homelab: these checks occur every 90 minutes
-    reference_answer: TrueNAS runs SMART checks every 90 minutes, which wake the drives and defeat the purpose,
-      and he couldn't find a way to configure when those checks run.
-    key_facts:
-    - TrueNAS SMART checks every 90 minutes wake the drives
-    - check schedule isn't configurable (as far as he could tell)
 
   - id: sf15
     type: single_fact
@@ -493,6 +458,8 @@ questions:
     v1_paraphrase: What puzzle did he leave unresolved at the end of his laptop timing experiment?
     source_posts:
     - one-reason-input-tokens-are-cheaper-than-output-tokens
+    acceptable_posts:
+    - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
     evidence:
       one-reason-input-tokens-are-cheaper-than-output-tokens: why is the TPOT roughly 10 ms per output token?
     reference_answer: Why the time per output token is roughly 10 ms. He suspected it relates to token generation
@@ -708,24 +675,23 @@ questions:
     - grander plans such as photo essays and galleries
     - site now focuses on writing and side projects
 
-  - id: sf83
+  - id: sf86
     type: single_fact
-    topic: homelab
-    probe: table_only
-    in_v1_subset: true
-    question: How much did Bryan pay for the ASRock B550M Pro4?
-    v1_question: How much did Bryan pay for the ASRock B550M Pro4?
-    v1_paraphrase: What did the main circuit board in his small file server cost?
+    topic: ai-llm
+    question: How did the percentage of time spent reading weights vary across models?
     source_posts:
-    - building-a-better-nas-for-my-homelab
-    related_posts:
-    - sagittarius-8-bay-nas-first-impressions
+    - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
     evidence:
-      building-a-better-nas-for-my-homelab: ASRock B550M Pro4 | $87.99
-    reference_answer: $87.99, including shipping and taxes.
+      straight-line-predicts-how-fast-my-laptop-generates-llm-tokens: For the smallest model my laptop spends
+        roughly 45% of time reading weights, whereas for the largest model it spends 91%
+    reference_answer: 'It rises with model size: roughly 45% for the smallest model (Gemma 3 270M, bfloat16)
+      and 91% for the largest (Qwen3 1.7B, float32). The rest is fixed system overhead, which takes up a
+      larger share of each token''s time for small models.'
     key_facts:
-    - $87.99
-    notes: The answer is in a parts table. The Sagittarius post gives a nearby estimate of "around $89".
+    - about 45% for the smallest model
+    - about 91% for the largest model
+    - fixed overhead is a larger share for small models
+    notes: New in v2. The per-model numbers are in a table; the 45% and 91% figures are also stated in prose.
 
   # ---------------------------------------------------------------
   # CURRENT STATE
@@ -881,6 +847,30 @@ questions:
     notes: New in v2. my-homelab-setup describes the old gaming PC (March 2026). Decide whether the Mac
       mini counts as part of the homelab; the Hetzner VPS is not included. Overlaps with mp01 (how the hardware
       evolved), so you may want only one of them.
+
+  - id: cs22
+    type: current_state
+    topic: ai-llm
+    probe: recency
+    question: Why is TPOT about 9 ms for Qwen2.5-0.5B?
+    source_posts:
+    - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
+    superseded_posts:
+    - one-reason-input-tokens-are-cheaper-than-output-tokens
+    evidence:
+      straight-line-predicts-how-fast-my-laptop-generates-llm-tokens: my laptop takes roughly 6.05 ms to
+        read the weights plus a fixed cost of 4.03 ms
+    reference_answer: 'Generating each token is limited by memory bandwidth: the model''s weights (about
+      988 MB) are re-read from RAM for every output token. His linear fit attributes about 6.05 ms to reading
+      the weights (at an effective 163 GB/s) plus a fixed cost of about 4.03 ms, predicting 10.08 ms against
+      the 8.99 ms he measured. His earlier token-pricing post left this as an open question.'
+    key_facts:
+    - limited by memory bandwidth
+    - weights re-read for every output token
+    - about 6.05 ms reading weights plus about 4.03 ms fixed cost
+    notes: New in v2. The older post measured TPOT at roughly 9-10 ms but couldn't explain it, so it can't
+      answer this; it's marked superseded rather than wrong. Complements sf32, which asks what the open
+      question was.
 
   # ---------------------------------------------------------------
   # MULTI-POST
@@ -1079,6 +1069,8 @@ questions:
     v1_paraphrase: What's his explanation for replies costing more than prompts on model providers?
     source_posts:
     - one-reason-input-tokens-are-cheaper-than-output-tokens
+    acceptable_posts:
+    - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
     related_posts:
     - jev-by-example
     - implementing-rate-limiter-fastapi-redis
