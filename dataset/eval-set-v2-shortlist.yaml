@@ -802,7 +802,7 @@ questions:
     reference_answer: Yes. The footer has a dropdown for switching between light and dark mode. It was once
       a wishlist item.
     key_facts:
-    - true
+    - yes, the site supports dark mode
     - dropdown in the footer
 
   - id: cs18
