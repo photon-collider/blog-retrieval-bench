@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Cached embeddings and model downloads (regenerable)
+cache/
+*.npy
+
+# macOS
+.DS_Store

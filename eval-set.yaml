@@ -1,0 +1,2835 @@
+# Blog Q&A eval set
+#
+# Covers all 43 posts in src/content/blog (read in full Nov 5, 2026).
+# Round 3 added questions for the 22 posts with no coverage, fixed existing
+# labels, and added the acceptable_posts, evidence, and probe fields.
+# Reference answers are drafts until reviewed. Layer 1 only uses the phrasings
+# and post labels.
+#
+# Fields
+#   id               stable identifier, never reuse
+#   type             single_fact | multi_post | current_state | opinion | unanswerable
+#   topic            ai-llm | ml-nlp | backend | web-design | homelab | self-hosting |
+#                    computing | personal | writing-productivity | cross-topic
+#   probe            optional: the retrieval failure this question is built to expose
+#                    vocab_mismatch | lexical_collision | sibling_confusion | near_miss |
+#                    caption_only | alt_text_only | table_only | code_only | callout_only |
+#                    buried_detail | short_post | long_post | recency | false_premise |
+#                    aggregation | multi_hop
+#   question         phrased close to the post's own wording
+#   paraphrase       same question with as little word overlap as possible
+#   source_posts     posts REQUIRED for a full answer. These are the recall denominator.
+#   acceptable_posts posts that also contain the answer, or part of it. Count them as
+#                    relevant for precision and MRR, but don't require them for recall.
+#   superseded_posts older posts with outdated info (current_state only)
+#   related_posts    near-miss posts likely to tempt a wrong answer. Not relevant.
+#   evidence         slug -> verbatim quote; check_eval_set.py confirms it is in the post
+#   reference_answer short ideal answer
+#   key_facts        atomic facts a correct answer must include (for grading)
+#   notes            caveats, things to verify
+#
+# as_of: answers reflect the blog as of 2026-11-05.
+
+as_of: "2026-11-05"
+
+questions:
+
+  # ---------------------------------------------------------------
+  # SINGLE FACT
+  # ---------------------------------------------------------------
+
+  - id: sf01
+    type: single_fact
+    topic: ai-llm
+    question: In Bryan's experiment, how much more time did an output token take than an input token?
+    paraphrase: When he timed a tiny model on his laptop, how big was the gap between reading a prompt and writing a reply?
+    source_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    evidence:
+      one-reason-input-tokens-are-cheaper-than-output-tokens: 'an output token uses 29× more time than an input token'
+    reference_answer: >-
+      Up to about 29x longer per output token than per input token, measured with
+      a 2,048-token prompt on Qwen2.5-0.5B-Instruct running on his M2 MacBook Pro.
+    key_facts:
+      - up to ~29x more time per output token
+      - measured at a 2,048-token prompt
+      - Qwen2.5-0.5B-Instruct on an M2 MacBook Pro
+
+  - id: sf02
+    type: single_fact
+    topic: ai-llm
+    question: What do TTFT and TPOT measure?
+    paraphrase: Which two latency numbers did he use to describe how quickly a reply starts and how quickly it streams?
+    source_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    evidence:
+      one-reason-input-tokens-are-cheaper-than-output-tokens: 'the time to first token (TTFT) and the time per output token (TPOT)'
+    reference_answer: >-
+      TTFT (time to first token) is how long before the response starts streaming,
+      which is dominated by the prefill phase. TPOT (time per output token) is how
+      fast each subsequent token is generated during the decode phase.
+    key_facts:
+      - TTFT = time to first token, tied to prefill
+      - TPOT = time per output token, tied to decode
+    notes: Acronym-heavy question; expect BM25 to do well on the original phrasing and worse on the paraphrase.
+
+  - id: sf03
+    type: single_fact
+    topic: ai-llm
+    question: What question types does Jev support?
+    paraphrase: What are the three ways you can ask that probability-returning model for a judgment?
+    source_posts: [jev-by-example]
+    evidence:
+      jev-by-example: 'Requests support three kinds of `questions`'
+    reference_answer: >-
+      Three: choice (pick the most plausible option from a fixed set), noul (the
+      probability a yes/no statement is true), and score (a rating on an ordered scale).
+    key_facts:
+      - choice
+      - noul
+      - score
+
+  - id: sf04
+    type: single_fact
+    topic: ai-llm
+    question: How does TypeSafe AI price Jev?
+    paraphrase: What's the fee for calling that probability-returning judgment model?
+    source_posts: [jev-by-example]
+    evidence:
+      jev-by-example: '$0.042 per million input tokens and nothing for output tokens'
+    reference_answer: $0.042 per million input tokens, and nothing for output tokens.
+    key_facts:
+      - $0.042 per million input tokens
+      - output tokens are free
+
+  - id: sf05
+    type: single_fact
+    topic: backend
+    question: Which rate limiting algorithm did Bryan implement, and with what tools?
+    paraphrase: How did he stop clients from flooding his API with too many calls?
+    source_posts: [implementing-rate-limiter-fastapi-redis]
+    evidence:
+      implementing-rate-limiter-fastapi-redis: 'one of the simplest: the token bucket algorithm'
+    reference_answer: >-
+      The token bucket algorithm, implemented as FastAPI middleware that calls a
+      Redis Lua script to track each client's tokens and last-request timestamp
+      (keyed by client IP).
+    key_facts:
+      - token bucket algorithm
+      - FastAPI middleware
+      - Redis Lua script
+      - clients identified by IP
+
+  - id: sf06
+    type: single_fact
+    topic: backend
+    question: Why did custom metadata disappear from Celery task documents in MongoDB, and how did Bryan fix it?
+    paraphrase: Why was the extra information he attached to background jobs getting wiped from the database?
+    source_posts: [custom-celery-mongodb-backend]
+    evidence:
+      custom-celery-mongodb-backend: 'It now uses `update_one` instead of `replace_one`'
+    reference_answer: >-
+      Celery's MongoDB backend overwrites the task document with replace_one when
+      storing results. He subclassed MongoBackend and overrode _store_result to use
+      update_one with $set, created the initial document in a before_task_publish
+      signal handler, and enabled task_track_started.
+    key_facts:
+      - default backend replaces the document (replace_one)
+      - custom MongoBackend subclass overriding _store_result with update_one/$set
+      - before_task_publish signal creates the initial document
+      - task_track_started enabled
+    notes: The post's prose says task_tracking=True, but its code uses task_track_started=True. The code is correct.
+
+  - id: sf07
+    type: single_fact
+    topic: ai-llm
+    question: What model and weather API did the AutoGen weather chatbot use?
+    paraphrase: Which LLM and which forecast service powered his umbrella-advice agent?
+    source_posts: [autogen-weather-chatbot]
+    evidence:
+      autogen-weather-chatbot: 'This example uses `gpt-4o-mini`'
+    reference_answer: gpt-4o-mini, with weather data from the OpenWeather One Call API (3.0).
+    key_facts:
+      - gpt-4o-mini
+      - OpenWeather One Call API
+
+  - id: sf08
+    type: single_fact
+    topic: computing
+    question: What did Bryan build in Part 1 of Nand2Tetris?
+    paraphrase: What did he make in the first half of that course where you build a computer from logic gates?
+    source_posts: [insights-from-nand2tetris-part1]
+    evidence:
+      insights-from-nand2tetris-part1: 'I built a 16-bit computer capable of performing integer arithmetic'
+    reference_answer: >-
+      Across 6 projects, a 16-bit computer that does integer arithmetic and handles
+      keyboard and screen I/O, plus an assembler that converts assembly into binary.
+    key_facts:
+      - 16-bit computer
+      - an assembler
+      - 6 projects
+
+  - id: sf09
+    type: single_fact
+    topic: web-design
+    question: What line length does Bryan recommend for readable text?
+    paraphrase: How many characters wide should a paragraph be for comfortable reading?
+    source_posts: [takeaways-practical-ui-book]
+    evidence:
+      takeaways-practical-ui-book: 'Keep line lengths between 40 - 80 characters'
+    reference_answer: Between 40 and 80 characters per line, a takeaway from the book Practical UI.
+    key_facts:
+      - 40-80 characters
+      - from Practical UI
+
+  - id: sf10
+    type: single_fact
+    topic: self-hosting
+    question: Which VPS does Bryan host Umami on, and what does it cost?
+    paraphrase: Where does his self-run website analytics live, and how much does the server cost per month?
+    source_posts: [self-hosting-umami-analytics]
+    evidence:
+      self-hosting-umami-analytics: 'Hetzner CAX11 (ARM-based VPS) for €4.45/month'
+    reference_answer: A Hetzner CAX11 (ARM-based) for €4.45/month, including automatic daily backups.
+    key_facts:
+      - Hetzner CAX11
+      - ARM-based
+      - €4.45/month including daily backups
+
+  - id: sf11
+    type: single_fact
+    topic: self-hosting
+    question: What tool and domain registrar does Bryan use for dynamic DNS?
+    paraphrase: How does he stay connected back to his house after his provider reassigns its internet address?
+    source_posts: [home-vpn-dynamic-dns]
+    evidence:
+      home-vpn-dynamic-dns: 'ran the `ddns-updater` client in a docker container'
+    reference_answer: >-
+      He self-hosts ddns-updater in a Docker container, which updates the DNS
+      records of a domain he bought on Porkbun.
+    key_facts:
+      - ddns-updater
+      - runs in Docker
+      - Porkbun domain
+
+  - id: sf12
+    type: single_fact
+    topic: homelab
+    question: How much did Bryan's new NAS cost, and how much power does it draw at idle?
+    paraphrase: What did his small file server end up costing, and how much electricity does it use when sitting unused?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'In total, I paid $1,090.48'
+    reference_answer: >-
+      $1,090.48 total ($746.50 excluding hard drives). It idles at 30-35 W, versus
+      55-60 W for his previous home server.
+    key_facts:
+      - $1,090.48 total
+      - $746.50 excluding drives
+      - idles at 30-35 W
+      - previous server idled at 55-60 W
+
+  - id: sf13
+    type: single_fact
+    topic: homelab
+    question: What should you watch out for when buying a used Ryzen PRO CPU?
+    paraphrase: What's the catch with second-hand business-line AMD processors pulled from office PCs?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'which blows a hardware fuse in the CPU'
+    reference_answer: >-
+      Some are vendor-locked to a PC maker's motherboards via Platform Secure Boot
+      (PSB), which blows a fuse in the CPU; Lenovo-pulled chips are an example. He
+      bought one reportedly pulled from an HP system, and it worked on his ASRock board.
+    key_facts:
+      - vendor locking via Platform Secure Boot (PSB)
+      - Lenovo chips are an example of locked CPUs
+      - his chip came from an HP system and worked
+
+  - id: sf14
+    type: single_fact
+    topic: homelab
+    question: Why didn't Bryan configure his NAS hard drives to spin down?
+    paraphrase: Why couldn't he save power by letting his disks go to sleep?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'these checks occur every 90 minutes'
+    reference_answer: >-
+      TrueNAS runs SMART checks every 90 minutes, which wake the drives and defeat
+      the purpose, and he couldn't find a way to configure when those checks run.
+    key_facts:
+      - TrueNAS SMART checks every 90 minutes wake the drives
+      - check schedule isn't configurable (as far as he could tell)
+
+  - id: sf15
+    type: single_fact
+    topic: ai-llm
+    question: How did Bryan fix the Claude Code "credential is only authorized for use with Claude Code" API 400 error?
+    paraphrase: What got his AI coding assistant working again on a Pro subscription when it kept rejecting his login?
+    source_posts: [fixing-claude-code-api-errors-pro-users]
+    evidence:
+      fixing-claude-code-api-errors-pro-users: 'use the `/model` command in Claude Code to select Sonnet'
+    reference_answer: >-
+      The default config used Opus, which Pro-tier users didn't have access to. He
+      switched to Sonnet with the /model command in the CLI and added --model sonnet
+      to claude_args in his GitHub Actions workflows.
+    key_facts:
+      - default model was Opus, unavailable on Pro
+      - switch to Sonnet via /model
+      - add --model sonnet in GitHub Actions claude_args
+    notes: The post now carries a note that the original issue has been solved.
+
+  - id: sf16
+    type: single_fact
+    topic: personal
+    question: What was Bryan's first camera?
+    paraphrase: What gear did he start taking pictures with back in grad school?
+    source_posts: [my-first-steps-in-photography]
+    acceptable_posts: [2022-in-review]
+    evidence:
+      my-first-steps-in-photography: 'the day I bought a used camera: a Nikon D3300'
+    reference_answer: >-
+      A used Nikon D3300 with a 35mm f/1.8G prime lens, bought on October 19, 2019.
+    key_facts:
+      - Nikon D3300
+      - 35mm f/1.8G prime lens
+      - bought used in October 2019
+    notes: Pairs with cs07. A good system answers "first camera" with the Nikon without claiming it's his current one.
+
+  - id: sf17
+    type: single_fact
+    topic: ai-llm
+    question: What's the difference between masked and autoregressive language models in Bryan's notes on Chip Huyen's book?
+    paraphrase: What two kinds of language models did he describe in his first-chapter takeaways, and which kind powers chatbots?
+    source_posts: [shift-from-ml-to-ai-engineering]
+    evidence:
+      shift-from-ml-to-ai-engineering: 'trained to predict the next token'
+    reference_answer: >-
+      Masked language models are trained for fill-in-the-blank tasks.
+      Autoregressive models predict the next token given a sequence, and they're
+      the ones used for generative tasks like summarizing or answering questions.
+    key_facts:
+      - masked = fill in the blank
+      - autoregressive = predict the next token
+      - autoregressive models are used for generative AI
+
+  - id: sf18
+    type: single_fact
+    topic: ai-llm
+    question: What three approaches for adapting foundation models did Bryan describe?
+    paraphrase: What are the main ways to make a general-purpose AI model fit a specific use case, per his book notes?
+    source_posts: [shift-from-ml-to-ai-engineering]
+    evidence:
+      shift-from-ml-to-ai-engineering: 'These include prompt engineering, retrieval-augmented generation, and fine-tuning.'
+    reference_answer: >-
+      Prompt engineering (usually tried first), retrieval-augmented generation
+      (adding relevant context from a database), and fine-tuning (updating the
+      model's weights on a curated dataset).
+    key_facts:
+      - prompt engineering
+      - retrieval-augmented generation
+      - fine-tuning
+
+  - id: sf19
+    type: single_fact
+    topic: self-hosting
+    question: Why did Bryan switch his VPS from Ubuntu to Debian?
+    paraphrase: What made him change the Linux distribution on his rented cloud server?
+    source_posts: [black-october-made-me-switch-from-ubuntu-to-debian]
+    evidence:
+      black-october-made-me-switch-from-ubuntu-to-debian: 'which already received a security patch the day after the CVE was announced'
+    reference_answer: >-
+      Weeks after a critical kernel vulnerability was disclosed on October 15,
+      Ubuntu LTS releases still hadn't shipped a patch, while Debian patched it
+      the day after disclosure.
+    key_facts:
+      - critical kernel CVE disclosed October 15
+      - Ubuntu LTS still unpatched weeks later
+      - Debian patched it the next day
+
+  - id: sf20
+    type: single_fact
+    topic: personal
+    question: Which camera mode did Bryan use when he started photography, and why?
+    paraphrase: How did he simplify juggling exposure settings as a beginner?
+    source_posts: [my-first-steps-in-photography]
+    evidence:
+      my-first-steps-in-photography: 'I began using my camera in the aperture-priority mode'
+    reference_answer: >-
+      Aperture-priority mode. Juggling rules for shutter speed, ISO, and aperture
+      at once was hard, so he controlled only the aperture and let the camera pick
+      ISO and shutter speed.
+    key_facts:
+      - aperture-priority mode
+      - camera picks ISO and shutter speed
+    notes: Paraphrase shares almost no words with the post; a good vector search test.
+
+  - id: sf21
+    type: single_fact
+    topic: web-design
+    question: What does the @theme directive replace in Tailwind CSS v4?
+    paraphrase: How did the new version of that utility CSS framework change where design tokens live?
+    source_posts: [configuring-tailwind-css-v4]
+    evidence:
+      configuring-tailwind-css-v4: 'configure all of your CSS in a single CSS file, without having to maintain a Javascript config file'
+    reference_answer: >-
+      The separate JavaScript config file (tailwind.config.mjs). In v4, design
+      tokens are CSS variables declared in @theme inside the CSS file, and
+      namespaces like --color-* generate the utility classes.
+    key_facts:
+      - replaces the JavaScript config file
+      - tokens are CSS variables in @theme
+      - namespaces generate utility classes
+    notes: A historical "how did it work" question about a topic that has since changed (see cs01). Retrievers should still find it.
+
+  - id: sf22
+    type: single_fact
+    topic: web-design
+    question: Which page did Bryan remove in his 4.0 redesign, and why?
+    paraphrase: Which section of his site did he drop because it had gone stale?
+    source_posts: [redesign-4]
+    evidence:
+      redesign-4: 'I removed the projects page because I wasn''t really creating new projects to share'
+    reference_answer: The projects page, because he wasn't creating new projects to share, so it had become redundant.
+    key_facts:
+      - removed the projects page
+      - he wasn't making new projects
+
+  - id: sf23
+    type: single_fact
+    topic: self-hosting
+    question: How does Bryan back up the Postgres database behind his Umami analytics?
+    paraphrase: Where do the dumps of his website stats database end up?
+    source_posts: [self-hosting-umami-analytics]
+    evidence:
+      self-hosting-umami-analytics: 'monthly backups of my Postgres database to AWS S3 Glacier using a cron job'
+    reference_answer: Monthly backups to AWS S3 Glacier using a cron job, on top of Hetzner's automatic daily server backups.
+    key_facts:
+      - monthly
+      - AWS S3 Glacier
+      - cron job
+
+  - id: sf24
+    type: single_fact
+    topic: self-hosting
+    question: What reverse proxy does Bryan use on his Umami VPS?
+    paraphrase: What handles HTTPS certificates for his self-hosted analytics server?
+    source_posts: [self-hosting-umami-analytics]
+    evidence:
+      self-hosting-umami-analytics: 'as a reverse proxy. Caddy here handles HTTPS automatically'
+    reference_answer: >-
+      Caddy, which handles HTTPS automatically via Let's Encrypt. It runs with
+      Umami and Postgres under docker compose.
+    key_facts:
+      - Caddy
+      - automatic HTTPS via Let's Encrypt
+
+  - id: sf25
+    type: single_fact
+    topic: self-hosting
+    question: Why does a home VPN need dynamic DNS?
+    paraphrase: Why might his connection back to his home network work one day and fail the next?
+    source_posts: [home-vpn-dynamic-dns]
+    evidence:
+      home-vpn-dynamic-dns: 'it''s dynamically assigned by your ISP'
+    reference_answer: >-
+      The router's WAN IP address is assigned by the ISP and can change after
+      power outages, modem reboots, or ISP maintenance. Dynamic DNS keeps a
+      domain name pointed at the current IP so the VPN client can always find it.
+    key_facts:
+      - WAN IP is dynamically assigned by the ISP and can change
+      - DDNS keeps a domain pointed at the current IP
+
+  - id: sf26
+    type: single_fact
+    topic: computing
+    question: How does two's complement represent negative numbers?
+    paraphrase: How did he explain storing negative integers in binary?
+    source_posts: [insights-from-nand2tetris-part1]
+    evidence:
+      insights-from-nand2tetris-part1: 'flipping all the bits, and adding 1'
+    reference_answer: >-
+      Take the positive number's binary representation, flip all the bits, and add
+      1. Subtraction then becomes a case of addition, and the most significant bit
+      acts as the sign bit.
+    key_facts:
+      - flip the bits and add 1
+      - subtraction handled as addition
+      - most significant bit is the sign bit
+
+  - id: sf27
+    type: single_fact
+    topic: computing
+    question: How do computers interface with keyboards and screens, according to Bryan's Nand2Tetris notes?
+    paraphrase: How does a computer talk to its input and output devices?
+    source_posts: [insights-from-nand2tetris-part1]
+    evidence:
+      insights-from-nand2tetris-part1: 'external devices are mapped onto chunks of memory'
+    reference_answer: >-
+      Through memory maps. Devices are mapped onto chunks of memory, and the
+      computer reads and writes those regions, e.g., writing pixel states to the
+      screen's memory map or reading the keyboard's register.
+    key_facts:
+      - memory-mapped I/O
+      - screen pixels and keyboard input live in mapped memory
+
+  - id: sf28
+    type: single_fact
+    topic: web-design
+    question: How large should buttons be, according to Bryan's takeaways from Practical UI?
+    paraphrase: What's the minimum size for something people tap or click?
+    source_posts: [takeaways-practical-ui-book]
+    evidence:
+      takeaways-practical-ui-book: 'Require buttons to be at least 48 by 48 pixels in size.'
+    reference_answer: At least 48 by 48 pixels.
+    key_facts:
+      - at least 48x48 pixels
+
+  - id: sf29
+    type: single_fact
+    topic: ai-llm
+    question: What does TypeSafe AI mean by calling Jev a System One model?
+    paraphrase: What psychology book does the name of that classifier's model category reference, and what does it imply?
+    source_posts: [jev-by-example]
+    evidence:
+      jev-by-example: 'callback to Daniel Kahneman''s book'
+    reference_answer: >-
+      It's a callback to Kahneman's Thinking, Fast and Slow: System One is fast,
+      intuitive judgment. Jev is positioned for snap decisions, unlike frontier
+      models built for multi-step reasoning.
+    key_facts:
+      - references Thinking, Fast and Slow
+      - fast, intuitive judgments rather than multi-step reasoning
+
+  - id: sf30
+    type: single_fact
+    topic: ai-llm
+    question: How did Bryan's AutoGen weather assistant know when to end the conversation?
+    paraphrase: How did his agent decide its job was done?
+    source_posts: [autogen-weather-chatbot]
+    evidence:
+      autogen-weather-chatbot: 'Return ''TERMINATE'' when the task is done.'
+    reference_answer: >-
+      Its system message told it to return "TERMINATE" when done, and its
+      is_termination_msg function checked whether "terminate" appeared in the message.
+    key_facts:
+      - system message instructs it to return TERMINATE
+      - is_termination_msg checks for "terminate"
+
+  - id: sf31
+    type: single_fact
+    topic: backend
+    question: In Bryan's rate limiter test, why did the 15th request succeed?
+    paraphrase: When he fired 20 rapid calls at his throttled endpoint, why did one late call get through?
+    source_posts: [implementing-rate-limiter-fastapi-redis]
+    evidence:
+      implementing-rate-limiter-fastapi-redis: 'The 15th request succeeds because a token has been added to the token bucket.'
+    reference_answer: >-
+      The first 10 requests used up the bucket's capacity, requests 11-14 were
+      rejected with 429s, and by request 15 enough time had passed for a token to
+      be refilled.
+    key_facts:
+      - first 10 succeeded (bucket capacity 10)
+      - a token had been refilled by request 15
+
+  - id: sf32
+    type: single_fact
+    topic: ai-llm
+    question: What open question did Bryan end his token-pricing post with?
+    paraphrase: What puzzle did he leave unresolved at the end of his laptop timing experiment?
+    source_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    evidence:
+      one-reason-input-tokens-are-cheaper-than-output-tokens: 'why is the TPOT roughly 10 ms per output token?'
+    reference_answer: >-
+      Why the time per output token is roughly 10 ms. He suspected it relates to
+      token generation being largely bound by memory bandwidth.
+    key_facts:
+      - why TPOT is about 10 ms
+      - suspects memory bandwidth
+
+  - id: sf33
+    type: single_fact
+    topic: homelab
+    question: Which NAS cases did Bryan consider besides the Sagittarius, and why did he reject them?
+    paraphrase: What other enclosures did he look at for his storage server, and what was wrong with each?
+    source_posts: [sagittarius-8-bay-nas-first-impressions]
+    evidence:
+      sagittarius-8-bay-nas-first-impressions: 'are all mITX-only'
+    reference_answer: >-
+      The Jonsbo N2, N3, and Fractal Node 304 are mITX-only; the Jonsbo N4 had
+      airflow concerns; the Jonsbo N6 and Fractal Node 804 were too big; and he
+      didn't like the look of the SilverStone CS351.
+    key_facts:
+      - N2, N3, Node 304 mITX-only
+      - N4 airflow concerns
+      - N6 and Node 804 too big
+      - CS351 looks
+
+  - id: sf34
+    type: single_fact
+    topic: web-design
+    question: What new pages and features did Bryan add in his 5.0 redesign?
+    paraphrase: What changed in the layout and navigation of his site in the latest refresh?
+    source_posts: [redesign-5]
+    evidence:
+      redesign-5: 'This is a new section I added to share links'
+    reference_answer: >-
+      A Links page, a blog index page listing all tags and posts, tag lists in the
+      blog sidebar, share buttons on posts, a light/dark mode dropdown in the
+      footer, and a staggered two-column reading list.
+    key_facts:
+      - Links page
+      - blog index page
+      - share buttons
+      - theme toggle in the footer
+
+  - id: sf35
+    type: single_fact
+    topic: cross-topic
+    question: Which of Bryan's posts went viral in 2024?
+    paraphrase: Which of his technical write-ups unexpectedly drew a lot of readers?
+    source_posts: [2024-in-review]
+    related_posts: [creating-simple-rest-api-elixir-phoenix, pydantic-custom-dictionary-types]
+    evidence:
+      2024-in-review: 'went viral this year'
+    reference_answer: >-
+      His posts on Elixir REST APIs and Pydantic dictionary types, with over 3,000
+      views combined in 12 months. The Pydantic one was featured in PyCoder's Weekly.
+    key_facts:
+      - Elixir REST API post
+      - Pydantic dictionary types post
+      - over 3,000 combined views
+    notes: >-
+      The answer is in the year-in-review post, but the Elixir and Pydantic posts
+      themselves will likely rank high. Retrieving them is a near miss, not a hit.
+
+  # ---------------------------------------------------------------
+  # CURRENT STATE (older posts contain outdated info)
+  # ---------------------------------------------------------------
+
+  - id: cs01
+    type: current_state
+    topic: web-design
+    question: Does Bryan's website currently use Tailwind CSS?
+    paraphrase: Is his personal site still styled with that utility-class framework?
+    source_posts: [redesign-5]
+    superseded_posts: [simplifying-my-website-css-using-tailwind, configuring-tailwind-css-v4]
+    evidence:
+      redesign-5: 'I no longer see it as a necessity for this project'
+    reference_answer: >-
+      No. He removed Tailwind in the version 5.0 redesign (February 2026) and now
+      writes his own CSS, split into a few files and following the CUBE CSS approach.
+      He moved fully to Tailwind utility classes in 2023 and to v4 in January 2025.
+    key_facts:
+      - no longer uses Tailwind
+      - removed in the v5.0 redesign, Feb 2026
+      - now hand-written CSS / CUBE CSS
+    notes: Classic stale-retrieval trap. Two posts say yes, one newer post says no.
+
+  - id: cs02
+    type: current_state
+    topic: homelab
+    question: What apps does Bryan run on his NAS?
+    paraphrase: Which self-hosted services live on his storage box these days?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    superseded_posts: [my-homelab-setup]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'Right now, I only run these apps on it:'
+    reference_answer: >-
+      As of the October 2026 post, only Backrest, Scrutiny, and Immich. He moved
+      Mealie and Readeck to an M1 Mac mini to cut power use. The March 2026 setup
+      also ran Mealie and Ollama.
+    key_facts:
+      - Backrest, Scrutiny, Immich
+      - Mealie and Readeck moved to an M1 Mac mini
+    notes: No post says whether Ollama still runs anywhere (see un17).
+
+  - id: cs03
+    type: current_state
+    topic: homelab
+    question: Does Bryan's home server have a dedicated GPU?
+    paraphrase: Can his storage server run local AI models on a graphics card?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    superseded_posts: [my-homelab-setup]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'has integrated graphics, so a dedicated GPU isn''t necessary'
+    reference_answer: >-
+      Not anymore. The new NAS uses a Ryzen 5 PRO 5650GE with integrated graphics,
+      so no dedicated GPU. His previous server had a GTX 1070 Ti, which accounted
+      for about 15 W of its idle power draw.
+    key_facts:
+      - new NAS has no dedicated GPU (integrated graphics)
+      - old server had a GTX 1070 Ti
+    notes: Hard version, since the GPU fact must be inferred from "integrated graphics, so a dedicated GPU isn't necessary."
+
+  - id: cs04
+    type: current_state
+    topic: homelab
+    question: Where does Bryan run Mealie?
+    paraphrase: What machine hosts his recipe manager now?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    superseded_posts: [my-homelab-setup]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'on an M1 Mac mini'
+    reference_answer: >-
+      On an M1 Mac mini that runs 24/7 and idles at about 5 W. It previously ran
+      as a TrueNAS app on his home server.
+    key_facts:
+      - M1 Mac mini
+      - previously on the TrueNAS server
+
+  - id: cs05
+    type: current_state
+    topic: web-design
+    question: What fonts does Bryan's website use?
+    paraphrase: Which typefaces appear on his personal site right now?
+    source_posts: [redesign-5]
+    superseded_posts: [redesign-4, redesign-3]
+    evidence:
+      redesign-5: 'I''m using these fonts now:'
+    reference_answer: >-
+      Space Grotesk for headers, FK Roman Standard for body text, and IBM Plex Mono
+      for code, tags, and bylines (v5.0, February 2026). Version 4.0 used Satoshi
+      Variable and Source Serif 4.
+    key_facts:
+      - Space Grotesk
+      - FK Roman Standard
+      - IBM Plex Mono
+
+  - id: cs06
+    type: current_state
+    topic: homelab
+    question: What case is Bryan's NAS built in?
+    paraphrase: What enclosure houses his home storage server?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    acceptable_posts: [sagittarius-8-bay-nas-first-impressions]
+    superseded_posts: [my-homelab-setup]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'My new NAS built in the Sagittarius 8 Bay NAS Case.'
+    reference_answer: >-
+      The Sagittarius 8-bay NAS case. His first home server used a Fractal Design
+      Meshify C mid-tower.
+    key_facts:
+      - Sagittarius 8-bay NAS case
+      - previously a Fractal Design Meshify C
+
+  - id: cs07
+    type: current_state
+    topic: personal
+    question: What camera does Bryan shoot with now?
+    paraphrase: Which body has he been taking pictures with lately?
+    source_posts: [2022-in-review, my-homelab-setup]
+    superseded_posts: [my-first-steps-in-photography]
+    evidence:
+      2022-in-review: 'I decided to buy a Fujifilm XT4'
+      my-homelab-setup: 'my Fujifilm RAW files'
+    reference_answer: >-
+      A Fujifilm XT4, bought to replace his first camera, a Nikon D3300 (2022 review).
+      The March 2026 homelab post still mentions his Fujifilm RAW files, which suggests
+      he's still on Fujifilm, though no newer post names a model.
+    key_facts:
+      - Fujifilm XT4
+      - replaced the Nikon D3300
+      - March 2026 post still refers to Fujifilm RAW files
+
+  - id: cs08
+    type: current_state
+    topic: self-hosting
+    question: How does Bryan access his homelab remotely?
+    paraphrase: How does he reach his home server when he's away from home?
+    source_posts: [home-vpn-dynamic-dns, my-homelab-setup]
+    evidence:
+      home-vpn-dynamic-dns: 'set up a WireGuard VPN for remote access'
+      my-homelab-setup: 'a plug-and-play VPN service, to access my data and self-hosted apps remotely'
+    reference_answer: >-
+      The posts disagree. The March 2026 post says Tailscale. The April 2026 post
+      describes setting up a WireGuard VPN with self-hosted dynamic DNS. A good
+      answer mentions both with dates and notes the blog doesn't say whether one
+      replaced the other.
+    key_facts:
+      - Tailscale (March 2026)
+      - WireGuard + DDNS (April 2026)
+      - acknowledges the ambiguity
+    notes: FILL IN THE TRUTH. You know what you actually use; update the reference answer to reflect it.
+
+  - id: cs09
+    type: current_state
+    topic: self-hosting
+    question: Does Bryan still use Plausible for his website analytics?
+    paraphrase: Is he still paying for a hosted service to track visitors to his site?
+    source_posts: [self-hosting-umami-analytics]
+    evidence:
+      self-hosting-umami-analytics: 'switching from Plausible to self-hosted Umami Analytics'
+    reference_answer: >-
+      No. In December 2025 he switched from Plausible to a self-hosted Umami
+      instance on a Hetzner VPS.
+    key_facts:
+      - no longer uses Plausible
+      - switched to self-hosted Umami in December 2025
+    notes: No older post among those read names Plausible as current, so this tests recency within a single post.
+
+  # ---------------------------------------------------------------
+  # MULTI-POST
+  # ---------------------------------------------------------------
+
+  - id: mp01
+    type: multi_post
+    topic: homelab
+    question: How has Bryan's homelab hardware evolved during 2026?
+    paraphrase: Walk me through how his home server setup changed over this year.
+    source_posts: [my-homelab-setup, sagittarius-8-bay-nas-first-impressions, building-a-better-nas-for-my-homelab]
+    evidence:
+      my-homelab-setup: 'I repurposed my old gaming PC I built back in 2018'
+      sagittarius-8-bay-nas-first-impressions: 'I recently decided to rebuild it in the Sagittarius 8-bay NAS case'
+      building-a-better-nas-for-my-homelab: 'the result is an 8-bay NAS with 16 GB of ECC memory'
+    reference_answer: >-
+      March: he repurposed his 2018 gaming PC (Ryzen 5 2600X, GTX 1070 Ti, Fractal
+      Meshify C, two mirrored 8 TB drives) running TrueNAS. May: it felt too big, so
+      he picked the Sagittarius 8-bay case. October: he documented the finished
+      build: a Ryzen 5 PRO 5650GE with 16 GB ECC on an ASRock B550M Pro4, reusing
+      the PSU, SSDs, and drives, idling at 30-35 W.
+    key_facts:
+      - started as a repurposed gaming PC
+      - moved to the Sagittarius 8-bay case because the old one was too big
+      - new build uses a Ryzen 5 PRO 5650GE with ECC memory
+      - lower idle power
+
+  - id: mp02
+    type: multi_post
+    topic: self-hosting
+    question: What are all the ways Bryan backs up his data?
+    paraphrase: How does he protect his files and databases against loss?
+    source_posts: [my-homelab-setup, building-a-better-nas-for-my-homelab, self-hosting-umami-analytics]
+    evidence:
+      my-homelab-setup: 'take hourly, daily, and even weekly snapshots'
+      building-a-better-nas-for-my-homelab: 'Backs up my data to a Backblaze B2 bucket'
+      self-hosting-umami-analytics: 'automatic daily backups'
+    reference_answer: >-
+      TrueNAS snapshots (hourly, daily, weekly); two mirrored hard drives (RAID 1);
+      daily Backrest/restic backups to a Backblaze B2 bucket; Immich backing up his
+      phone photos; and for the VPS, Hetzner's automatic daily backups plus monthly
+      Postgres backups to AWS S3 Glacier via cron.
+    key_facts:
+      - TrueNAS snapshots
+      - RAID 1 mirror
+      - Backrest to Backblaze B2
+      - Hetzner daily backups
+      - monthly Postgres backups to S3 Glacier
+
+  - id: mp03
+    type: multi_post
+    topic: web-design
+    question: How has Bryan's approach to styling his website changed over the years?
+    paraphrase: How have his ways of making his homepage look good changed through the years?
+    source_posts: [simplifying-my-website-css-using-tailwind, configuring-tailwind-css-v4, redesign-5]
+    evidence:
+      simplifying-my-website-css-using-tailwind: 'I kept all of the CSS styles in a single stylesheet'
+      configuring-tailwind-css-v4: 'I immediately migrated my personal website'
+      redesign-5: 'Moving Away from TailwindCSS'
+    reference_answer: >-
+      He started with a single stylesheet, including custom classes built on Tailwind's
+      @apply. In 2023 he refactored to Tailwind utility classes on components, in January
+      2025 he migrated to Tailwind v4's CSS-based @theme config, and in the February 2026
+      redesign he dropped Tailwind for hand-written CSS using CUBE CSS and Astro's scoped styles.
+    key_facts:
+      - started with a single stylesheet
+      - refactored to Tailwind utility classes (2023)
+      - migrated to v4 @theme (Jan 2025)
+      - removed Tailwind for custom CSS / CUBE CSS (Feb 2026)
+
+  - id: mp04
+    type: multi_post
+    topic: backend
+    question: Which of Bryan's posts involve Redis?
+    paraphrase: Where has he relied on that in-memory data store?
+    source_posts: [implementing-rate-limiter-fastapi-redis, custom-celery-mongodb-backend]
+    related_posts: [2024-in-review]
+    evidence:
+      implementing-rate-limiter-fastapi-redis: 'a high-performance key-value store'
+      custom-celery-mongodb-backend: 'Redis as the message broker'
+    reference_answer: >-
+      The rate limiter post (Redis stores each client's token bucket state via a
+      Lua script) and the Celery post (Redis as the message broker).
+    key_facts:
+      - rate limiter
+      - Celery post uses Redis as broker
+
+  - id: mp05
+    type: multi_post
+    topic: cross-topic
+    question: Which code repositories has Bryan shared alongside his posts?
+    paraphrase: What sample code of his can I download and try?
+    source_posts:
+      - implementing-rate-limiter-fastapi-redis
+      - custom-celery-mongodb-backend
+      - autogen-weather-chatbot
+      - self-hosting-umami-analytics
+      - jev-by-example
+      - first-elixir-program
+    acceptable_posts: [2024-in-review]
+    evidence:
+      implementing-rate-limiter-fastapi-redis: 'photon-collider/rate-limiter-example'
+      custom-celery-mongodb-backend: 'photon-collider/celery-task-metadata-persistence'
+      autogen-weather-chatbot: 'photon-collider/autogen-weather-chatbot-example'
+      self-hosting-umami-analytics: 'photon-collider/selfhost-umami-analytics'
+      jev-by-example: 'photon-collider/jevs-kitchen'
+      first-elixir-program: 'photon-collider/imag_proc'
+    reference_answer: >-
+      rate-limiter-example, celery-task-metadata-persistence,
+      autogen-weather-chatbot-example, selfhost-umami-analytics, jevs-kitchen, and
+      imag_proc, all under the photon-collider GitHub account.
+    key_facts:
+      - rate-limiter-example
+      - celery-task-metadata-persistence
+      - autogen-weather-chatbot-example
+      - selfhost-umami-analytics
+      - jevs-kitchen
+      - imag_proc
+    notes: Aggregation question; top-k retrieval will likely miss some. A grep of all 43 posts found these 6 repos.
+
+  - id: mp06
+    type: multi_post
+    topic: ai-llm
+    question: What has Bryan written about LLMs and AI engineering?
+    paraphrase: Summarize his posts on language models and building with them.
+    source_posts:
+      - autogen-weather-chatbot
+      - shift-from-ml-to-ai-engineering
+      - fixing-claude-code-api-errors-pro-users
+      - jev-by-example
+      - one-reason-input-tokens-are-cheaper-than-output-tokens
+    evidence:
+      autogen-weather-chatbot: 'create agents that can autonomously perform tasks'
+      shift-from-ml-to-ai-engineering: 'AI Engineering by Chip Huyen'
+      fixing-claude-code-api-errors-pro-users: 'Fix Claude Code Credential Errors'
+      jev-by-example: 'new frontier AI model called Jev'
+      one-reason-input-tokens-are-cheaper-than-output-tokens: 'LLM inference requires two stages'
+    reference_answer: >-
+      An AutoGen weather chatbot (July 2024), Chapter 1 takeaways from Chip Huyen's
+      AI Engineering (September 2025), a Claude Code credential fix (September 2025),
+      an exploration of TypeSafe AI's Jev classifier (September 2026), and an
+      experiment on why output tokens cost more (October 2026).
+    key_facts:
+      - AutoGen chatbot
+      - ML vs AI engineering post
+      - Claude Code fix
+      - Jev
+      - token pricing experiment
+    notes: >-
+      Judgment call whether the 2021 sentiment-analysis posts count (pre-LLM NLP).
+      Full-context should beat top-k RAG here; worth highlighting in a write-up.
+
+  - id: mp07
+    type: multi_post
+    topic: homelab
+    question: Why does Bryan care about ECC memory?
+    paraphrase: Why did error-correcting RAM matter so much in his storage build?
+    source_posts: [sagittarius-8-bay-nas-first-impressions, building-a-better-nas-for-my-homelab]
+    evidence:
+      sagittarius-8-bay-nas-first-impressions: 'to protect against silent data corruption'
+      building-a-better-nas-for-my-homelab: 'I wanted ECC support'
+    reference_answer: >-
+      To protect against silent data corruption. ECC support drove his choice of an
+      mATX motherboard (the ASRock B550M Pro4) and a Ryzen PRO CPU, and he noted
+      that a comparable UGREEN prebuilt lacked it.
+    key_facts:
+      - protects against silent data corruption
+      - shaped motherboard/CPU choices
+      - UGREEN prebuilt lacked ECC
+
+  - id: mp08
+    type: multi_post
+    topic: personal
+    question: Which places in the Dolomites appear in Bryan's posts?
+    paraphrase: What spots in the Italian Alps has he shared photos of?
+    source_posts: [2024-in-review, implementing-rate-limiter-fastapi-redis, custom-celery-mongodb-backend]
+    evidence:
+      2024-in-review: 'Our view of the Seceda ridgeline.'
+      implementing-rate-limiter-fastapi-redis: 'Val di Funes, Italy.'
+      custom-celery-mongodb-backend: 'Lago di Braies, Dolomites'
+    reference_answer: >-
+      The Seceda ridgeline (2024 review), Val di Funes (hero image of the rate
+      limiter post), and Lago di Braies (hero image of the Celery post).
+    key_facts:
+      - Seceda
+      - Val di Funes
+      - Lago di Braies
+    notes: >-
+      Two answers live only in image captions of unrelated technical posts. This
+      tests whether your corpus loader keeps captions and alt text.
+
+  - id: mp09
+    type: multi_post
+    topic: self-hosting
+    question: Which of Bryan's posts involve Docker?
+    paraphrase: Where has he run services in containers?
+    source_posts: [home-vpn-dynamic-dns, self-hosting-umami-analytics]
+    evidence:
+      home-vpn-dynamic-dns: 'docker container'
+      self-hosting-umami-analytics: 'leveraging docker compose'
+    reference_answer: >-
+      The dynamic DNS post (ddns-updater runs in a Docker container) and the Umami
+      post (Umami, Postgres, and Caddy run under docker compose).
+    key_facts:
+      - ddns-updater container
+      - Umami docker compose stack
+
+  - id: mp10
+    type: multi_post
+    topic: cross-topic
+    question: Which courses has Bryan taken, according to his blog?
+    paraphrase: What structured learning programs has he worked through?
+    source_posts:
+      - redesign-4
+      - 2024-in-review
+      - insights-from-nand2tetris-part1
+      - autogen-weather-chatbot
+      - redesign-5
+      - 2020-in-review
+      - building-a-simple-sentiment-classifier
+      - first-elixir-program
+      - simplifying-my-website-css-using-tailwind
+    evidence:
+      redesign-4: 'completing half of the Learn UI Design course'
+      2024-in-review: 'finishing 4 out of 7 modules'
+      insights-from-nand2tetris-part1: 'completing the Nand2Tetris course'
+      autogen-weather-chatbot: 'short course on creating agentic workflows'
+      redesign-5: 'this CSS course by Andy Bell'
+      2020-in-review: 'The Odin Project and Free Code Camp were my favorites'
+      building-a-simple-sentiment-classifier: 'Natural Language Specialization course'
+      first-elixir-program: 'I took the CS 3110 course on functional programming'
+      simplifying-my-website-css-using-tailwind: 'Joy of React course'
+    reference_answer: >-
+      Learn UI Design (4 of 7 modules by end of 2024), Nand2Tetris Part 1, a
+      DeepLearning.AI short course on AutoGen, Every Layout, Andy Bell's Complete CSS,
+      The Odin Project and freeCodeCamp, Coursera's natural language specialization,
+      Cornell's CS 3110, and Josh Comeau's Joy of React.
+    key_facts:
+      - Learn UI Design
+      - Nand2Tetris
+      - DeepLearning.AI AutoGen short course
+      - Every Layout / Andy Bell's CSS course
+      - Odin Project / freeCodeCamp
+      - Coursera NLP specialization
+      - CS 3110
+      - Joy of React
+    notes: Nine required posts, so whole-post recall can't reach 1.0 at k below 9. Held out of the scored subset.
+
+  # ---------------------------------------------------------------
+  # OPINION / SUMMARY
+  # ---------------------------------------------------------------
+
+  - id: op01
+    type: opinion
+    topic: ai-llm
+    question: What does Bryan see as Jev's limitations?
+    paraphrase: What reservations did he have about that classifier model after trying it?
+    source_posts: [jev-by-example]
+    evidence:
+      jev-by-example: 'it is still a black box'
+    reference_answer: >-
+      It's a black box: it returns probabilities but can't explain them (e.g., why
+      heavy cream got 35% for carbonara). The burden stays on developers to define
+      criteria, evaluate it on representative cases, and decide how much authority
+      to give it. It's also not generative, so it can't do tasks like summarization.
+    key_facts:
+      - black box / can't explain its probabilities
+      - developers must define criteria and evaluate it
+      - not suited to generative tasks
+
+  - id: op02
+    type: opinion
+    topic: self-hosting
+    question: Why did Bryan self-host Umami instead of continuing to pay for Plausible?
+    paraphrase: What made him move his site analytics off a paid service and onto his own server?
+    source_posts: [self-hosting-umami-analytics]
+    evidence:
+      self-hosting-umami-analytics: 'Paying $90 per year also feels steep'
+    reference_answer: >-
+      Cost ($90/year felt steep for a low-traffic site), wanting more than 3 years
+      of data retention, planning more sites, and wanting to learn VPS hosting.
+      Umami looked easier to self-host than Plausible's community edition and has a
+      nicer UI. He accepted the tradeoff that Postgres scales worse than ClickHouse.
+    key_facts:
+      - cost
+      - longer data retention
+      - plans for more sites
+      - learning to self-host on a VPS
+
+  - id: op03
+    type: opinion
+    topic: homelab
+    question: Why did Bryan build his own NAS instead of buying a Synology or UGREEN?
+    paraphrase: What convinced him to assemble his storage server rather than buy one ready-made?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'the cost of buying one and my comfort with building computers'
+    reference_answer: >-
+      Cost and his comfort building PCs. The UGREEN 8-bay lacked ECC; the Synology
+      cost more with half the ECC RAM. He acknowledged prebuilt advantages: a single
+      warranty, a friendlier OS, and customer support.
+    key_facts:
+      - cheaper
+      - comfortable building PCs
+      - acknowledges prebuilt advantages
+
+  - id: op04
+    type: opinion
+    topic: self-hosting
+    question: Does Bryan think Debian will always patch security issues faster than Ubuntu?
+    paraphrase: How strongly did that kernel vulnerability episode convince him one distro is better at security updates?
+    source_posts: [black-october-made-me-switch-from-ubuntu-to-debian]
+    evidence:
+      black-october-made-me-switch-from-ubuntu-to-debian: 'this incident alone may not be proof that Debian will always have faster updates'
+    reference_answer: >-
+      No. He says one incident isn't proof Debian will always be faster, but it was
+      enough to tip him into switching his VPS. His bigger worry is the accelerating
+      pace of vulnerability disclosures, which he expects AI to speed up further.
+    key_facts:
+      - one incident isn't proof
+      - it was enough to make him switch
+      - concern about the growing pace of vulnerabilities
+
+  - id: op05
+    type: opinion
+    topic: homelab
+    question: What is Bryan's verdict on the Sagittarius NAS case?
+    paraphrase: Was he glad he bought that small storage enclosure, flaws and all?
+    source_posts: [sagittarius-8-bay-nas-first-impressions, building-a-better-nas-for-my-homelab]
+    evidence:
+      sagittarius-8-bay-nas-first-impressions: 'Despite the rough edges, I''m happy with this purchase.'
+      building-a-better-nas-for-my-homelab: 'the case was difficult to build in'
+    reference_answer: >-
+      Happy with it despite rough build quality (surface imperfections, a bent USB
+      cutout, no cable tie-downs, Molex-powered backplane), because nothing else
+      offers mATX support, eight bays, and expansion room in that size. It was hard
+      to build in, and there wasn't room for a second fan in the motherboard chamber.
+    key_facts:
+      - happy overall
+      - build quality is rough
+      - unique feature set for its size
+
+  - id: op06
+    type: opinion
+    topic: personal
+    question: What lessons did Bryan say he learned in 2024?
+    paraphrase: What did he take away from looking back on that year?
+    source_posts: [2024-in-review]
+    evidence:
+      2024-in-review: 'Simplicity is key in problem-solving.'
+    reference_answer: >-
+      Simplicity is key in problem-solving; sleep is the ultimate productivity
+      hack; and every pursuit comes at the expense of another, so doing less let
+      him achieve more.
+    key_facts:
+      - simplicity in problem-solving
+      - sleep
+      - every pursuit has a cost / doing less
+
+  - id: op07
+    type: opinion
+    topic: personal
+    question: Why did Bryan gravitate toward symmetry in his early photos?
+    paraphrase: How did his science background shape the way he composed pictures?
+    source_posts: [my-first-steps-in-photography]
+    evidence:
+      my-first-steps-in-photography: 'I heavily gravitated towards symmetry'
+    reference_answer: >-
+      His physics training. Recognizing symmetries unlocks shortcuts in physics
+      problems (he mentions Noether's theorem), so he found symmetry satisfying to
+      spot in the real world.
+    key_facts:
+      - physics background
+      - symmetry unlocks shortcuts in physics
+
+  - id: op08
+    type: opinion
+    topic: personal
+    question: What goals did Bryan set for 2025?
+    paraphrase: What did he plan to focus on in the year after his 2024 review?
+    source_posts: [2024-in-review]
+    evidence:
+      2024-in-review: 'Goals for 2025'
+    reference_answer: >-
+      Improve his fitness (strength and running goals, swimming), learn about
+      distributed systems, finish the Learn UI Design course, network with other
+      developers, and read 12 books.
+    key_facts:
+      - fitness
+      - distributed systems
+      - finish Learn UI Design
+      - networking
+      - read 12 books
+
+  # ---------------------------------------------------------------
+  # UNANSWERABLE (the blog doesn't say; tests abstention)
+  # ---------------------------------------------------------------
+
+  - id: un01
+    type: unanswerable
+    topic: personal
+    question: When did Bryan get married?
+    paraphrase: What was the date of his wedding?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: >-
+      The blog doesn't say. The 2024 review mentions getting engaged and planning
+      to marry in 2025, but no post confirms a wedding date.
+    notes: Tempting hallucination ("2025"). Grep of all 43 posts found no wedding date.
+
+  - id: un02
+    type: unanswerable
+    topic: computing
+    question: Did Bryan finish Part 2 of Nand2Tetris?
+    paraphrase: Did he complete the software half of the build-a-computer course?
+    source_posts: []
+    related_posts: [insights-from-nand2tetris-part1, 2024-in-review]
+    reference_answer: >-
+      The blog doesn't say. The Part 1 post says he looked forward to Part 2, and
+      the 2024 review mentions completing only Part 1.
+
+  - id: un03
+    type: unanswerable
+    topic: cross-topic
+    question: What is Bryan's favorite programming language?
+    paraphrase: Which language does he enjoy coding in most?
+    source_posts: []
+    related_posts: [first-elixir-program, creating-simple-rest-api-elixir-phoenix]
+    reference_answer: >-
+      The blog doesn't state a favorite. He has written about Python, JavaScript,
+      Elixir, and others.
+
+  - id: un04
+    type: unanswerable
+    topic: self-hosting
+    question: How much does Bryan pay for Backblaze B2 each month?
+    paraphrase: What does his cloud backup storage cost him?
+    source_posts: []
+    related_posts: [my-homelab-setup, building-a-better-nas-for-my-homelab]
+    reference_answer: The blog mentions backing up to Backblaze B2 but doesn't give the cost.
+    notes: Near-miss trap. Posts with prices exist (NAS parts, Hetzner VPS), so a weak system may borrow one.
+
+  - id: un05
+    type: unanswerable
+    topic: ai-llm
+    question: What GPU does Bryan use to finetune models?
+    paraphrase: What hardware does he train his own models on?
+    source_posts: []
+    related_posts: [my-homelab-setup]
+    reference_answer: >-
+      The blog doesn't cover finetuning. The March 2026 post mentions running small
+      models for inference with Ollama on a GTX 1070 Ti, but not training.
+    notes: False-premise question. A good answer corrects the premise instead of naming the 1070 Ti as a training GPU.
+
+  - id: un06
+    type: unanswerable
+    topic: personal
+    question: What did Bryan think of Brandon Sanderson's novels?
+    paraphrase: How did he like that fantasy author everyone recommended to him?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: >-
+      The blog doesn't say. The 2024 review only mentions he'd heard good things
+      about Sanderson's novels.
+    notes: Tempts a system to invent a review from the "heard good things" mention.
+
+  - id: un07
+    type: unanswerable
+    topic: personal
+    question: What was Bryan's 10K time?
+    paraphrase: How fast did he finish that running race he was training for?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: The blog doesn't say. Running a 10K was one of his 2025 goals, but no post reports a result.
+
+  - id: un08
+    type: unanswerable
+    topic: cross-topic
+    question: How many visitors does Bryan's blog get each month?
+    paraphrase: What's his site's monthly traffic?
+    source_posts: []
+    related_posts: [2024-in-review, self-hosting-umami-analytics]
+    reference_answer: >-
+      The blog doesn't say. The 2024 review mentions two posts had over 3,000
+      combined views in 12 months, and the Umami post mentions a 10,000-page-view plan
+      limit. Neither is his monthly traffic.
+    notes: Near-miss trap. A weak system may turn the 3,000 figure into a monthly number.
+
+
+  # ===============================================================
+  # ROUND 3: full-corpus questions
+  # ===============================================================
+
+  # ---------------------------------------------------------------
+  # SINGLE FACT
+  # ---------------------------------------------------------------
+
+  - id: sf36
+    type: single_fact
+    topic: personal
+    probe: vocab_mismatch
+    question: What was the topic of Bryan's master's thesis?
+    paraphrase: What physics research was he doing before he changed direction in grad school?
+    source_posts: [2020-in-review]
+    related_posts: [my-first-steps-in-photography]
+    evidence:
+      2020-in-review: 'I studied the optical properties of single-wall carbon nanotubes'
+    reference_answer: The optical properties of single-wall carbon nanotubes, in experimental condensed matter physics.
+    key_facts:
+      - optical properties of single-wall carbon nanotubes
+      - experimental condensed matter physics
+
+  - id: sf37
+    type: single_fact
+    topic: web-design
+    probe: near_miss
+    question: Why did Bryan choose Eleventy over Pelican for his website?
+    paraphrase: He mostly coded in Python, so why did he pick a JavaScript tool to generate his first site?
+    source_posts: [2020-in-review]
+    related_posts: [hello-world]
+    evidence:
+      2020-in-review: 'I picked Eleventy because it was written in JavaScript'
+    reference_answer: >-
+      He wanted to learn a new programming language, and Eleventy is written in
+      JavaScript. It also seemed simple, modern, and flexible enough for his needs.
+    key_facts:
+      - wanted to learn a new language
+      - Eleventy is written in JavaScript
+
+  - id: sf38
+    type: single_fact
+    topic: personal
+    probe: buried_detail
+    question: What country is the land of Bryan's birth?
+    paraphrase: Where did he grow up before coming to the US?
+    source_posts: [2020-in-review]
+    evidence:
+      2020-in-review: 'My cousins all reside in Ghana, the land of my birth.'
+    reference_answer: Ghana.
+    key_facts:
+      - Ghana
+
+  - id: sf39
+    type: single_fact
+    topic: personal
+    probe: sibling_confusion
+    question: How many books did Bryan read in 2022?
+    paraphrase: How far short of his annual reading target did he land the year he moved to California?
+    source_posts: [2022-in-review]
+    related_posts: [2023-in-review, 2024-in-review]
+    evidence:
+      2022-in-review: 'This time I managed to read 6 books'
+    reference_answer: Six, against his goal of at least 12.
+    key_facts:
+      - 6 books
+      - goal was 12
+    notes: Every yearly review has a reading section, so retrievers must pick the right year.
+
+  - id: sf40
+    type: single_fact
+    topic: personal
+    question: Why did Bryan switch from learning French to learning Spanish?
+    paraphrase: What made him drop one foreign tongue for another after settling in the Bay Area?
+    source_posts: [2022-in-review]
+    related_posts: [2023-in-review, 2024-in-review]
+    evidence:
+      2022-in-review: "My partner speaks Spanish so I've opted to learn Spanish"
+    reference_answer: >-
+      French is hard to maintain in the US because he rarely meets French speakers,
+      and his partner speaks Spanish.
+    key_facts:
+      - French is hard to maintain in the US
+      - his partner speaks Spanish
+
+  - id: sf41
+    type: single_fact
+    topic: personal
+    question: Why did Bryan buy a Fujifilm XT4 instead of a Sony full-frame camera?
+    paraphrase: Why didn't he go for a larger sensor when he replaced his first body?
+    source_posts: [2022-in-review]
+    related_posts: [my-first-steps-in-photography]
+    evidence:
+      2022-in-review: 'the lenses for Sony cameras tend to be very expensive'
+    reference_answer: >-
+      Sony lenses tend to be very expensive and he wouldn't make use of a full-frame
+      sensor's advantages, so he stayed with APS-C.
+    key_facts:
+      - Sony lenses are expensive
+      - wouldn't use full-frame advantages
+    notes: The post writes "XT4" and never "X-T4", so the hyphenated form is a tokenizer test for BM25.
+
+  - id: sf42
+    type: single_fact
+    topic: personal
+    probe: lexical_collision
+    question: What did Bryan name his golden retriever?
+    paraphrase: What's the puppy he and his partner adopted called, and where does that come from?
+    source_posts: [2023-in-review]
+    evidence:
+      2023-in-review: 'We named her Hana, after the city in Maui.'
+    reference_answer: Hana, after the city in Maui.
+    key_facts:
+      - Hana
+      - named after the city in Maui
+    notes: A substring match on "hana" also hits "Ghana" in the 2020 review. Word-level BM25 shouldn't.
+
+  - id: sf43
+    type: single_fact
+    topic: writing-productivity
+    probe: near_miss
+    question: Which tools did Bryan adopt for his task management workflow in 2023?
+    paraphrase: What apps does he rely on for notes, to-dos, and drafting?
+    source_posts: [2023-in-review]
+    acceptable_posts: [getting-things-done-with-things-3]
+    evidence:
+      2023-in-review: 'I achieved this by adopting these tools:'
+    reference_answer: Obsidian for notes and periodic reviews, Things 3 for tasks, and iA Writer for drafting blog posts.
+    key_facts:
+      - Obsidian
+      - Things 3
+      - iA Writer
+    notes: Only the 2023 review names all three. The Things 3 post covers one.
+
+  - id: sf44
+    type: single_fact
+    topic: writing-productivity
+    probe: short_post
+    question: Which book changed how Bryan thinks about ambiguity?
+    paraphrase: What title convinced him that loosely defined aims can help rather than hurt?
+    source_posts: [ambiguity-fuels-creativity]
+    related_posts: [2023-in-review]
+    evidence:
+      ambiguity-fuels-creativity: 'by Andrea Small and Kelly Schmutte'
+    reference_answer: Navigating Ambiguity by Andrea Small and Kelly Schmutte.
+    key_facts:
+      - Navigating Ambiguity
+      - Andrea Small and Kelly Schmutte
+
+  - id: sf45
+    type: single_fact
+    topic: ml-nlp
+    probe: sibling_confusion
+    question: What accuracy did Bryan's linear SVM sentiment classifier reach on the Amazon reviews test set?
+    paraphrase: How well did his two-feature model judge customer opinions it hadn't seen before?
+    source_posts: [building-a-simple-sentiment-classifier]
+    related_posts: [sentiment-analysis-with-naive-bayes]
+    evidence:
+      building-a-simple-sentiment-classifier: 'achieved a classification accuracy of 75%'
+    reference_answer: 75% on the test set, compared with about 77.9% on the training data.
+    key_facts:
+      - 75% test accuracy
+      - about 77.9% training accuracy
+
+  - id: sf46
+    type: single_fact
+    topic: ml-nlp
+    probe: long_post
+    question: How does removing stop words change the meaning of "not happy with this product"?
+    paraphrase: What goes wrong with negative customer feedback when very common words get filtered out during cleanup?
+    source_posts: [building-a-simple-sentiment-classifier]
+    evidence:
+      building-a-simple-sentiment-classifier: 'Nuances such as this represent one of the shortcomings'
+    reference_answer: >-
+      It becomes "happi product". Removing "not" loses the negation, so a negative
+      review looks positive. He names this as a shortcoming of the approach.
+    key_facts:
+      - becomes "happi product"
+      - the negation is lost
+    notes: The answer sits in the middle of the longest post in the corpus, a good test of whole-post dilution.
+
+  - id: sf47
+    type: single_fact
+    topic: ml-nlp
+    question: How does Laplacian smoothing fix the divide-by-zero error in Bryan's naive Bayes implementation?
+    paraphrase: How did he stop his classifier from crashing on terms it had never seen with one label?
+    source_posts: [sentiment-analysis-with-naive-bayes]
+    related_posts: [building-a-simple-sentiment-classifier]
+    evidence:
+      sentiment-analysis-with-naive-bayes: 'This can be addressed using a method known as Laplacian smoothing.'
+    reference_answer: >-
+      It adds 1 to each word count and adds the vocabulary size V to the denominator,
+      so an unseen word gets a small nonzero probability, 1/(N_s + V), instead of 0.
+    key_facts:
+      - add 1 to the word frequency
+      - add vocabulary size to the denominator
+      - probabilities are never zero
+
+  - id: sf48
+    type: single_fact
+    topic: ml-nlp
+    probe: vocab_mismatch
+    question: Why compute log-likelihoods in a naive Bayes classifier?
+    paraphrase: What numeric problem appears when you multiply many tiny fractions across a long document?
+    source_posts: [sentiment-analysis-with-naive-bayes]
+    evidence:
+      sentiment-analysis-with-naive-bayes: 'Computing the logarithm of probability will mitigate the presence of underflow errors.'
+    reference_answer: >-
+      To prevent underflow. A product of many small probabilities can be too small to
+      represent accurately, so he sums log probabilities instead.
+    key_facts:
+      - prevents underflow
+      - sums logs instead of multiplying probabilities
+
+  - id: sf49
+    type: single_fact
+    topic: backend
+    question: What endpoints does Bryan's Phoenix REST API provide?
+    paraphrase: What can you request from his web service of ancient philosophers' sayings?
+    source_posts: [creating-simple-rest-api-elixir-phoenix]
+    related_posts: [first-elixir-program]
+    evidence:
+      creating-simple-rest-api-elixir-phoenix: '`/api/quotes/random` to fetch a random quote'
+    reference_answer: /api/quotes/ lists all quotes, and /api/quotes/random returns a random quote.
+    key_facts:
+      - /api/quotes/
+      - /api/quotes/random
+
+  - id: sf50
+    type: single_fact
+    topic: backend
+    question: How does Bryan prevent duplicate quotes in his Phoenix app's database?
+    paraphrase: How did he guard the table against the same saying being stored twice?
+    source_posts: [creating-simple-rest-api-elixir-phoenix]
+    evidence:
+      creating-simple-rest-api-elixir-phoenix: 'creates a unique index, ensuring each quote is distinct'
+    reference_answer: >-
+      A unique index on the quote column in the migration, plus a unique_constraint in
+      the schema's changeset function, which returns an error on duplicates.
+    key_facts:
+      - unique index in the migration
+      - unique_constraint in the changeset
+
+  - id: sf51
+    type: single_fact
+    topic: backend
+    probe: code_only
+    question: What mix command generates the quotes context in Bryan's Phoenix tutorial?
+    paraphrase: Which generator invocation scaffolds the table for his sayings service?
+    source_posts: [creating-simple-rest-api-elixir-phoenix]
+    evidence:
+      creating-simple-rest-api-elixir-phoenix: 'mix phx.gen.context Quotes Quote quotes quote:text author:string source:string'
+    reference_answer: "mix phx.gen.context Quotes Quote quotes quote:text author:string source:string"
+    key_facts:
+      - mix phx.gen.context with those arguments
+    notes: The full command appears only in a code block, so stripping code blocks would remove the answer.
+
+  - id: sf52
+    type: single_fact
+    topic: web-design
+    probe: callout_only
+    question: Does Google use the priority and changefreq values in a sitemap?
+    paraphrase: Which optional per-URL fields in that crawler file does the search giant disregard?
+    source_posts: [creating-sveltekit-sitemap]
+    evidence:
+      creating-sveltekit-sitemap: 'You can also add `priority` and `changefreq` values to each URL declaration.'
+    reference_answer: No. You can add them to each URL, but Google says it ignores them.
+    key_facts:
+      - Google ignores priority and changefreq
+    notes: The answer is inside a Callout component, so the corpus loader has to keep component children.
+
+  - id: sf53
+    type: single_fact
+    topic: web-design
+    question: When does Google recommend generating a sitemap?
+    paraphrase: What kinds of websites benefit most from giving crawlers a list of their pages?
+    source_posts: [creating-sveltekit-sitemap]
+    evidence:
+      creating-sveltekit-sitemap: 'Your website has 500+ pages.'
+    reference_answer: >-
+      When a site has 500+ pages, is new and hasn't been indexed, or has a lot of rich
+      media or appears in Google News.
+    key_facts:
+      - 500+ pages
+      - new and not yet indexed
+      - rich media or Google News
+
+  - id: sf54
+    type: single_fact
+    topic: backend
+    question: What image sizes does Bryan's Elixir script generate?
+    paraphrase: What dimensions come out of his photo resizing pipeline?
+    source_posts: [first-elixir-program]
+    evidence:
+      first-elixir-program: 'long edges are 500, 1000, and 2000 pixels long'
+    reference_answer: >-
+      Small, medium, and large. Portrait and landscape images get long edges of 500,
+      1000, and 2000 px, and square images are 334, 668, and 1334 px. Each is saved as
+      JPEG and WebP.
+    key_facts:
+      - 500, 1000, and 2000 px for portrait or landscape
+      - 334, 668, and 1334 px for square
+      - JPEG and WebP outputs
+
+  - id: sf55
+    type: single_fact
+    topic: backend
+    probe: vocab_mismatch
+    question: What does the exclamation point mean in Elixir function names like Image.open!?
+    paraphrase: How do the bang and non-bang variants of a function differ when something fails in that language?
+    source_posts: [first-elixir-program]
+    evidence:
+      first-elixir-program: 'an exception is raised that can be handled'
+    reference_answer: >-
+      The ! version raises an exception on error. The version without it returns a
+      tuple such as {:ok, image} or {:error, message}, which you can pattern match on.
+    key_facts:
+      - "! raises an exception"
+      - the non-! version returns an ok or error tuple
+
+  - id: sf56
+    type: single_fact
+    topic: computing
+    probe: buried_detail
+    question: What functional programming course did Bryan take at Cornell?
+    paraphrase: Which undergraduate class first introduced him to OCaml?
+    source_posts: [first-elixir-program]
+    related_posts: [2020-in-review]
+    evidence:
+      first-elixir-program: 'I took the CS 3110 course on functional programming using OCaml'
+    reference_answer: CS 3110, which used OCaml.
+    key_facts:
+      - CS 3110
+      - OCaml
+
+  - id: sf57
+    type: single_fact
+    topic: writing-productivity
+    question: What is the only tag Bryan uses in Things 3?
+    paraphrase: What label does he attach to to-dos that take just a few minutes?
+    source_posts: [getting-things-done-with-things-3]
+    evidence:
+      getting-things-done-with-things-3: 'The only tag in my system is'
+    reference_answer: A "Quick" tag, for tasks he can complete in 5 minutes.
+    key_facts:
+      - Quick
+      - tasks that take 5 minutes
+
+  - id: sf58
+    type: single_fact
+    topic: writing-productivity
+    question: Why did Bryan choose Things 3 as his to-do app?
+    paraphrase: What made him settle on that task manager over the others in the App Store?
+    source_posts: [getting-things-done-with-things-3]
+    related_posts: [2023-in-review]
+    evidence:
+      getting-things-done-with-things-3: 'Things 3 does not require a monthly or annual subscription.'
+    reference_answer: He already owned it on his Apple devices, it needs no subscription, and he likes its minimalist design.
+    key_facts:
+      - already purchased
+      - no subscription
+      - minimalist design
+
+  - id: sf59
+    type: single_fact
+    topic: writing-productivity
+    question: What does Bryan do with his Someday and Anytime lists during monthly planning?
+    paraphrase: How does he trim his backlog at the start of each month?
+    source_posts: [getting-things-done-with-things-3]
+    evidence:
+      getting-things-done-with-things-3: 'review tasks in the `Someday` category and move them to `Anytime`'
+    reference_answer: >-
+      He moves Someday tasks to Anytime if he expects to finish them that month, and
+      moves tasks that no longer fit back to Someday. This keeps Anytime from getting
+      overwhelming.
+    key_facts:
+      - Someday to Anytime if doable this month
+      - others go to Someday
+
+  - id: sf60
+    type: single_fact
+    topic: web-design
+    probe: short_post
+    question: What tool did Bryan use to build the first version of his website?
+    paraphrase: What powered his blog when it originally launched in 2020?
+    source_posts: [hello-world]
+    acceptable_posts: [2020-in-review, redesign-2, simplifying-my-website-css-using-tailwind]
+    evidence:
+      hello-world: 'the static site builder Eleventy'
+    reference_answer: The static site generator Eleventy.
+    key_facts:
+      - Eleventy
+
+  - id: sf61
+    type: single_fact
+    topic: web-design
+    question: How does a rest parameter like [...postSlug] work in SvelteKit routing?
+    paraphrase: How can one folder catch a URL with a date and title in it, without nesting a directory per segment?
+    source_posts: [how-sveltekit-dynamic-routes-work]
+    evidence:
+      how-sveltekit-dynamic-routes-work: 'Better yet, you can create the folder'
+    reference_answer: >-
+      A folder named [...postSlug] captures the remaining path as one string, such as
+      "2023/01/01/hello-world", available in the load function's params. You can split it on "/".
+    key_facts:
+      - captures the whole remaining path
+      - available as a param in the load function
+
+  - id: sf62
+    type: single_fact
+    topic: web-design
+    probe: buried_detail
+    question: How can you make sure a year slug is a number in SvelteKit?
+    paraphrase: How would you send visitors to an error page when a URL segment has the wrong type?
+    source_posts: [how-sveltekit-dynamic-routes-work]
+    evidence:
+      how-sveltekit-dynamic-routes-work: 'SvelteKit allows you to define a custom `match` function'
+    reference_answer: Define a custom match function, which SvelteKit provides for these edge cases.
+    key_facts:
+      - custom match function
+
+  - id: sf63
+    type: single_fact
+    topic: computing
+    question: Why does Bryan say the worst case is usually the most important to analyze?
+    paraphrase: Why focus on an algorithm's slowest possible scenario?
+    source_posts: [intro-to-algorithm-analysis]
+    evidence:
+      intro-to-algorithm-analysis: "It's often the worst case that should interest us the most"
+    reference_answer: >-
+      It's simpler to analyze, can expose opportunities to optimize, and guarantees an
+      upper limit on runtime for any input, which matters where predictability is key.
+    key_facts:
+      - simpler to analyze
+      - exposes optimization opportunities
+      - guarantees an upper limit on runtime
+
+  - id: sf64
+    type: single_fact
+    topic: computing
+    question: Which book prompted Bryan's post on algorithm analysis?
+    paraphrase: What textbook surprised him with programs that could outlast the age of the universe?
+    source_posts: [intro-to-algorithm-analysis]
+    evidence:
+      intro-to-algorithm-analysis: 'Chapter 2 of the Algorithm Design Manual by Steven Skiena'
+    reference_answer: The Algorithm Design Manual by Steven Skiena (Chapter 2).
+    key_facts:
+      - The Algorithm Design Manual
+      - Steven Skiena
+
+  - id: sf65
+    type: single_fact
+    topic: computing
+    question: Where does the log(n) come from in binary search?
+    paraphrase: Why does repeatedly halving a sorted list produce that particular growth rate?
+    source_posts: [intro-to-algorithm-analysis]
+    evidence:
+      intro-to-algorithm-analysis: 'how many times we can divide'
+    reference_answer: >-
+      If n = 2^s, then s is how many times you can halve n. Taking the log of both sides
+      gives log(n) = s, the worst-case number of divisions.
+    key_facts:
+      - n = 2^s
+      - log(n) = s is the number of halvings
+
+  - id: sf66
+    type: single_fact
+    topic: writing-productivity
+    probe: short_post
+    question: What held Bryan back from writing more often?
+    paraphrase: What did he decide was limiting how frequently he published?
+    source_posts: [just-write-more]
+    related_posts: [2023-in-review, ambiguity-fuels-creativity]
+    evidence:
+      just-write-more: 'I write less often because of the unnecessary pressure I put on myself'
+    reference_answer: >-
+      He aimed for each post to be perfectly structured and full of original ideas. That
+      pressure meant he wrote less, so he resolved to publish more regularly.
+    key_facts:
+      - perfectionism or pressure for each post
+      - resolved to publish more regularly
+
+  - id: sf67
+    type: single_fact
+    topic: personal
+    probe: vocab_mismatch
+    question: What self-care changes did Bryan make during the pandemic?
+    paraphrase: How did he look after his mental health while stuck at home in 2020?
+    source_posts: [making-the-most-of-my-solitude]
+    related_posts: [2020-in-review]
+    evidence:
+      making-the-most-of-my-solitude: 'I now went on long walks each morning'
+    reference_answer: >-
+      Long morning walks, keeping his apartment clean and uncluttered, reading long-form
+      essays, journaling regularly, and restricting aimless browsing.
+    key_facts:
+      - morning walks
+      - clean apartment
+      - reading essays and journaling
+
+  - id: sf68
+    type: single_fact
+    topic: personal
+    question: What is Bryan's favorite building in Chicago?
+    paraphrase: Which rippling high-rise impressed him most on his first trip to the Windy City?
+    source_posts: [my-first-visit-to-chicago]
+    evidence:
+      my-first-visit-to-chicago: 'the Aqua tower has to be one of my most favorite buildings'
+    reference_answer: The Aqua Tower, for its rippling facade and the spiral staircase at its base.
+    key_facts:
+      - Aqua Tower
+      - rippling facade
+
+  - id: sf69
+    type: single_fact
+    topic: personal
+    question: How far did Bryan walk during his first days in Chicago?
+    paraphrase: How much ground did he cover on foot at the start of that 4th of July trip?
+    source_posts: [my-first-visit-to-chicago]
+    evidence:
+      my-first-visit-to-chicago: 'walked 15 and 12 miles'
+    reference_answer: 15 miles on the first day and 12 on the second.
+    key_facts:
+      - 15 miles
+      - 12 miles
+
+  - id: sf70
+    type: single_fact
+    topic: backend
+    question: Which Pydantic class did Bryan use to create a custom dictionary type?
+    paraphrase: How did he define a typed mapping from enum keys to model values?
+    source_posts: [pydantic-custom-dictionary-types]
+    related_posts: [2024-in-review]
+    evidence:
+      pydantic-custom-dictionary-types: 'Using the `RootModel` class, we can rewrite'
+    reference_answer: >-
+      RootModel, with root typed as Dict[AnimalSpecies, AnimalData] and a model_validator
+      that checks each key and value type.
+    key_facts:
+      - RootModel
+      - model_validator checks the types
+
+  - id: sf71
+    type: single_fact
+    topic: personal
+    probe: caption_only
+    question: What place is shown at the top of Bryan's Pydantic post?
+    paraphrase: Which foggy California waterfall did he use as a hero image on his Python typing write-up?
+    source_posts: [pydantic-custom-dictionary-types]
+    evidence:
+      pydantic-custom-dictionary-types: 'McWay Falls shrouded in coastal fog.'
+    reference_answer: McWay Falls, shrouded in coastal fog.
+    key_facts:
+      - McWay Falls
+    notes: The answer exists only in frontmatter (imgCaption).
+
+  - id: sf72
+    type: single_fact
+    topic: web-design
+    question: Why did Bryan rebuild his site with SvelteKit rather than React?
+    paraphrase: What prompted his first move off the static generator, and why skip the more mature ecosystem?
+    source_posts: [redesign-2]
+    evidence:
+      redesign-2: 'I opted to learn Svelte out of curiosity'
+    reference_answer: >-
+      Using React at work made him enjoy components that handle state, so he wanted a
+      front-end framework. He chose Svelte over React out of curiosity.
+    key_facts:
+      - enjoyed component-based work after learning React
+      - chose Svelte out of curiosity
+
+  - id: sf73
+    type: single_fact
+    topic: web-design
+    probe: near_miss
+    question: Why did Bryan remove social media links from his site in version 2.0?
+    paraphrase: Why don't his profile pages on photo and microblogging apps appear on the redesigned site?
+    source_posts: [redesign-2]
+    related_posts: [rethinking-my-relationship-with-instagram]
+    evidence:
+      redesign-2: "No social media links as I don't use instagram or twitter anymore"
+    reference_answer: He said he no longer uses Instagram or Twitter.
+    key_facts:
+      - no longer uses Instagram or Twitter
+
+  - id: sf74
+    type: single_fact
+    topic: web-design
+    question: What typographic scale ratio did Bryan pick in his 3.0 redesign?
+    paraphrase: What multiplier produces the set of text sizes in the design system he made in 2023?
+    source_posts: [redesign-3]
+    related_posts: [takeaways-practical-ui-book]
+    evidence:
+      redesign-3: 'I picked a scale ratio of 1.313 to create 7 font sizes'
+    reference_answer: 1.313, which produced 7 font sizes.
+    key_facts:
+      - "1.313"
+      - 7 font sizes
+
+  - id: sf75
+    type: single_fact
+    topic: web-design
+    question: Why did Bryan remove the photos page from his website?
+    paraphrase: Why did his pictures stop living on his main personal site?
+    source_posts: [redesign-3]
+    related_posts: [redesign-2, rethinking-my-relationship-with-instagram]
+    evidence:
+      redesign-3: 'I have grander visions for showcasing my photography online.'
+    reference_answer: >-
+      He wants to showcase his photography through photo essays and galleries, perhaps on
+      a separate site, and decided to dedicate this one to his writing and side projects.
+    key_facts:
+      - grander plans such as photo essays and galleries
+      - site now focuses on writing and side projects
+
+  - id: sf76
+    type: single_fact
+    topic: personal
+    probe: vocab_mismatch
+    question: What does Bryan compare social media platforms to?
+    paraphrase: Which behavioral psychology experiment does he liken that photo-sharing app to?
+    source_posts: [rethinking-my-relationship-with-instagram]
+    evidence:
+      rethinking-my-relationship-with-instagram: 'function as Skinner boxes'
+    reference_answer: Skinner boxes, which hand out virtual rewards such as likes at irregular intervals to keep users hooked.
+    key_facts:
+      - Skinner boxes
+      - irregular rewards keep users hooked
+
+  - id: sf77
+    type: single_fact
+    topic: writing-productivity
+    probe: short_post
+    question: What did Stephen King do with his rejection slips?
+    paraphrase: How did a teenage horror novelist handle magazines turning down his manuscripts?
+    source_posts: [stephen-king-lesson-failure]
+    related_posts: [2024-in-review]
+    evidence:
+      stephen-king-lesson-failure: 'I replaced the nail with a spike and went on writing.'
+    reference_answer: He impaled them on a nail in his wall, replaced the nail with a spike when it filled up, and kept writing.
+    key_facts:
+      - pinned on a nail
+      - replaced it with a spike
+      - kept writing
+
+  - id: sf78
+    type: single_fact
+    topic: writing-productivity
+    question: Whose lecture made Bryan rethink what makes writing valuable?
+    paraphrase: Which academic's talk changed his view of what an essay owes its audience?
+    source_posts: [thinking-about-the-value-of-writing]
+    evidence:
+      thinking-about-the-value-of-writing: 'after watching a lecture by Larry McEnerney'
+    reference_answer: Larry McEnerney, director of the writing program at the University of Chicago.
+    key_facts:
+      - Larry McEnerney
+      - University of Chicago writing program
+
+  - id: sf79
+    type: single_fact
+    topic: writing-productivity
+    question: What four qualities does good writing possess, according to Bryan's notes on McEnerney?
+    paraphrase: Which attributes of strong prose do school curricula mostly teach, and which one do they neglect?
+    source_posts: [thinking-about-the-value-of-writing]
+    evidence:
+      thinking-about-the-value-of-writing: 'good writing possesses value, persuasiveness, organization, and clarity'
+    reference_answer: Value, persuasiveness, organization, and clarity. Writing education focuses on the last three.
+    key_facts:
+      - value, persuasiveness, organization, clarity
+      - education focuses on the last three
+
+  - id: sf80
+    type: single_fact
+    topic: backend
+    probe: lexical_collision
+    question: When does the token bucket algorithm block a client?
+    paraphrase: How does that API throttling design decide a caller has to wait?
+    source_posts: [implementing-rate-limiter-fastapi-redis]
+    related_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens, jev-by-example]
+    evidence:
+      implementing-rate-limiter-fastapi-redis: 'If a client has no more tokens in their bucket'
+    reference_answer: >-
+      Each API call removes a token, and tokens refill at a set rate. A client with no
+      tokens left can't make requests until more are added.
+    key_facts:
+      - each request removes a token
+      - tokens refill at a set rate
+      - no tokens means the request is rejected
+    notes: '"Token" means something else in the LLM posts, and "bucket" also appears in the backup posts.'
+
+  - id: sf81
+    type: single_fact
+    topic: ai-llm
+    probe: lexical_collision
+    question: What probability did Jev assign to umami for soy sauce?
+    paraphrase: How likely did that classifier think savoriness was the leading flavor of the fermented condiment?
+    source_posts: [jev-by-example]
+    related_posts: [self-hosting-umami-analytics]
+    evidence:
+      jev-by-example: 'it has assigned a 33% probability to `Umami`'
+    reference_answer: 33%, with Salty at 67%. Jev chose Salty at a confidence of 0.58.
+    key_facts:
+      - Umami 33%
+      - Salty 67%
+    notes: '"Umami" is also the analytics product in another post. Jev''s post also uses "plausible" as an ordinary word.'
+
+  - id: sf82
+    type: single_fact
+    topic: homelab
+    probe: caption_only
+    question: Which TrueNAS version was Bryan running on his first homelab PC?
+    paraphrase: What release of his storage operating system appears on the dashboard of his repurposed gaming machine?
+    source_posts: [my-homelab-setup]
+    related_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      my-homelab-setup: 'My TrueNAS dashboard running version 25.10.1 (Goldeye)'
+    reference_answer: Version 25.10.1 (Goldeye).
+    key_facts:
+      - 25.10.1
+      - Goldeye
+    notes: The answer exists only in an image caption passed as a component prop.
+
+  - id: sf83
+    type: single_fact
+    topic: homelab
+    probe: table_only
+    question: How much did Bryan pay for the ASRock B550M Pro4?
+    paraphrase: What did the main circuit board in his small file server cost?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    related_posts: [sagittarius-8-bay-nas-first-impressions]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'ASRock B550M Pro4 | $87.99'
+    reference_answer: $87.99, including shipping and taxes.
+    key_facts:
+      - $87.99
+    notes: The answer is in a parts table. The Sagittarius post gives a nearby estimate of "around $89".
+
+  - id: sf84
+    type: single_fact
+    topic: homelab
+    probe: alt_text_only
+    question: What plant sits next to Bryan's NAS?
+    paraphrase: What's growing in the pot beside his home storage server on the shelf?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'next to a potted ficus tree'
+    reference_answer: A potted ficus tree.
+    key_facts:
+      - ficus
+    notes: The answer exists only in frontmatter alt text (imgAlt).
+
+  - id: sf85
+    type: single_fact
+    topic: ai-llm
+    probe: table_only
+    question: What prefill throughput did Bryan measure for a 512-token prompt?
+    paraphrase: How many tokens per second did his laptop read at the third-longest length he tried?
+    source_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    evidence:
+      one-reason-input-tokens-are-cheaper-than-output-tokens: '188 | 9.12 | 2,720 | 110'
+    reference_answer: 2,720 tokens per second.
+    key_facts:
+      - 2,720 tokens/s
+
+  # ---------------------------------------------------------------
+  # CURRENT STATE
+  # ---------------------------------------------------------------
+
+  - id: cs10
+    type: current_state
+    topic: web-design
+    probe: recency
+    question: What framework is Bryan's website built with now?
+    paraphrase: What powers his personal site today, after its earlier rebuilds?
+    source_posts: [redesign-5]
+    acceptable_posts: [configuring-tailwind-css-v4]
+    superseded_posts: [hello-world, 2020-in-review, redesign-2, simplifying-my-website-css-using-tailwind]
+    evidence:
+      redesign-5: 'Astro components already support locally-scoped CSS styles'
+    reference_answer: >-
+      Astro. It started on Eleventy (2020) and moved to SvelteKit (2022). No post
+      announces the move to Astro, but the January 2025 and February 2026 posts refer to it.
+    key_facts:
+      - Astro
+      - earlier Eleventy and SvelteKit
+    notes: >-
+      22 posts contain "astro" only in MDX import lines or similar. If the loader keeps
+      those lines, BM25 will treat the term as almost meaningless.
+
+  - id: cs11
+    type: current_state
+    topic: personal
+    probe: recency
+    question: Does Bryan share his photography on his website?
+    paraphrase: Can I browse a gallery of his pictures on his site?
+    source_posts: [redesign-3]
+    superseded_posts: [rethinking-my-relationship-with-instagram, redesign-2]
+    evidence:
+      redesign-3: 'I removed the photos page.'
+    reference_answer: >-
+      No. He removed the photos page in the December 2023 redesign, and later redesign
+      posts don't bring it back. In 2021 he had planned for a gallery to overshadow his Instagram.
+    key_facts:
+      - photos page removed in the 3.0 redesign
+      - he may add one back or start a new site
+
+  - id: cs12
+    type: current_state
+    topic: web-design
+    probe: recency
+    question: Does Bryan's website have a projects page?
+    paraphrase: Can I find a list of his side builds on his site?
+    source_posts: [redesign-4]
+    superseded_posts: [redesign-3]
+    related_posts: [creating-sveltekit-sitemap]
+    evidence:
+      redesign-4: 'I removed the projects page'
+    reference_answer: No. He added one in version 3.0 and removed it in version 4.0 because it had become redundant.
+    key_facts:
+      - added in 3.0
+      - removed in 4.0
+
+  - id: cs13
+    type: current_state
+    topic: personal
+    probe: recency
+    question: Does Bryan still work as a data scientist?
+    paraphrase: Is he still in the analytics role he took after leaving grad school?
+    source_posts: [2024-in-review]
+    acceptable_posts: [2023-in-review]
+    superseded_posts: [2022-in-review]
+    evidence:
+      2024-in-review: 'my current role as a full-stack developer'
+    reference_answer: No. He moved into software engineering around 2023 and described himself as a full-stack developer in January 2025.
+    key_facts:
+      - no longer a data scientist
+      - full-stack developer
+
+  - id: cs14
+    type: current_state
+    topic: personal
+    probe: recency
+    question: Did Bryan finish his Ph.D.?
+    paraphrase: Did he end up completing his doctorate at Rice?
+    source_posts: [2022-in-review]
+    superseded_posts: [2020-in-review]
+    related_posts: [my-first-steps-in-photography]
+    evidence:
+      2022-in-review: 'I quit my Ph.D.'
+    reference_answer: No. He quit in fall 2021, though the 2020 review describes him as continuing under a new advisor.
+    key_facts:
+      - quit in fall 2021
+
+  - id: cs15
+    type: current_state
+    topic: personal
+    question: Which language is Bryan currently trying to learn?
+    paraphrase: What foreign tongue has been on his goals list lately?
+    source_posts: [2024-in-review]
+    acceptable_posts: [2022-in-review, 2023-in-review]
+    evidence:
+      2024-in-review: 'Gain Conversational Fluency in Spanish'
+    reference_answer: >-
+      Spanish, though he hadn't made progress as of his 2024 review. He studied French in
+      2021 and now only maintains it.
+    key_facts:
+      - Spanish
+      - no real progress as of the 2024 review
+
+  - id: cs16
+    type: current_state
+    topic: ml-nlp
+    probe: recency
+    question: Does Bryan still want to become a deep learning expert?
+    paraphrase: Is mastering neural networks still one of his ambitions?
+    source_posts: [2022-in-review]
+    superseded_posts: [2020-in-review]
+    evidence:
+      2022-in-review: 'I have since then changed my mind.'
+    reference_answer: >-
+      No. His 2020 review set that goal, but by his 2022 review he had changed his mind
+      and preferred learning to use models over building them.
+    key_facts:
+      - he changed his mind
+      - prefers using models over building them
+
+  - id: cs17
+    type: current_state
+    topic: web-design
+    probe: recency
+    question: Does Bryan's website have a dark mode?
+    paraphrase: Can I switch his site to a darker theme, and where is the control?
+    source_posts: [redesign-5]
+    superseded_posts: [redesign-2]
+    related_posts: [configuring-tailwind-css-v4]
+    evidence:
+      redesign-5: 'a dropdown menu to toggle between light and dark mode'
+    reference_answer: Yes. The footer has a dropdown for switching between light and dark mode. It was once a wishlist item.
+    key_facts:
+      - yes
+      - dropdown in the footer
+
+  - id: cs18
+    type: current_state
+    topic: self-hosting
+    question: Which operating system does Bryan's Hetzner VPS run now?
+    paraphrase: What Linux flavor is on his rented server these days?
+    source_posts: [black-october-made-me-switch-from-ubuntu-to-debian]
+    related_posts: [self-hosting-umami-analytics]
+    evidence:
+      black-october-made-me-switch-from-ubuntu-to-debian: 'So I reconfigured my VPS to run Debian instead'
+    reference_answer: Debian. It ran Ubuntu until November 2026.
+    key_facts:
+      - Debian
+      - previously Ubuntu
+
+  - id: cs19
+    type: current_state
+    topic: homelab
+    probe: recency
+    question: How many of the drive bays in Bryan's NAS are powered?
+    paraphrase: Can every slot in his file server take a disk today?
+    source_posts: [building-a-better-nas-for-my-homelab]
+    superseded_posts: [sagittarius-8-bay-nas-first-impressions]
+    evidence:
+      building-a-better-nas-for-my-homelab: 'my PSU is only powering 6 of the 8 drive bays'
+    reference_answer: Six of eight. His PSU cable has three Molex connectors, and he'd need a splitter to power the rest.
+    key_facts:
+      - 6 of 8 bays
+      - needs a Molex splitter for the others
+
+  - id: cs20
+    type: current_state
+    topic: ai-llm
+    probe: callout_only
+    question: Is the Claude Code Pro credential error Bryan wrote about still a problem?
+    paraphrase: Do lower-tier subscribers still need that model-switching workaround?
+    source_posts: [fixing-claude-code-api-errors-pro-users]
+    evidence:
+      fixing-claude-code-api-errors-pro-users: 'This post addresses an old issue (now solved)'
+    reference_answer: No. A note at the top of the post says the issue has been solved.
+    key_facts:
+      - the issue is solved
+    notes: The status appears only in a Callout, and the rest of the post presents the fix as current.
+
+  # ---------------------------------------------------------------
+  # MULTI-POST
+  # ---------------------------------------------------------------
+
+  - id: mp11
+    type: multi_post
+    topic: web-design
+    question: What frameworks has Bryan's website been built with over time?
+    paraphrase: Trace the technology behind his personal site since it launched.
+    source_posts: [redesign-2, redesign-5]
+    acceptable_posts: [hello-world, 2020-in-review, simplifying-my-website-css-using-tailwind, configuring-tailwind-css-v4]
+    evidence:
+      redesign-2: 'I took the time to rebuild this site using Sveltekit'
+      redesign-5: 'Astro components already support locally-scoped CSS styles'
+    reference_answer: Eleventy (2020), then SvelteKit (2022), then Astro (in use by January 2025).
+    key_facts:
+      - Eleventy
+      - SvelteKit
+      - Astro
+
+  - id: mp12
+    type: multi_post
+    topic: writing-productivity
+    probe: vocab_mismatch
+    question: How has perfectionism affected Bryan's work?
+    paraphrase: Where does he describe his drive for flawlessness getting in the way?
+    source_posts: [just-write-more, 2023-in-review, ambiguity-fuels-creativity]
+    evidence:
+      just-write-more: 'worry less about writing perfect blog posts'
+      2023-in-review: 'Avoid letting perfectionism hinder progress.'
+      ambiguity-fuels-creativity: 'because of my perfectionism'
+    reference_answer: >-
+      It made him publish less, slowed his growth, and pushed him to perfect the first
+      obvious solution instead of exploring alternatives.
+    key_facts:
+      - published less
+      - hindered his growth
+      - rushed to perfect the obvious solution
+
+  - id: mp13
+    type: multi_post
+    topic: personal
+    probe: sibling_confusion
+    question: How has Bryan done against his goal of reading 12 books a year?
+    paraphrase: Has he kept up with his annual reading target?
+    source_posts: [2022-in-review, 2023-in-review, 2024-in-review]
+    related_posts: [2020-in-review]
+    evidence:
+      2022-in-review: 'This time I managed to read 6 books'
+      2023-in-review: "I'm happy to say that I achieved this goal!"
+      2024-in-review: 'I read 11 books this year:'
+    reference_answer: 6 in 2022, met the goal in 2023, and 11 in 2024.
+    key_facts:
+      - 6 in 2022
+      - met in 2023
+      - 11 in 2024
+
+  - id: mp14
+    type: multi_post
+    topic: personal
+    probe: vocab_mismatch
+    question: How has Bryan's career changed over the years?
+    paraphrase: Walk me through how he got from graduate physics to his present line of work.
+    source_posts: [2020-in-review, 2022-in-review, 2023-in-review, 2024-in-review]
+    evidence:
+      2020-in-review: 'opted to change my field of study'
+      2022-in-review: 'I quit my Ph.D.'
+      2023-in-review: 'Switching From Data Science to Software Engineering'
+      2024-in-review: 'first full year working as a professional software developer'
+    reference_answer: >-
+      From condensed matter physics to applied machine learning research in 2020, then
+      quit his Ph.D. in 2021 for a data science job, then moved into software engineering
+      around 2023, working as a full-stack developer by his 2024 review.
+    key_facts:
+      - physics to applied ML research
+      - quit Ph.D. for data science
+      - moved to software engineering
+      - full-stack developer
+
+  - id: mp15
+    type: multi_post
+    topic: ml-nlp
+    question: What sentiment analysis methods has Bryan written about?
+    paraphrase: How has he taught software to tell happy customers from angry ones?
+    source_posts: [building-a-simple-sentiment-classifier, sentiment-analysis-with-naive-bayes]
+    related_posts: [2020-in-review]
+    evidence:
+      building-a-simple-sentiment-classifier: 'linear support vector machine (SVM) sentiment classifier'
+      sentiment-analysis-with-naive-bayes: 'How to implement sentiment analysis using a naive Bayes classifier.'
+    reference_answer: A linear SVM trained on two word-frequency features, and a naive Bayes classifier built from scratch.
+    key_facts:
+      - linear SVM with word-frequency features
+      - naive Bayes
+
+  - id: mp16
+    type: multi_post
+    topic: backend
+    question: What has Bryan written about Elixir and Phoenix?
+    paraphrase: Which of his tutorials use the language with the pipe operator?
+    source_posts: [first-elixir-program, creating-simple-rest-api-elixir-phoenix]
+    related_posts: [2023-in-review, 2024-in-review]
+    evidence:
+      first-elixir-program: 'Sharing the process of writing my first Elixir program'
+      creating-simple-rest-api-elixir-phoenix: 'A step-by-step guide on creating a REST API with Phoenix'
+    reference_answer: An image-resizing script as his first Elixir program, and a Phoenix REST API that serves Stoic quotes.
+    key_facts:
+      - image-processing program
+      - Stoic quotes REST API
+
+  - id: mp17
+    type: multi_post
+    topic: web-design
+    probe: multi_hop
+    question: Which of Bryan's posts involve SvelteKit?
+    paraphrase: Which posts cover the framework he moved his site to in 2022?
+    source_posts: [creating-sveltekit-sitemap, how-sveltekit-dynamic-routes-work, redesign-2, simplifying-my-website-css-using-tailwind]
+    evidence:
+      creating-sveltekit-sitemap: 'How to create a sitemap in SvelteKit'
+      how-sveltekit-dynamic-routes-work: 'How Slug-Based Dynamic Routing Works in Sveltekit'
+      redesign-2: 'I took the time to rebuild this site using Sveltekit'
+      simplifying-my-website-css-using-tailwind: 'after rebuilding my website using SvelteKit'
+    reference_answer: >-
+      Tutorials on sitemaps and dynamic routing, the 2.0 redesign announcing the rebuild,
+      and the post on refactoring his CSS with Tailwind.
+    key_facts:
+      - sitemap tutorial
+      - dynamic routing tutorial
+      - 2.0 redesign
+      - Tailwind refactor
+
+  - id: mp18
+    type: multi_post
+    topic: writing-productivity
+    question: Why does Bryan think writing a blog is worthwhile?
+    paraphrase: What benefit does he see in sharing ideas on the internet?
+    source_posts: [thinking-about-the-value-of-writing, just-write-more]
+    acceptable_posts: [making-the-most-of-my-solitude]
+    evidence:
+      thinking-about-the-value-of-writing: 'Learning in public is one of the most valuable aspects of writing for my blog.'
+      just-write-more: 'Writing and publishing more frequently will help me grow as a writer.'
+    reference_answer: >-
+      Writing about what he learns deepens his understanding, helps others and his future
+      self, invites expert feedback, and develops his voice as a writer.
+    key_facts:
+      - learning in public
+      - helps others and his future self
+      - grows as a writer
+
+  - id: mp19
+    type: multi_post
+    topic: personal
+    question: What cameras has Bryan owned?
+    paraphrase: What equipment has he shot with over the years?
+    source_posts: [my-first-steps-in-photography, 2022-in-review]
+    acceptable_posts: [my-homelab-setup]
+    evidence:
+      my-first-steps-in-photography: 'the day I bought a used camera: a Nikon D3300'
+      2022-in-review: 'I decided to buy a Fujifilm XT4'
+    reference_answer: A used Nikon D3300 with a 35mm prime lens, followed by a Fujifilm XT4.
+    key_facts:
+      - Nikon D3300
+      - Fujifilm XT4
+
+  - id: mp20
+    type: multi_post
+    topic: personal
+    question: Which Hawaiian islands has Bryan visited?
+    paraphrase: Which Pacific vacation spots in the US has he written about going to with his partner?
+    source_posts: [2023-in-review, 2024-in-review]
+    related_posts: [configuring-tailwind-css-v4]
+    evidence:
+      2023-in-review: 'My partner and I spent a week exploring Maui in April.'
+      2024-in-review: 'We visited Kauai over Thanksgiving break.'
+    reference_answer: Maui in April 2023 and Kauai over Thanksgiving 2024.
+    key_facts:
+      - Maui
+      - Kauai
+    notes: The Tailwind v4 hero is captioned Waimea Canyon, on Kauai, but the post never says so.
+
+  - id: mp21
+    type: multi_post
+    topic: web-design
+    question: How have the fonts on Bryan's site changed with each redesign?
+    paraphrase: Trace the typefaces his personal site has used over time.
+    source_posts: [redesign-3, redesign-4, redesign-5]
+    evidence:
+      redesign-3: 'My design uses Inter font for headings and body text.'
+      redesign-4: 'This design uses two fonts:'
+      redesign-5: "I'm using these fonts now:"
+    reference_answer: >-
+      Browser default sans-serif, then Inter (3.0), then Satoshi Variable and Source Serif 4
+      (4.0), then Space Grotesk, FK Roman Standard, and IBM Plex Mono (5.0).
+    key_facts:
+      - Inter
+      - Satoshi Variable and Source Serif 4
+      - Space Grotesk, FK Roman Standard, IBM Plex Mono
+
+  - id: mp22
+    type: multi_post
+    topic: cross-topic
+    question: Which books has Bryan written dedicated posts about?
+    paraphrase: Which titles inspired a standalone article from him?
+    source_posts: [takeaways-practical-ui-book, shift-from-ml-to-ai-engineering, stephen-king-lesson-failure, ambiguity-fuels-creativity]
+    acceptable_posts: [intro-to-algorithm-analysis]
+    related_posts: [2023-in-review, 2024-in-review]
+    evidence:
+      takeaways-practical-ui-book: 'My Top Takeaways from'
+      shift-from-ml-to-ai-engineering: 'AI Engineering by Chip Huyen'
+      stephen-king-lesson-failure: "While reading Stephen King's book"
+      ambiguity-fuels-creativity: 'after reading the book'
+    reference_answer: Practical UI, AI Engineering (Chapter 1), On Writing, and Navigating Ambiguity.
+    key_facts:
+      - Practical UI
+      - AI Engineering
+      - On Writing
+      - Navigating Ambiguity
+
+  - id: mp23
+    type: multi_post
+    topic: computing
+    question: What has Bryan written about computer science fundamentals?
+    paraphrase: Which of his posts teach how machines and programs work at a basic level?
+    source_posts: [insights-from-nand2tetris-part1, intro-to-algorithm-analysis]
+    related_posts: [2023-in-review]
+    evidence:
+      insights-from-nand2tetris-part1: 'What I Learned About Computers in Nand2Tetris Part 1'
+      intro-to-algorithm-analysis: "A Beginner's Intro to Algorithm Analysis"
+    reference_answer: His Nand2Tetris Part 1 takeaways and an introduction to algorithm analysis and Big O notation.
+    key_facts:
+      - Nand2Tetris Part 1
+      - algorithm analysis and Big O
+
+  - id: mp24
+    type: multi_post
+    topic: self-hosting
+    question: Which of Bryan's posts discuss his Hetzner VPS?
+    paraphrase: What has he written about the cloud server he rents?
+    source_posts: [self-hosting-umami-analytics, black-october-made-me-switch-from-ubuntu-to-debian]
+    evidence:
+      self-hosting-umami-analytics: 'Hetzner CAX11 (ARM-based VPS)'
+      black-october-made-me-switch-from-ubuntu-to-debian: 'Until recently my Hetzner VPS ran Ubuntu.'
+    reference_answer: Setting it up to self-host Umami, and moving it from Ubuntu to Debian after an unpatched kernel CVE.
+    key_facts:
+      - Umami hosting
+      - Ubuntu to Debian switch
+
+  - id: mp25
+    type: multi_post
+    topic: ai-llm
+    probe: near_miss
+    question: Where does Bryan mention using Claude?
+    paraphrase: In which posts did Anthropic's assistant actually help him or give him trouble?
+    source_posts: [fixing-claude-code-api-errors-pro-users, self-hosting-umami-analytics]
+    related_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    evidence:
+      fixing-claude-code-api-errors-pro-users: 'when using Claude Code and my Claude Code GitHub Actions'
+      self-hosting-umami-analytics: 'with the help of Claude'
+    reference_answer: The Claude Code credential error post, and the Umami post, where Claude helped him with VPS setup.
+    key_facts:
+      - Claude Code credential error
+      - help self-hosting Umami
+    notes: The token-pricing post cites Anthropic's pricing, but he isn't using Claude there.
+
+  - id: mp26
+    type: multi_post
+    topic: writing-productivity
+    probe: sibling_confusion
+    question: Did Bryan meet his goal of publishing 12 blog posts a year?
+    paraphrase: Has he kept to his annual writing output target?
+    source_posts: [2023-in-review, 2024-in-review]
+    related_posts: [2020-in-review, 2022-in-review, just-write-more]
+    evidence:
+      2023-in-review: 'I wrote 10 blog posts in 2023.'
+      2024-in-review: 'I only published 8 blog posts this year.'
+    reference_answer: No. He wrote 10 in 2023 and 8 in 2024, and then chose to favor quality over quantity.
+    key_facts:
+      - 10 in 2023
+      - 8 in 2024
+      - quality over quantity
+
+  # ---------------------------------------------------------------
+  # OPINION / SUMMARY
+  # ---------------------------------------------------------------
+
+  - id: op09
+    type: opinion
+    topic: personal
+    question: What did Bryan think of The Three-Body Problem?
+    paraphrase: Did that heavily hyped Chinese science fiction novel live up to expectations for him?
+    source_posts: [2023-in-review]
+    evidence:
+      2023-in-review: 'the poor character development made this one fall flat for me'
+    reference_answer: It didn't impress him. The concepts and setting were interesting, but poor character development made it fall flat.
+    key_facts:
+      - not impressed
+      - poor character development
+
+  - id: op10
+    type: opinion
+    topic: ml-nlp
+    question: Why did Bryan lose interest in deep learning?
+    paraphrase: What put him off the neural-net path he'd planned?
+    source_posts: [2022-in-review]
+    related_posts: [2020-in-review]
+    evidence:
+      2022-in-review: 'deep learning models still function as black boxes'
+    reference_answer: >-
+      Models act as black boxes, so it's hard to know why they work, and the cycle of
+      tweaking parameters and waiting for training felt repetitive.
+    key_facts:
+      - black boxes
+      - repetitive training
+
+  - id: op11
+    type: opinion
+    topic: personal
+    question: Why did Bryan leave data science for software engineering?
+    paraphrase: What pushed him out of his analytics career and into building software?
+    source_posts: [2023-in-review]
+    acceptable_posts: [2022-in-review, 2024-in-review]
+    evidence:
+      2023-in-review: "I didn't enjoy doing data science work as much as I thought I would."
+    reference_answer: >-
+      He didn't enjoy data science as much as expected, and its responsibilities didn't
+      match his long-term interests. He preferred full-stack development and engineering topics.
+    key_facts:
+      - didn't enjoy data science as much as expected
+      - poor fit with long-term interests
+
+  - id: op12
+    type: opinion
+    topic: personal
+    question: Why does Bryan try to ignore likes on Instagram?
+    paraphrase: What's his objection to tracking approval counts on that photo-sharing app?
+    source_posts: [rethinking-my-relationship-with-instagram]
+    evidence:
+      rethinking-my-relationship-with-instagram: 'focusing on social approval metrics places too much emphasis on the quantity'
+    reference_answer: >-
+      Approval metrics overemphasize the quantity of social interactions and obscure their
+      depth and quality. He also found that likes pulled him into caring too much.
+    key_facts:
+      - quantity over quality
+      - obscures depth of connection
+
+  - id: op13
+    type: opinion
+    topic: writing-productivity
+    question: When does Bryan think ambiguity becomes a problem?
+    paraphrase: At what point does having too many open options stop helping a creative project, and what's his remedy?
+    source_posts: [ambiguity-fuels-creativity]
+    evidence:
+      ambiguity-fuels-creativity: 'too much ambiguity hinders progress'
+    reference_answer: When the range of possible paths is so vast that choosing becomes cumbersome. Then he sets narrower constraints.
+    key_facts:
+      - too many options hinders progress
+      - set narrower constraints
+
+  - id: op14
+    type: opinion
+    topic: writing-productivity
+    question: How does Bryan contrast writing as a student with writing for readers?
+    paraphrase: Why doesn't what schools teach about essays prepare you for an audience that has no obligation to read?
+    source_posts: [thinking-about-the-value-of-writing]
+    evidence:
+      thinking-about-the-value-of-writing: 'are paid to care about their students'
+    reference_answer: >-
+      Students write to demonstrate knowledge for instructors, who are paid to care. Outside
+      the classroom, writers must convince readers to care by offering them value.
+    key_facts:
+      - instructors are paid to care
+      - other readers must be convinced
+
+  - id: op15
+    type: opinion
+    topic: personal
+    question: What does Bryan wish he had done in Chicago?
+    paraphrase: What did he regret missing on that trip, to save for a return visit?
+    source_posts: [my-first-visit-to-chicago]
+    evidence:
+      my-first-visit-to-chicago: 'I wish I had taken the time to explore Chinatown'
+    reference_answer: Explore Chinatown and try Chicago-style pizza. He also missed the fireworks and is curious about the city in winter.
+    key_facts:
+      - explore Chinatown
+      - try Chicago-style pizza
+
+  - id: op16
+    type: opinion
+    topic: web-design
+    question: Why did Bryan stop using TailwindCSS?
+    paraphrase: Why did he drop that utility-class framework from his personal site?
+    source_posts: [redesign-5]
+    related_posts: [simplifying-my-website-css-using-tailwind, configuring-tailwind-css-v4]
+    evidence:
+      redesign-5: "I've grown more comfortable writing my own CSS"
+    reference_answer: >-
+      He no longer saw it as necessary. He'd grown more comfortable writing CSS, and Astro
+      components already support locally scoped styles, so removal was easy.
+    key_facts:
+      - no longer necessary
+      - comfortable writing his own CSS
+      - Astro supports scoped styles
+
+  - id: op17
+    type: opinion
+    topic: web-design
+    question: What does Bryan like about Tailwind v4's new configuration?
+    paraphrase: What did he enjoy about that utility framework's latest setup change?
+    source_posts: [configuring-tailwind-css-v4]
+    evidence:
+      configuring-tailwind-css-v4: 'I no longer need to context switch between my CSS and JS files'
+    reference_answer: Everything lives in one CSS file, so he no longer switches between CSS and JS when editing design tokens.
+    key_facts:
+      - everything is in one CSS file
+      - no context switching
+
+  - id: op18
+    type: opinion
+    topic: ai-llm
+    probe: lexical_collision
+    question: Why does Bryan think LLM APIs charge more for output tokens?
+    paraphrase: What's his explanation for replies costing more than prompts on model providers?
+    source_posts: [one-reason-input-tokens-are-cheaper-than-output-tokens]
+    related_posts: [jev-by-example, implementing-rate-limiter-fastapi-redis]
+    evidence:
+      one-reason-input-tokens-are-cheaper-than-output-tokens: 'charging more per output token makes sense'
+    reference_answer: >-
+      GPU time costs money and APIs bill per token. Prefill handles the prompt in one pass,
+      while decode generates one token at a time and rereads the model weights for each.
+    key_facts:
+      - GPU time is what costs money
+      - prefill handles input in one pass
+      - decode rereads the weights for each output token
+
+  - id: op19
+    type: opinion
+    topic: backend
+    question: What does Bryan like about Elixir's syntax?
+    paraphrase: Which features of his new functional language made his code nicer to read?
+    source_posts: [first-elixir-program]
+    related_posts: [creating-simple-rest-api-elixir-phoenix]
+    evidence:
+      first-elixir-program: 'Piping makes it easier to compose a sequence of computations'
+    reference_answer: >-
+      The pipe operator for readable chains of computation, pattern matching, and for-loop
+      syntax that handles nested loops in a single line.
+    key_facts:
+      - pipe operator
+      - pattern matching
+      - for-loop syntax
+
+  - id: op20
+    type: opinion
+    topic: writing-productivity
+    probe: short_post
+    question: What lesson did Bryan take from Stephen King's early rejections?
+    paraphrase: What did that novelist's teenage setbacks teach him about sharing his own work?
+    source_posts: [stephen-king-lesson-failure]
+    related_posts: [just-write-more]
+    evidence:
+      stephen-king-lesson-failure: 'failure is an inevitable step in a creative journey'
+    reference_answer: Failure is an inevitable step in a creative journey, not the end of one. This speaks to his fear of criticism.
+    key_facts:
+      - failure is an inevitable step
+      - he sometimes fears sharing his work
+
+  - id: op21
+    type: opinion
+    topic: computing
+    question: What surprised Bryan about computer hardware in Nand2Tetris?
+    paraphrase: What did he find remarkable about the single kind of logic element behind a whole machine?
+    source_posts: [insights-from-nand2tetris-part1]
+    evidence:
+      insights-from-nand2tetris-part1: 'It was surprising to learn that all hardware in a computer can be built using only NAND gates.'
+    reference_answer: All the hardware in a computer can be built using only NAND gates.
+    key_facts:
+      - everything can be built from NAND gates
+
+  - id: op22
+    type: opinion
+    topic: personal
+    question: Why did Bryan switch from black and white to color photography?
+    paraphrase: What made him abandon his monochrome style during the fall of 2020?
+    source_posts: [2020-in-review]
+    related_posts: [my-first-steps-in-photography]
+    evidence:
+      2020-in-review: 'Black and white photography felt too limiting'
+    reference_answer: His work felt stagnant and black and white felt limiting. An online workshop by Joanna Kustra then inspired him.
+    key_facts:
+      - stagnant and limiting
+      - workshop by Joanna Kustra
+
+  - id: op23
+    type: opinion
+    topic: web-design
+    question: What problems does Bryan see with keeping all CSS in a single stylesheet?
+    paraphrase: Why does one central styles file become painful as a project grows?
+    source_posts: [simplifying-my-website-css-using-tailwind]
+    evidence:
+      simplifying-my-website-css-using-tailwind: 'it can become cumbersome to keep all styles within a single stylesheet'
+    reference_answer: >-
+      The file bloats with classes, new classes require checking for duplicates, and
+      elements can end up with several overlapping classes, which adds friction.
+    key_facts:
+      - stylesheet bloat
+      - checking for duplicate classes
+      - multiple classes on one element
+
+  # ---------------------------------------------------------------
+  # UNANSWERABLE
+  # ---------------------------------------------------------------
+
+  - id: un09
+    type: unanswerable
+    topic: personal
+    probe: false_premise
+    question: What is Bryan's favorite Chicago-style pizza place?
+    paraphrase: Where did he go for deep dish in the Windy City?
+    source_posts: []
+    related_posts: [my-first-visit-to-chicago]
+    reference_answer: The blog doesn't name one. He says he didn't get to try Chicago-style pizza on his visit.
+
+  - id: un10
+    type: unanswerable
+    topic: personal
+    probe: false_premise
+    question: What was the title of Bryan's Ph.D. dissertation?
+    paraphrase: What was his doctoral thesis called?
+    source_posts: []
+    related_posts: [2020-in-review, 2022-in-review]
+    reference_answer: There isn't one. He quit his Ph.D. The blog describes only his master's thesis topic and gives no title.
+
+  - id: un11
+    type: unanswerable
+    topic: personal
+    probe: near_miss
+    question: How much can Bryan bench press?
+    paraphrase: What's his current chest press max at the gym?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: The blog doesn't say. His 2025 goal was a 180 lb three-rep max, but no post reports a result.
+    notes: Tempts a system to report the goal as an achievement.
+
+  - id: un12
+    type: unanswerable
+    topic: personal
+    question: Where did Bryan go on his honeymoon?
+    paraphrase: Which destination did he and his spouse pick for the trip after their wedding?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: The blog doesn't say. It mentions his engagement and many trips, but no honeymoon.
+
+  - id: un13
+    type: unanswerable
+    topic: ai-llm
+    probe: near_miss
+    question: Which embedding model did Bryan choose for searching his blog?
+    paraphrase: What vector model powers retrieval over his own posts?
+    source_posts: []
+    related_posts: [my-homelab-setup, shift-from-ml-to-ai-engineering]
+    reference_answer: The blog doesn't say. The homelab post mentions exploring qwen3-embedding:4b, but not for this.
+
+  - id: un14
+    type: unanswerable
+    topic: backend
+    probe: false_premise
+    question: How did Bryan deploy his FastAPI rate limiter to production?
+    paraphrase: Where does his throttling service run for real users?
+    source_posts: []
+    related_posts: [implementing-rate-limiter-fastapi-redis, 2024-in-review]
+    reference_answer: The blog doesn't describe a deployment. He calls it a toy project and recommends libraries for production systems.
+
+  - id: un15
+    type: unanswerable
+    topic: ai-llm
+    probe: near_miss
+    question: What were Bryan's takeaways from Chapter 2 of AI Engineering?
+    paraphrase: What did he learn from the second chapter of Chip Huyen's book?
+    source_posts: []
+    related_posts: [shift-from-ml-to-ai-engineering]
+    reference_answer: The blog doesn't say. He has a post on Chapter 1 and said more would follow, but none covers Chapter 2.
+
+  - id: un16
+    type: unanswerable
+    topic: backend
+    probe: false_premise
+    question: What has Bryan built in Rust?
+    paraphrase: What projects has he written in that memory-safe systems language?
+    source_posts: []
+    related_posts: [2024-in-review]
+    reference_answer: Nothing on the blog. His 2024 review mentions learning Rust only as a path he chose not to pursue.
+
+  - id: un17
+    type: unanswerable
+    topic: homelab
+    probe: near_miss
+    question: Does Bryan still run Ollama?
+    paraphrase: Is he still hosting small local language models at home?
+    source_posts: []
+    related_posts: [my-homelab-setup, building-a-better-nas-for-my-homelab]
+    reference_answer: >-
+      The blog doesn't say. He ran it on his old server, which had a GPU. The new NAS has
+      no dedicated GPU and doesn't list Ollama, but no post says what happened to it.
+
+  - id: un18
+    type: unanswerable
+    topic: web-design
+    question: What Lighthouse score does Bryan's website get?
+    paraphrase: How does his site perform on Google's page speed audit?
+    source_posts: []
+    related_posts: [redesign-5, creating-sveltekit-sitemap]
+    reference_answer: The blog doesn't say.
+
+  - id: un19
+    type: unanswerable
+    topic: ml-nlp
+    probe: sibling_confusion
+    question: What accuracy did Bryan's naive Bayes classifier get on the Amazon reviews dataset?
+    paraphrase: How well did his Bayesian model do on that large collection of customer opinions?
+    source_posts: []
+    related_posts: [sentiment-analysis-with-naive-bayes, building-a-simple-sentiment-classifier]
+    reference_answer: >-
+      The blog doesn't report this. The naive Bayes post uses a four-sentence toy dataset.
+      The Amazon reviews and the 75% figure belong to the linear SVM post.
+    notes: Tempts a system to borrow the 75% figure from the sibling post.
+
+  - id: un20
+    type: unanswerable
+    topic: writing-productivity
+    probe: false_premise
+    question: Which Things 3 area does Bryan use for his work tasks?
+    paraphrase: Where do his job-related to-dos live in that app?
+    source_posts: []
+    related_posts: [getting-things-done-with-things-3]
+    reference_answer: None. He says he doesn't use this setup for work tasks, and the blog doesn't say what he uses instead.
