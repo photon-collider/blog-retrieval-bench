@@ -10,7 +10,12 @@ import sys
 from retrieval_bench.evaluate import evaluate, print_summaries, summarize
 from retrieval_bench.models import EVAL_SET, load_questions, paraphrased
 from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts
-from retrieval_bench.retrievers import BM25Retriever
+from retrieval_bench.retrievers import (
+    EMBEDDING_MODELS,
+    BM25Retriever,
+    EmbeddingRetriever,
+    RRFRetriever,
+)
 
 
 def main() -> None:
@@ -29,7 +34,9 @@ def main() -> None:
             sys.exit(str(e))
     print(f"wording: {'paraphrase' if a.paraphrase else 'original'}\n")
 
-    retrievers = [BM25Retriever(posts)]  # embedding models and RRF join here in step 5
+    bm25 = BM25Retriever(posts)
+    embedders = [EmbeddingRetriever(name, posts) for name in EMBEDDING_MODELS]
+    retrievers = [bm25, *embedders, *(RRFRetriever([bm25, e]) for e in embedders)]
     results = [r for retriever in retrievers for r in evaluate(retriever, questions)]
     print_summaries(summarize(results))
 

@@ -148,7 +148,7 @@ def print_summaries(summaries: list[Summary]) -> None:
         return
     ks = list(summaries[0].hit_at)
     header = (
-        f"{'retriever':16} {'group':14} {'n':>3}"
+        f"{'retriever':22} {'group':14} {'n':>3}"
         + "".join(f" {'Hit@' + str(k):>7}" for k in ks)
         + "".join(f" {'R@' + str(k):>6}" for k in ks)
         + f" {'MRR':>6}"
@@ -159,7 +159,7 @@ def print_summaries(summaries: list[Summary]) -> None:
             f" {s.recall_at[k]:>6.2f}" if s.recall_at else f" {'-':>6}" for k in ks
         )
         print(
-            f"{s.retriever:16} {s.group:14} {s.n:>3}"
+            f"{s.retriever:22} {s.group:14} {s.n:>3}"
             + "".join(f" {s.hit_at[k]:>7.2f}" for k in ks)
             + "".join(recall)
             + f" {s.mrr:>6.2f}"

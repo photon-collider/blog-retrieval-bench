@@ -5,7 +5,8 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
 
 - **Post 1:** compare retrievers.
 - **Post 2:** add reranking.
-- **Later, maybe:** abstaining on unanswerable questions; date-aware retrieval.
+- **Later, maybe:** abstaining on unanswerable questions; date-aware retrieval;
+  embedding the photos themselves with a multimodal model (EmbeddingGemma 2).
 
 ## Decisions for post 1
 
@@ -31,9 +32,12 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
   person, so "his" has a high IDF and pulls toward posts about other people
   (sf75 ranks a Stephen King post first). That's an analysis note, not a fix;
   bm25s's 179-word `en_plus` list would remove it.
-- **Retrievers:** BM25 (`bm25s`), EmbeddingGemma 2, Qwen3-Embedding-0.6B, and
-  BM25 + each embedding model via reciprocal rank fusion (RRF). Whole posts,
-  no chunking.
+- **Retrievers:** BM25 (`bm25s`); three embedding models, bge-m3 (568M, a
+  classic encoder), EmbeddingGemma 2 (multimodal, 740M total but a 270M text
+  model, so say so when comparing) and Qwen3-Embedding-0.6B (from an LLM);
+  and BM25 + each embedding model via reciprocal rank fusion (RRF). Whole
+  posts, no chunking: every post fits all three models' context (longest
+  ~7,600 tokens). Text only, though EmbeddingGemma 2 could embed images.
 - **Post text:** what every retriever indexes is `retrieval.post_text`: the
   prose and code, plus the frontmatter title, description, imgAlt and
   imgCaption, and the alt/caption/title props of components. mp08's answer
