@@ -102,7 +102,7 @@ class QuestionResult(BaseModel):
     @property
     def reciprocal_rank(self) -> float:
         """1 / first_source_rank, or 0 if no source post was ranked."""
-        return 0.0  # TODO
+        return 0.0 if self.first_source_rank is None else 1 / self.first_source_rank
 
 
 class Summary(BaseModel):

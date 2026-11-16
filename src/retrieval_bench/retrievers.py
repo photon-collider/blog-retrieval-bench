@@ -4,8 +4,11 @@ run it (see evaluate.Retriever).
 Every retriever indexes retrieval.post_text(raw) for each post, so they all see
 the same text.
 """
+
+from bm25s import BM25
+
 from retrieval_bench.models import Slug
-from retrieval_bench.retrieval import post_text, tokenize  # noqa: F401 (you'll use these)
+from retrieval_bench.retrieval import post_text, tokenize
 
 
 class BM25Retriever:
@@ -21,13 +24,18 @@ class BM25Retriever:
 
     def __init__(self, posts: dict[Slug, str]) -> None:
         """Build the index. `posts` maps slug -> raw MDX, as load_posts() returns."""
-        # TODO: keep the slugs in a fixed order, so a document's position in the
-        #       index maps back to its slug.
-        # TODO: turn each post into post_text, tokenize it, and index it with bm25s.
-        raise NotImplementedError
+        # Document i in the index is self.slugs[i].
+        self.slugs = list(posts)
+        self.retriever = BM25()
+        self.retriever.index(tokenize([post_text(posts[slug]) for slug in self.slugs]))
 
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post's slug, highest BM25 score first."""
-        # TODO: tokenize each question the same way as the posts, score every
-        #       post, and sort the slugs by score.
-        raise NotImplementedError
+        output: list[list[Slug]] = []
+        for q in tokenize(questions):
+            scores = self.retriever.get_scores(q)
+            slug_scores = sorted(
+                zip(self.slugs, scores), key=lambda x: x[1], reverse=True
+            )
+            output.append([slug for slug, _ in slug_scores])
+        return output

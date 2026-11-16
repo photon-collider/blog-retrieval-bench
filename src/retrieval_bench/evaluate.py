@@ -20,7 +20,6 @@ single_fact questions would otherwise dominate.
     print_summaries(summarize(results))
 """
 import collections
-import statistics
 from collections.abc import Sequence
 from typing import Protocol
 
@@ -38,21 +37,39 @@ class Retriever(Protocol):
         ...
 
 
-def score(retriever: str, q: Question, ranking: list[Slug], ks: Sequence[int] = KS) -> QuestionResult:
+def get_highest_source_rank(
+    ranking: list[Slug], source_posts: list[Slug]
+) -> int | None:
+    """The rank (1 = top) of the first source post in `ranking`, or None."""
+    sources = set(source_posts)
+    for rank, post in enumerate(ranking, start=1):
+        if post in sources:
+            return rank
+    return None
+
+
+def get_recall_at(
+    ranking: list[Slug], source_posts: list[Slug], ks: Sequence[int]
+) -> dict[int, float]:
+    """For each k, the share of `source_posts` in the top k of `ranking`."""
+    sources = set(source_posts)
+    return {k: len(sources & set(ranking[:k])) / len(sources) for k in ks}
+
+
+def score(
+    retriever: str, q: Question, ranking: list[Slug], ks: Sequence[int] = KS
+) -> QuestionResult:
     """Score one ranking against one question's labels.
 
     Ranks start at 1: ranking[0] is rank 1.
     """
-    # TODO: the rank of the first post in `ranking` that's one of
-    #       q.source_posts, or None if none of them appears.
-    first_source_rank: int | None = None
-
-    # TODO: for each k in ks, is a source post in the top k?
-    hit_at: dict[int, bool] = {}
-
-    # TODO: for multi_post questions only: for each k in ks, the share of
-    #       q.source_posts in the top k. For every other type, leave it None.
-    recall_at: dict[int, float] | None = None
+    first_source_rank = get_highest_source_rank(ranking, q.source_posts)
+    hit_at = {
+        k: first_source_rank is not None and first_source_rank <= k for k in ks
+    }
+    recall_at = (
+        get_recall_at(ranking, q.source_posts, ks) if q.type == "multi_post" else None
+    )
 
     return QuestionResult(
         retriever=retriever,
@@ -65,33 +82,49 @@ def score(retriever: str, q: Question, ranking: list[Slug], ks: Sequence[int] = 
     )
 
 
-def evaluate(retriever: Retriever, questions: list[Question], ks: Sequence[int] = KS) -> list[QuestionResult]:
+def evaluate(
+    retriever: Retriever, questions: list[Question], ks: Sequence[int] = KS
+) -> list[QuestionResult]:
     """Rank posts for every answerable question and score each ranking."""
     answerable = [q for q in questions if q.source_posts]
     rankings = retriever.rank([q.question for q in answerable])
     if len(rankings) != len(answerable):
-        raise ValueError(f"{retriever.name} returned {len(rankings)} rankings "
-                         f"for {len(answerable)} questions")
-    return [score(retriever.name, q, ranking, ks) for q, ranking in zip(answerable, rankings)]
+        raise ValueError(
+            f"{retriever.name} returned {len(rankings)} rankings "
+            f"for {len(answerable)} questions"
+        )
+    return [
+        score(retriever.name, q, ranking, ks)
+        for q, ranking in zip(answerable, rankings)
+    ]
 
 
 def _summary(retriever: str, group: str, results: list[QuestionResult]) -> Summary:
     """Average one retriever's results over one group of questions."""
     ks = results[0].hit_at.keys()
+    n = len(results)
 
-    # TODO: for each k, the share of results with a hit in the top k.
-    hit_at: dict[int, float] = {}
+    hit_at = {k: sum(r.hit_at[k] for r in results) / n for k in ks}
 
-    # TODO: if every result has a recall_at (a multi_post group), the mean of
-    #       their recall at each k. Otherwise None: the "all" row mixes types,
-    #       so it gets no recall.
-    recall_at: dict[int, float] | None = None
+    # Recall only if every result has it (a multi_post group). The "all" row
+    # mixes types, so it gets none.
+    recalls = [r.recall_at for r in results if r.recall_at is not None]
+    recall_at = (
+        {k: sum(rec[k] for rec in recalls) / n for k in ks}
+        if len(recalls) == n
+        else None
+    )
 
-    # TODO: the mean reciprocal rank (QuestionResult.reciprocal_rank).
-    mrr: float = 0.0
+    mrr = sum(r.reciprocal_rank for r in results) / n
 
-    return Summary(retriever=retriever, group=group, n=len(results),
-                   hit_at=hit_at, recall_at=recall_at, mrr=mrr)
+    return Summary(
+        retriever=retriever,
+        group=group,
+        n=n,
+        hit_at=hit_at,
+        recall_at=recall_at,
+        mrr=mrr,
+    )
 
 
 def summarize(results: list[QuestionResult]) -> list[Summary]:
@@ -114,12 +147,20 @@ def print_summaries(summaries: list[Summary]) -> None:
     if not summaries:
         return
     ks = list(summaries[0].hit_at)
-    header = (f"{'retriever':16} {'group':14} {'n':>3}"
-              + "".join(f" {'Hit@' + str(k):>7}" for k in ks)
-              + "".join(f" {'R@' + str(k):>6}" for k in ks) + f" {'MRR':>6}")
+    header = (
+        f"{'retriever':16} {'group':14} {'n':>3}"
+        + "".join(f" {'Hit@' + str(k):>7}" for k in ks)
+        + "".join(f" {'R@' + str(k):>6}" for k in ks)
+        + f" {'MRR':>6}"
+    )
     print(header)
     for s in summaries:
-        recall = (f" {s.recall_at[k]:>6.2f}" if s.recall_at else f" {'-':>6}" for k in ks)
-        print(f"{s.retriever:16} {s.group:14} {s.n:>3}"
-              + "".join(f" {s.hit_at[k]:>7.2f}" for k in ks)
-              + "".join(recall) + f" {s.mrr:>6.2f}")
+        recall = (
+            f" {s.recall_at[k]:>6.2f}" if s.recall_at else f" {'-':>6}" for k in ks
+        )
+        print(
+            f"{s.retriever:16} {s.group:14} {s.n:>3}"
+            + "".join(f" {s.hit_at[k]:>7.2f}" for k in ks)
+            + "".join(recall)
+            + f" {s.mrr:>6.2f}"
+        )
