@@ -47,11 +47,11 @@ class Question(BaseModel):
     reference_answer: str = Field(min_length=1)
     key_facts: list[str] = []
     notes: str | None = None
+    paraphrase: str | None = None  # the same question reworded; see paraphrased()
 
     # Reference only; not used by any check
     v1_question: str | None = None
     v1_paraphrase: str | None = None
-    paraphrase: str | None = None
     in_v1_subset: bool = False
 
 
@@ -84,6 +84,18 @@ def load_questions(path: str | Path = EVAL_SET) -> list[Question]:
     if errors:
         raise ValueError(f"{len(errors)} questions in {path} failed to parse: {sorted(errors)}")
     return questions
+
+
+def paraphrased(questions: list[Question]) -> list[Question]:
+    """The same questions with `question` replaced by `paraphrase`, to run the
+    eval on the reworded set. Unanswerable questions are left as they are,
+    since evaluate() skips them. Raises ValueError if an answerable question
+    has no paraphrase."""
+    missing = [q.id for q in questions if q.source_posts and not q.paraphrase]
+    if missing:
+        raise ValueError(f"no paraphrase for {missing}; run `uv run check-eval-set`")
+    return [q.model_copy(update={"question": q.paraphrase}) if q.paraphrase else q
+            for q in questions]
 
 
 class QuestionResult(BaseModel):

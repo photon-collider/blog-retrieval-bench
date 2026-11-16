@@ -1,7 +1,9 @@
 """Validate an eval set against the blog posts and report coverage.
 
-Checks the schema (models.Question), post slugs, and that each required
-source post has an evidence quote found in that post. Quotes are looked up in
+Checks the schema (models.Question), post slugs, that each required source
+post has an evidence quote found in that post, and that each answerable
+question has a paraphrase. Paraphrases nearly the same as their question are
+listed as warnings. Quotes are looked up in
 retrieval.post_text, the text the retrievers index, so an answer that exists only
 in dropped markup is caught. A found quote shows the post has the text, not that
 the reference answer is right.
@@ -18,6 +20,7 @@ Usage: uv run check-eval-set [--file dataset/eval-set-v2-shortlist.yaml] [--blog
 """
 import argparse
 import collections
+import difflib
 import functools
 import re
 import sys
@@ -32,6 +35,11 @@ from retrieval_bench.models import (
     parse_questions,
 )
 from retrieval_bench.retrieval import DEFAULT_BLOG, load_posts, post_text, strip_links
+
+# A paraphrase this similar to its question (difflib ratio, 0 to 1) barely
+# changes the wording. That's a warning, not an error: a short question whose
+# content is mostly names can't be reworded much without hiding them.
+MAX_PARAPHRASE_SIMILARITY = 0.8
 
 PUNCTUATION = str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-"})
 
@@ -66,6 +74,8 @@ def validate(qs: list[Question], posts: dict[Slug, str]) -> list[str]:
         if not q.key_facts: errs.append(f"{i}: missing key_facts")
         labeled = [s for f in POST_FIELDS for s in getattr(q, f)]
         errs += [f"{i}: {s} appears in more than one post field" for s, n in collections.Counter(labeled).items() if n > 1]
+        if not q.paraphrase:
+            errs.append(f"{i}: no paraphrase")
         for s in q.source_posts:
             if s not in q.evidence: errs.append(f"{i}: no evidence for {s}")
         for s, quote in q.evidence.items():
@@ -74,6 +84,12 @@ def validate(qs: list[Question], posts: dict[Slug, str]) -> list[str]:
             elif s in posts and not contains(posts[s], quote):
                 errs.append(f"{i}: quote not found in {s}: {quote!r}")
     return errs
+
+def close_paraphrases(qs: list[Question]) -> list[str]:
+    """Paraphrases nearly the same as their question. Text only, no retrieval."""
+    return [f"{q.id}: paraphrase is nearly the same as the question" for q in qs
+            if q.paraphrase and difflib.SequenceMatcher(
+                None, norm(q.question), norm(q.paraphrase)).ratio() > MAX_PARAPHRASE_SIMILARITY]
 
 def print_coverage(qs: list[Question], posts: dict[Slug, str], post_cap: int) -> None:
     print("by type: ", dict(collections.Counter(q.type for q in qs)))
@@ -105,11 +121,17 @@ def main() -> None:
           + f", {len(posts)} posts")
     print_coverage(qs, posts, a.post_cap)
 
+    warns = close_paraphrases(qs)
+    if warns:
+        print(f"\nWARNINGS ({len(warns)}):")
+        print("\n".join("  " + w for w in warns))
+
     if errs:
         print(f"\nERRORS ({len(errs)}):")
         print("\n".join("  " + e for e in errs))
         sys.exit(1)
-    print("\nOK: schema valid, all slugs exist, every evidence quote was found in the indexed post text.")
+    print("\nOK: schema valid, all slugs exist, every evidence quote was found in the indexed post text,"
+          " every answerable question has a paraphrase.")
 
 if __name__ == "__main__":
     main()

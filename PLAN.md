@@ -11,8 +11,26 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
 
 - **Eval set:** `dataset/eval-set-v2-shortlist.yaml`, 54 hand-written questions
   (35 single_fact, 8 current_state, 5 multi_post, 6 opinion). Unanswerable
-  questions are left out. Questions are worded the way a reader would ask;
-  wording is not controlled or scored.
+  questions are left out. Questions are worded the way a reader would ask.
+- **Two wordings:** I wrote the questions with the post in mind, so they share
+  its vocabulary; that's close to the best case for BM25. Each question also
+  has a `paraphrase` with the same answer and labels but different vocabulary.
+  Every retriever is run on both (`run-eval` and `run-eval --paraphrase`), and
+  the post reports both as the two ends of a range. Real queries likely fall
+  between them. Paraphrases are written as one reader: someone asking the
+  blog's assistant who knows the names a post title would give them (Jev,
+  Mealie, SvelteKit) but hasn't read the post, so they use everyday words, not
+  the post's terms. Names stay; what's asked doesn't change. They are written
+  before any embedding results are seen, without looking at per-question
+  scores, and are frozen after that. The
+  checker requires one per answerable question and flags any that are nearly
+  the same as the question.
+- **Tokenization:** `bm25s` with Lucene's 33 English stopwords and the
+  Snowball stemmer, kept as the baseline. Lucene's list keeps "his", "he",
+  "what" and "how". Questions say "Bryan… his" while posts are in the first
+  person, so "his" has a high IDF and pulls toward posts about other people
+  (sf75 ranks a Stephen King post first). That's an analysis note, not a fix;
+  bm25s's 179-word `en_plus` list would remove it.
 - **Retrievers:** BM25 (`bm25s`), EmbeddingGemma 2, Qwen3-Embedding-0.6B, and
   BM25 + each embedding model via reciprocal rank fusion (RRF). Whole posts,
   no chunking.
@@ -44,7 +62,16 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
 3. [x] Evaluation harness (`evaluate.py`, result models in `models.py`): run
        any retriever over the questions and compute the metrics per question
        type. Tested in `tests/test_evaluate.py`.
-4. [ ] BM25 baseline.
-5. [ ] Embedding models (embeddings cached in `cache/`), then RRF.
+4. [x] BM25 baseline (`retrievers.py`, `uv run run-eval`). Near the ceiling
+       on single_fact and opinion; weak on current_state, where superseded
+       posts often rank first. A rough run on `v1_paraphrase` dropped Hit@1
+       from 0.78 to 0.51.
+4b. [x] Paraphrases written blind by a subagent (persona and questions
+       only), reviewed for meaning, frozen. BM25 on them: Hit@1 0.72, MRR
+       0.81 (vs 0.78 and 0.85 original). The v1 paraphrases, which hid names,
+       had dropped Hit@1 to 0.51, so most of that drop came from the
+       obfuscation, not from realistic rewording.
+5. [ ] Embedding models (embeddings cached in `cache/`), then RRF, on both
+       wordings.
 6. [ ] Analysis notebook: 2×2 tables, disagreement questions, per-term
        breakdowns.

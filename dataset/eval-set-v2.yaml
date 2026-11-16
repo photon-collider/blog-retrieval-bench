@@ -45,6 +45,18 @@
 #   reference_answer short ideal answer
 #   key_facts        atomic facts a correct answer must include
 #   notes            caveats, things to verify
+#   paraphrase       the same question reworded, with the same answer and labels. The
+#                    eval runs on both wordings. Written as this reader: someone
+#                    asking the blog's Q&A assistant who knows roughly what Bryan
+#                    writes about and the names a post title or link would give
+#                    them (Jev, Mealie, Tailwind, SvelteKit, Qwen, the Dolomites),
+#                    but hasn't read the post closely, so they describe its content
+#                    in everyday words, not the post's own terms. Casual; "Bryan"
+#                    or "he". Keep names and the specific things asked about (a
+#                    number, a quoted label). All 54 were written by a subagent that
+#                    saw only this persona and the questions: no answers, no
+#                    v1_paraphrase, no retrieval results. Frozen once reviewed:
+#                    edit only to fix meaning, never after seeing retrieval results.
 #
 # as_of: answers reflect the blog as of 2026-11-05 (cs21 added 2026-11-14).
 

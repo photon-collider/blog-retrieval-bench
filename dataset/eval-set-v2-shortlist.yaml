@@ -47,6 +47,18 @@
 #   reference_answer short ideal answer
 #   key_facts        atomic facts a correct answer must include
 #   notes            caveats, things to verify
+#   paraphrase       the same question reworded, with the same answer and labels. The
+#                    eval runs on both wordings. Written as this reader: someone
+#                    asking the blog's Q&A assistant who knows roughly what Bryan
+#                    writes about and the names a post title or link would give
+#                    them (Jev, Mealie, Tailwind, SvelteKit, Qwen, the Dolomites),
+#                    but hasn't read the post closely, so they describe its content
+#                    in everyday words, not the post's own terms. Casual; "Bryan"
+#                    or "he". Keep names and the specific things asked about (a
+#                    number, a quoted label). All 54 were written by a subagent that
+#                    saw only this persona and the questions: no answers, no
+#                    v1_paraphrase, no retrieval results. Frozen once reviewed:
+#                    edit only to fix meaning, never after seeing retrieval results.
 #
 # as_of: answers reflect the blog as of 2026-11-05 (cs21 added 2026-11-14).
 
@@ -65,6 +77,7 @@ questions:
     v1_question: In Bryan's experiment, how much more time did an output token take than an input token?
     v1_paraphrase: When he timed a tiny model on his laptop, how big was the gap between reading a prompt
       and writing a reply?
+    paraphrase: "Bryan timed how fast LLMs on his laptop read the prompt compared with how fast they write the reply. How much slower was writing the reply?"
     source_posts:
     - one-reason-input-tokens-are-cheaper-than-output-tokens
     evidence:
@@ -84,6 +97,7 @@ questions:
     question: 'What types of queries does Jev support?'
     v1_question: What question types does Jev support?
     v1_paraphrase: What are the three ways you can ask that probability-returning model for a judgment?
+    paraphrase: "What kinds of things can you ask Jev?"
     source_posts:
     - jev-by-example
     evidence:
@@ -101,6 +115,7 @@ questions:
     question: "What's the API price for using Jev?"
     v1_question: How does TypeSafe AI price Jev?
     v1_paraphrase: What's the fee for calling that probability-returning judgment model?
+    paraphrase: "How much does it cost to use Jev's API?"
     source_posts:
     - jev-by-example
     evidence:
@@ -116,6 +131,7 @@ questions:
     question: 'What rate limiting algorithm did Bryan implement?'
     v1_question: Which rate limiting algorithm did Bryan implement, and with what tools?
     v1_paraphrase: How did he stop clients from flooding his API with too many calls?
+    paraphrase: "What method did Bryan use to cap how many requests people can make?"
     source_posts:
     - implementing-rate-limiter-fastapi-redis
     evidence:
@@ -135,6 +151,7 @@ questions:
     v1_question: Why did custom metadata disappear from Celery task documents in MongoDB, and how did Bryan
       fix it?
     v1_paraphrase: Why was the extra information he attached to background jobs getting wiped from the database?
+    paraphrase: "Why was the extra info Bryan attached to his Celery tasks getting lost, and how did he fix it?"
     source_posts:
     - custom-celery-mongodb-backend
     evidence:
@@ -156,6 +173,7 @@ questions:
     question: 'What model and weather API did Bryan use for his weather chat bot?'
     v1_question: What model and weather API did the AutoGen weather chatbot use?
     v1_paraphrase: Which LLM and which forecast service powered his umbrella-advice agent?
+    paraphrase: "Which LLM and which weather service did Bryan hook up for his weather chatbot?"
     source_posts:
     - autogen-weather-chatbot
     evidence:
@@ -172,6 +190,7 @@ questions:
     v1_question: Which VPS does Bryan host Umami on, and what does it cost?
     v1_paraphrase: Where does his self-run website analytics live, and how much does the server cost per
       month?
+    paraphrase: "What server does Bryan run Umami on, and how much does it cost him?"
     source_posts:
     - self-hosting-umami-analytics
     evidence:
@@ -188,6 +207,7 @@ questions:
     question: 'What should you be aware of when buying a second-hand Ryzen PRO CPU?'
     v1_question: What should you watch out for when buying a used Ryzen PRO CPU?
     v1_paraphrase: What's the catch with second-hand business-line AMD processors pulled from office PCs?
+    paraphrase: "If I'm buying a used Ryzen PRO chip, what's the catch I should watch out for?"
     source_posts:
     - building-a-better-nas-for-my-homelab
     evidence:
@@ -208,6 +228,7 @@ questions:
       API 400 error?
     v1_paraphrase: What got his AI coding assistant working again on a Pro subscription when it kept rejecting
       his login?
+    paraphrase: "When Claude Code kept throwing errors at Bryan, what did he do to get it working?"
     source_posts:
     - fixing-claude-code-api-errors-pro-users
     evidence:
@@ -227,6 +248,7 @@ questions:
     question: What was Bryan's first camera?
     v1_question: What was Bryan's first camera?
     v1_paraphrase: What gear did he start taking pictures with back in grad school?
+    paraphrase: "What camera did Bryan start out with?"
     source_posts:
     - my-first-steps-in-photography
     - 2022-in-review
@@ -249,6 +271,7 @@ questions:
       on Chip Huyen's book?
     v1_paraphrase: What two kinds of language models did he describe in his first-chapter takeaways, and
       which kind powers chatbots?
+    paraphrase: "What two kinds of language models did Bryan talk about after reading Chip Huyen's AI engineering book?"
     source_posts:
     - shift-from-ml-to-ai-engineering
     evidence:
@@ -268,6 +291,7 @@ questions:
     v1_question: What three approaches for adapting foundation models did Bryan describe?
     v1_paraphrase: What are the main ways to make a general-purpose AI model fit a specific use case, per
       his book notes?
+    paraphrase: "What are the three ways Bryan lists for tailoring a base model to your own use case?"
     source_posts:
     - shift-from-ml-to-ai-engineering
     evidence:
@@ -286,6 +310,7 @@ questions:
     question: Why did Bryan switch the operating system on his VPS from Ubuntu to Debian?
     v1_question: Why did Bryan switch his VPS from Ubuntu to Debian?
     v1_paraphrase: What made him change the Linux distribution on his rented cloud server?
+    paraphrase: "Why did Bryan move his VPS off Ubuntu and onto Debian?"
     source_posts:
     - black-october-made-me-switch-from-ubuntu-to-debian
     evidence:
@@ -304,6 +329,7 @@ questions:
     question: Which camera mode did Bryan use when he started photography, and why?
     v1_question: Which camera mode did Bryan use when he started photography, and why?
     v1_paraphrase: How did he simplify juggling exposure settings as a beginner?
+    paraphrase: "When Bryan first got into photography, what shooting mode did he use and why?"
     source_posts:
     - my-first-steps-in-photography
     evidence:
@@ -321,6 +347,7 @@ questions:
     question: How does Bryan back up the Postgres database used by his Umami analytics server?
     v1_question: How does Bryan back up the Postgres database behind his Umami analytics?
     v1_paraphrase: Where do the dumps of his website stats database end up?
+    paraphrase: "How does Bryan keep backups of the Postgres data behind his Umami setup?"
     source_posts:
     - self-hosting-umami-analytics
     evidence:
@@ -339,6 +366,7 @@ questions:
     question: What reverse proxy does Bryan use on his Umami VPS?
     v1_question: What reverse proxy does Bryan use on his Umami VPS?
     v1_paraphrase: What handles HTTPS certificates for his self-hosted analytics server?
+    paraphrase: "What does Bryan put in front of Umami on his VPS to route incoming web traffic to it?"
     source_posts:
     - self-hosting-umami-analytics
     evidence:
@@ -355,6 +383,7 @@ questions:
     question: Why is dynamic DNS necessary for a VPN?
     v1_question: Why does a home VPN need dynamic DNS?
     v1_paraphrase: Why might his connection back to his home network work one day and fail the next?
+    paraphrase: "Why do you need dynamic DNS to get a VPN working?"
     source_posts:
     - home-vpn-dynamic-dns
     evidence:
@@ -372,6 +401,7 @@ questions:
     question: How does two's complement work for negative numbers?
     v1_question: How does two's complement represent negative numbers?
     v1_paraphrase: How did he explain storing negative integers in binary?
+    paraphrase: "How does two's complement let a computer store negative numbers?"
     source_posts:
     - insights-from-nand2tetris-part1
     evidence:
@@ -390,6 +420,7 @@ questions:
     v1_question: How do computers interface with keyboards and screens, according to Bryan's Nand2Tetris
       notes?
     v1_paraphrase: How does a computer talk to its input and output devices?
+    paraphrase: "How does a computer talk to the things you type on and look at, like the keyboard and screen?"
     source_posts:
     - insights-from-nand2tetris-part1
     evidence:
@@ -408,6 +439,7 @@ questions:
     v1_question: What does TypeSafe AI mean by calling Jev a System One model?
     v1_paraphrase: What psychology book does the name of that classifier's model category reference, and
       what does it imply?
+    paraphrase: "Why does Typesafe AI call Jev a \"System One\" model?"
     source_posts:
     - jev-by-example
     evidence:
@@ -424,6 +456,7 @@ questions:
     question: How did Bryan's weather chatbot decide when to end a conversation?
     v1_question: How did Bryan's AutoGen weather assistant know when to end the conversation?
     v1_paraphrase: How did his agent decide its job was done?
+    paraphrase: "How did Bryan's weather chatbot figure out when the chat was over?"
     source_posts:
     - autogen-weather-chatbot
     evidence:
@@ -441,6 +474,7 @@ questions:
     question: When Bryan fired 20 rapid calls at his throttled endpoint, why did one late call get through?
     v1_question: In Bryan's rate limiter test, why did the 15th request succeed?
     v1_paraphrase: When he fired 20 rapid calls at his throttled endpoint, why did one late call get through?
+    paraphrase: "Bryan hit his rate-limited endpoint with 20 quick requests. Why did one of the later ones still go through?"
     source_posts:
     - implementing-rate-limiter-fastapi-redis
     evidence:
@@ -458,6 +492,7 @@ questions:
     question: What open question did Bryan end his token-pricing post with?
     v1_question: What open question did Bryan end his token-pricing post with?
     v1_paraphrase: What puzzle did he leave unresolved at the end of his laptop timing experiment?
+    paraphrase: "What question did Bryan leave hanging at the end of his post on token prices?"
     source_posts:
     - one-reason-input-tokens-are-cheaper-than-output-tokens
     - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
@@ -477,6 +512,7 @@ questions:
     v1_question: Which NAS cases did Bryan consider besides the Sagittarius, and why did he reject them?
     v1_paraphrase: What other enclosures did he look at for his storage server, and what was wrong with
       each?
+    paraphrase: "Besides the Sagittarius, what other NAS cases did Bryan look at, and why did he pass on them?"
     source_posts:
     - sagittarius-8-bay-nas-first-impressions
     evidence:
@@ -499,6 +535,7 @@ questions:
     v1_question: How does removing stop words change the meaning of "not happy with this product"?
     v1_paraphrase: What goes wrong with negative customer feedback when very common words get filtered out
       during cleanup?
+    paraphrase: "When you're cleaning up customer reviews and drop the super common filler words, what goes wrong with the negative ones?"
     source_posts:
     - building-a-simple-sentiment-classifier
     evidence:
@@ -518,6 +555,7 @@ questions:
     question: What elixir command generates the quotes context in the Phoenix tutorial?
     v1_question: What mix command generates the quotes context in Bryan's Phoenix tutorial?
     v1_paraphrase: Which generator invocation scaffolds the table for his sayings service?
+    paraphrase: "In the Phoenix tutorial, what Elixir command do you run to generate the quotes context?"
     source_posts:
     - creating-simple-rest-api-elixir-phoenix
     evidence:
@@ -535,6 +573,7 @@ questions:
     question: How does Bryan trim his backlog at the start of each month?
     v1_question: What does Bryan do with his Someday and Anytime lists during monthly planning?
     v1_paraphrase: How does he trim his backlog at the start of each month?
+    paraphrase: "What does Bryan do at the start of each month to cut down his to-do pile?"
     source_posts:
     - getting-things-done-with-things-3
     evidence:
@@ -553,6 +592,7 @@ questions:
     question: What framework did Bryan use to build the first version of his website?
     v1_question: What tool did Bryan use to build the first version of his website?
     v1_paraphrase: What powered his blog when it originally launched in 2020?
+    paraphrase: "What did Bryan build the first version of his site with?"
     source_posts:
     - hello-world
     - 2020-in-review
@@ -575,6 +615,7 @@ questions:
     question:  How can you make sure a year slug is a number in SvelteKit?
     v1_question: How can you make sure a year slug is a number in SvelteKit?
     v1_paraphrase: How would you send visitors to an error page when a URL segment has the wrong type?
+    paraphrase: "In SvelteKit, how do you make sure the year in the URL is actually a number?"
     source_posts:
     - how-sveltekit-dynamic-routes-work
     evidence:
@@ -591,6 +632,7 @@ questions:
     question: What kept Bryan from posting more often in his blog?
     v1_question: What held Bryan back from writing more often?
     v1_paraphrase: What did he decide was limiting how frequently he published?
+    paraphrase: "What held Bryan back from putting out blog posts more often?"
     source_posts:
     - just-write-more
     related_posts:
@@ -611,6 +653,7 @@ questions:
     question: How did he look after his mental health while stuck at home in 2020?
     v1_question: What self-care changes did Bryan make during the pandemic?
     v1_paraphrase: How did he look after his mental health while stuck at home in 2020?
+    paraphrase: "How did he take care of his mental health while stuck inside during 2020?"
     source_posts:
     - making-the-most-of-my-solitude
     related_posts:
@@ -631,6 +674,7 @@ questions:
     question: What is Bryan's favorite building in Chicago?
     v1_question: What is Bryan's favorite building in Chicago?
     v1_paraphrase: Which rippling high-rise impressed him most on his first trip to the Windy City?
+    paraphrase: "Which building in Chicago does Bryan like best?"
     source_posts:
     - my-first-visit-to-chicago
     evidence:
@@ -647,6 +691,7 @@ questions:
     question: How did Bryan create a dictionary type using Pydantic?
     v1_question: Which Pydantic class did Bryan use to create a custom dictionary type?
     v1_paraphrase: How did he define a typed mapping from enum keys to model values?
+    paraphrase: "How did Bryan make a dict type with Pydantic?"
     source_posts:
     - pydantic-custom-dictionary-types
     related_posts:
@@ -666,6 +711,7 @@ questions:
     question: What made Bryan remove his photos from his website?
     v1_question: Why did Bryan remove the photos page from his website?
     v1_paraphrase: Why did his pictures stop living on his main personal site?
+    paraphrase: "Why did Bryan take his photos off his site?"
     source_posts:
     - redesign-3
     related_posts:
@@ -683,6 +729,7 @@ questions:
     type: single_fact
     topic: ai-llm
     question: How did the percentage of time spent reading weights vary across models?
+    paraphrase: "How did the share of time spent loading the model weights differ from one model to the next?"
     source_posts:
     - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
     evidence:
@@ -708,6 +755,7 @@ questions:
     question: Does Bryan's website still use Tailwind CSS?
     v1_question: Does Bryan's website currently use Tailwind CSS?
     v1_paraphrase: Is his personal site still styled with that utility-class framework?
+    paraphrase: "Is Bryan's site still styled with Tailwind CSS?"
     source_posts:
     - redesign-5
     superseded_posts:
@@ -731,6 +779,7 @@ questions:
     question: What machine does Bryan use to run his recipe manager tool?
     v1_question: Where does Bryan run Mealie?
     v1_paraphrase: What machine hosts his recipe manager now?
+    paraphrase: "What computer is Bryan running his recipe app on?"
     source_posts:
     - building-a-better-nas-for-my-homelab
     superseded_posts:
@@ -751,6 +800,7 @@ questions:
     question: Does Bryan's website have a project's page still?
     v1_question: Does Bryan's website have a projects page?
     v1_paraphrase: Can I find a list of his side builds on his site?
+    paraphrase: "Is there still a projects page on Bryan's site?"
     source_posts:
     - redesign-4
     superseded_posts:
@@ -773,6 +823,7 @@ questions:
     question: Is Bryan still a data scientist?
     v1_question: Does Bryan still work as a data scientist?
     v1_paraphrase: Is he still in the analytics role he took after leaving grad school?
+    paraphrase: "Does Bryan still work as a data scientist?"
     source_posts:
     - 2024-in-review
     - 2023-in-review
@@ -795,6 +846,7 @@ questions:
     question: Does the website support a dark theme?
     v1_question: Does Bryan's website have a dark mode?
     v1_paraphrase: Can I switch his site to a darker theme, and where is the control?
+    paraphrase: "Can you switch Bryan's site to dark mode?"
     source_posts:
     - redesign-5
     superseded_posts:
@@ -816,6 +868,7 @@ questions:
     question: What operating system does Bryan use in his VPS?
     v1_question: Which operating system does Bryan's Hetzner VPS run now?
     v1_paraphrase: What Linux flavor is on his rented server these days?
+    paraphrase: "What OS is Bryan running on his VPS?"
     source_posts:
     - black-october-made-me-switch-from-ubuntu-to-debian
     superseded_posts:
@@ -831,6 +884,7 @@ questions:
     type: current_state
     topic: homelab
     question: What is in Bryan's current homelab?
+    paraphrase: "What's in Bryan's homelab right now?"
     source_posts:
     - building-a-better-nas-for-my-homelab
     related_posts:
@@ -857,6 +911,7 @@ questions:
     topic: ai-llm
     probe: recency
     question: Why is TPOT about 9 ms for Qwen2.5-0.5B?
+    paraphrase: "Why does the smallest Qwen model take about 9 ms for each token it generates?"
     source_posts:
     - straight-line-predicts-how-fast-my-laptop-generates-llm-tokens
     superseded_posts:
@@ -887,6 +942,7 @@ questions:
     question: How did Bryan's homelab setup change over 2026?
     v1_question: How has Bryan's homelab hardware evolved during 2026?
     v1_paraphrase: Walk me through how his home server setup changed over this year.
+    paraphrase: "How did Bryan's homelab evolve during 2026?"
     source_posts:
     - my-homelab-setup
     - sagittarius-8-bay-nas-first-impressions
@@ -913,6 +969,7 @@ questions:
     question: How did Bryan's approach to managing his website's CSS change over the years?
     v1_question: How has Bryan's approach to styling his website changed over the years?
     v1_paraphrase: How have his ways of making his homepage look good changed through the years?
+    paraphrase: "How has the way Bryan handles the CSS styling on his site changed over time?"
     source_posts:
     - simplifying-my-website-css-using-tailwind
     - configuring-tailwind-css-v4
@@ -938,6 +995,7 @@ questions:
     question: What spots in the Dolomites has he shared photos of?
     v1_question: Which places in the Dolomites appear in Bryan's posts?
     v1_paraphrase: What spots in the Italian Alps has he shared photos of?
+    paraphrase: "Which places in the Dolomites has he posted photos from?"
     source_posts:
     - 2024-in-review
     - implementing-rate-limiter-fastapi-redis
@@ -962,6 +1020,7 @@ questions:
     question: How has Bryan's career changed over the years?
     v1_question: How has Bryan's career changed over the years?
     v1_paraphrase: Walk me through how he got from graduate physics to his present line of work.
+    paraphrase: "How has Bryan's career path shifted over the years?"
     source_posts:
     - 2020-in-review
     - 2022-in-review
@@ -989,6 +1048,7 @@ questions:
     question: What has Bryan written about SvelteKit?
     v1_question: Which of Bryan's posts involve SvelteKit?
     v1_paraphrase: Which posts cover the framework he moved his site to in 2022?
+    paraphrase: "What posts has Bryan written about SvelteKit?"
     source_posts:
     - creating-sveltekit-sitemap
     - how-sveltekit-dynamic-routes-work
@@ -1018,6 +1078,7 @@ questions:
     question: What made Bryan focus on symmetry in his early photos?
     v1_question: Why did Bryan gravitate toward symmetry in his early photos?
     v1_paraphrase: How did his science background shape the way he composed pictures?
+    paraphrase: "Why was Bryan so into symmetry when he first started taking photos?"
     source_posts:
     - my-first-steps-in-photography
     evidence:
@@ -1035,6 +1096,7 @@ questions:
     question: Why does Bryan try to ignore likes on Instagram?
     v1_question: Why does Bryan try to ignore likes on Instagram?
     v1_paraphrase: What's his objection to tracking approval counts on that photo-sharing app?
+    paraphrase: "Why does Bryan try not to pay attention to how many likes he gets on Instagram?"
     source_posts:
     - rethinking-my-relationship-with-instagram
     evidence:
@@ -1054,6 +1116,7 @@ questions:
     v1_question: How does Bryan contrast writing as a student with writing for readers?
     v1_paraphrase: Why doesn't what schools teach about essays prepare you for an audience that has no obligation
       to read?
+    paraphrase: "How does Bryan think writing for school compares to writing for his blog?"
     source_posts:
     - thinking-about-the-value-of-writing
     evidence:
@@ -1071,6 +1134,7 @@ questions:
     question: How does Bryan explain why output tokens cost more than input tokens?
     v1_question: Why does Bryan think LLM APIs charge more for output tokens?
     v1_paraphrase: What's his explanation for replies costing more than prompts on model providers?
+    paraphrase: "What's Bryan's explanation for why the tokens a model generates cost more than the ones you send it?"
     source_posts:
     - one-reason-input-tokens-are-cheaper-than-output-tokens
     related_posts:
@@ -1093,6 +1157,7 @@ questions:
     question: What does Bryan like about Elixir's syntax?
     v1_question: What does Bryan like about Elixir's syntax?
     v1_paraphrase: Which features of his new functional language made his code nicer to read?
+    paraphrase: "What does Bryan enjoy about the way Elixir code is written?"
     source_posts:
     - first-elixir-program
     related_posts:
@@ -1113,6 +1178,7 @@ questions:
     question: What did Bryan find surprising about computer hardware in Nand2Tetris?
     v1_question: What surprised Bryan about computer hardware in Nand2Tetris?
     v1_paraphrase: What did he find remarkable about the single kind of logic element behind a whole machine?
+    paraphrase: "What surprised Bryan about how computers are built when he worked through Nand2Tetris?"
     source_posts:
     - insights-from-nand2tetris-part1
     evidence:
