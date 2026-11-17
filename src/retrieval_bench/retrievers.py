@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 from bm25s import BM25
 
+from retrieval_bench.evaluate import Retriever
 from retrieval_bench.models import ROOT, Slug
 from retrieval_bench.retrieval import post_text, tokenize
 
@@ -121,14 +122,22 @@ class EmbeddingRetriever:
 
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post's slug, most similar first."""
-        # TODO: embed all the questions in one call with self.model.encode_query,
-        #       which adds the model's query prompt. (Plain encode() would leave
-        #       it out: no error, just worse rankings.) Ask for numpy output.
-        # TODO: score every post for every question. The document rows are unit
-        #       length, so cosine similarity is a dot product. Does the query's
-        #       length change the order of the posts?
-        # TODO: sort the slugs by score, highest first, as in BM25Retriever.
-        raise NotImplementedError
+
+        emb_qs = self.model.encode_query(questions, convert_to_numpy=True)
+        output: list[list[Slug]] = []
+
+        for q in emb_qs:
+            scores = []
+            for i,doc_emb in enumerate(self.doc_embeddings):
+                slug = self.slugs[i]
+                score = q @ doc_emb
+                scores.append((slug, score))
+
+            scores = sorted(scores, key=lambda x: x[1], reverse=True)
+            ranking = [slug for slug,_ in scores]
+            output.append(ranking)
+
+        return output
 
 
 # --- Reciprocal rank fusion ---------------------------------------------------
@@ -143,7 +152,7 @@ class RRFRetriever:
         RRFRetriever([bm25, gemma]).rank(questions)
     """
 
-    def __init__(self, retrievers: list, k: int = 60) -> None:
+    def __init__(self, retrievers: list[Retriever], k: int = 60) -> None:
         self.retrievers = retrievers
         self.k = k
         self.name = "rrf(" + "+".join(r.name for r in retrievers) + ")"
@@ -151,6 +160,26 @@ class RRFRetriever:
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post any retriever ranked, best fused score first."""
         # TODO: get each retriever's rankings for all the questions.
-        # TODO: for each question, add up 1 / (k + rank) per post across the
-        #       retrievers, then sort the posts by that total, highest first.
-        raise NotImplementedError
+        ret_rankings = []
+
+        for r in self.retrievers:
+            rankings = r.rank(questions)
+            ret_rankings.append(rankings)
+        
+        output = []
+
+        for i in range(len(questions)):
+            slug_scores = {}
+            for j in range(len(self.retrievers)):
+                q_rankings = ret_rankings[j][i]
+                for rank,slug in enumerate(q_rankings, start = 1):
+                    slug_scores[slug] = slug_scores.get(slug, 0) + 1/(self.k + rank)
+
+            scores = [ (slug, score) for (slug,score) in slug_scores.items()]
+            scores = sorted(scores, key=lambda x: x[1], reverse=True)
+            output_ranking = [slug for slug,_ in scores]
+            output.append(output_ranking)
+
+        return output
+        
+            
