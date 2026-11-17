@@ -36,7 +36,7 @@ class BM25Retriever:
         # Document i in the index is self.slugs[i].
         self.slugs = list(posts)
         self.retriever = BM25()
-        self.retriever.index(tokenize([post_text(posts[slug]) for slug in self.slugs]))
+        self.retriever.index(tokenize([post_text(posts[slug]) for slug in self.slugs]), show_progress=False)
 
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post's slug, highest BM25 score first."""

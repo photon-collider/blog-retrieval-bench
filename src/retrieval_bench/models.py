@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
 Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
 
@@ -23,6 +23,7 @@ Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "nea
 POST_FIELDS = ("source_posts", "superseded_posts", "related_posts")
 ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
 EVAL_SET = ROOT / "dataset" / "eval-set-v2-shortlist.yaml"
+RESULTS_DIR = ROOT / "results"  # run-eval --save writes here; the notebook reads it
 
 
 class Question(BaseModel):
@@ -127,3 +128,15 @@ class Summary(BaseModel):
     hit_at: dict[int, float]          # k -> Hit@k: share of questions with a hit in the top k
     recall_at: dict[int, float] | None  # k -> Recall@k, averaged; multi_post only
     mrr: float                        # mean reciprocal rank
+
+
+_RESULTS = TypeAdapter(list[QuestionResult])
+
+def save_results(path: str | Path, results: list[QuestionResult]) -> None:
+    """Write results as JSON, rankings included, so analysis needs no models."""
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_bytes(_RESULTS.dump_json(results, indent=1))
+
+def load_results(path: str | Path) -> list[QuestionResult]:
+    """Read results written by save_results."""
+    return _RESULTS.validate_json(Path(path).read_bytes())
