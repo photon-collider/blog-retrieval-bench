@@ -122,22 +122,13 @@ class EmbeddingRetriever:
 
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post's slug, most similar first."""
-
-        emb_qs = self.model.encode_query(questions, convert_to_numpy=True)
-        output: list[list[Slug]] = []
-
-        for q in emb_qs:
-            scores = []
-            for i,doc_emb in enumerate(self.doc_embeddings):
-                slug = self.slugs[i]
-                score = q @ doc_emb
-                scores.append((slug, score))
-
-            scores = sorted(scores, key=lambda x: x[1], reverse=True)
-            ranking = [slug for slug,_ in scores]
-            output.append(ranking)
-
-        return output
+        # encode_query adds the model's query prompt; plain encode() would not.
+        query_embeddings = self.model.encode_query(questions, convert_to_numpy=True)
+        # One row per question, one column per post. The posts are unit length,
+        # so this is cosine similarity up to each row's query length, which
+        # scales the whole row and leaves its order unchanged.
+        scores = query_embeddings @ self.doc_embeddings.T
+        return [[self.slugs[i] for i in np.argsort(-row, kind="stable")] for row in scores]
 
 
 # --- Reciprocal rank fusion ---------------------------------------------------
@@ -159,27 +150,17 @@ class RRFRetriever:
 
     def rank(self, questions: list[str]) -> list[list[Slug]]:
         """For each question, every post any retriever ranked, best fused score first."""
-        # TODO: get each retriever's rankings for all the questions.
-        ret_rankings = []
-
-        for r in self.retrievers:
-            rankings = r.rank(questions)
-            ret_rankings.append(rankings)
-        
-        output = []
-
-        for i in range(len(questions)):
-            slug_scores = {}
-            for j in range(len(self.retrievers)):
-                q_rankings = ret_rankings[j][i]
-                for rank,slug in enumerate(q_rankings, start = 1):
-                    slug_scores[slug] = slug_scores.get(slug, 0) + 1/(self.k + rank)
-
-            scores = [ (slug, score) for (slug,score) in slug_scores.items()]
-            scores = sorted(scores, key=lambda x: x[1], reverse=True)
-            output_ranking = [slug for slug,_ in scores]
-            output.append(output_ranking)
-
-        return output
+        # One batched call per retriever: by_retriever[r][i] is retriever r's
+        # ranking for question i. zip(*...) regroups it by question.
+        by_retriever = [r.rank(questions) for r in self.retrievers]
+        fused = []
+        for rankings in zip(*by_retriever):
+            scores: dict[Slug, float] = {}
+            for ranking in rankings:
+                for rank, slug in enumerate(ranking, start=1):
+                    scores[slug] = scores.get(slug, 0.0) + 1 / (self.k + rank)
+            # sorted is stable: ties keep the first retriever's order.
+            fused.append(sorted(scores, key=scores.get, reverse=True))
+        return fused
         
             

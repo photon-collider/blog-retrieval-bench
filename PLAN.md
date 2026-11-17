@@ -75,7 +75,10 @@ A blog series on retrieval-augmented Q&A over my own blog (44 MDX posts in
        0.81 (vs 0.78 and 0.85 original). The v1 paraphrases, which hid names,
        had dropped Hit@1 to 0.51, so most of that drop came from the
        obfuscation, not from realistic rewording.
-5. [ ] Embedding models (embeddings cached in `cache/`), then RRF, on both
-       wordings.
+5. [x] Embedding models (embeddings cached in `cache/`), then RRF, on both
+       wordings. Original wording: RRF(BM25 + EmbeddingGemma 2) is best
+       (Hit@1 0.87, Hit@3 1.00, MRR 0.92). Paraphrases: EmbeddingGemma 2 alone
+       is best (Hit@1 0.83, MRR 0.90) and every hybrid falls slightly below
+       it. current_state Hit@1 stays at 0.12–0.38 for every retriever.
 6. [ ] Analysis notebook: 2×2 tables, disagreement questions, per-term
        breakdowns.
