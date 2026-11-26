@@ -54,6 +54,26 @@ def agreement(results: list[QuestionResult], a: str, b: str, k: int = 1) -> dict
     return cells
 
 
+def mcnemar_exact(b: int, c: int) -> float:
+    """Two-sided exact McNemar p-value from the two disagreement counts of a
+    2x2 agreement table: b = questions only retriever A hits, c = only B hits.
+
+    Questions where both hit or both miss say nothing about which retriever is
+    better, so they're left out. If A and B were equally good, each
+    disagreement would be a fair coin flip, so b ~ Binomial(b + c, 1/2). The
+    p-value is the chance of a split at least as lopsided as the one observed:
+    2 * P(X <= min(b, c)), capped at 1. With no disagreements it is 1.
+
+    Assumes questions are independent, which only roughly holds when several
+    questions share a post or topic.
+    """
+    n = b + c
+    if n == 0:
+        return 1.0
+    tail = sum(comb(n, i) for i in range(min(b, c) + 1)) / 2 ** n
+    return min(1.0, 2 * tail)
+
+
 def paraphrase_flips(original: list[QuestionResult], paraphrase: list[QuestionResult],
                      retriever: str, k: int = 1) -> tuple[list[str], list[str]]:
     """Question ids whose Hit@k changes between the wordings for one retriever:

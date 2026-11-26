@@ -1,6 +1,7 @@
 import pytest
 
-from retrieval_bench.analysis import agreement, paraphrase_flips, random_baseline, term_contributions
+from retrieval_bench.analysis import (agreement, mcnemar_exact, paraphrase_flips, random_baseline,
+                                      term_contributions)
 from retrieval_bench.evaluate import score
 from retrieval_bench.models import Question, load_results, save_results
 from retrieval_bench.retrieval import tokenize
@@ -52,6 +53,19 @@ def test_agreement_cells():
     cells = agreement(x + y, "x", "y", k=1)
     assert cells == {(True, True): ["q1"], (True, False): ["q2"],
                      (False, True): ["q3"], (False, False): []}
+
+
+def test_mcnemar_exact_by_hand():
+    # 4 vs 0: every one of 4 coin flips lands the same way, 2 * (1/2)**4.
+    assert mcnemar_exact(4, 0) == pytest.approx(0.125)
+    # 9 vs 2: 2 * (C(11,0) + C(11,1) + C(11,2)) / 2**11 = 2 * 67 / 2048.
+    assert mcnemar_exact(9, 2) == pytest.approx(2 * 67 / 2048)
+    assert mcnemar_exact(2, 9) == mcnemar_exact(9, 2)
+
+
+def test_mcnemar_exact_edge_cases():
+    assert mcnemar_exact(0, 0) == 1.0  # no disagreements: no evidence either way
+    assert mcnemar_exact(3, 3) == 1.0  # an even split is capped at 1, not 2 * P(X <= 3) > 1
 
 
 def test_paraphrase_flips():
