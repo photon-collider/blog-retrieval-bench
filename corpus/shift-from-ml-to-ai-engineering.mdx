@@ -1,0 +1,76 @@
+---
+title: "The Shift from ML Engineering to AI Engineering"
+tags: ["ai-engineering", "foundation-models", "llm", "machine-learning"]
+description: "Exploring the key differences between ML and AI engineering, foundation models, and the challenges of building AI applications."
+date: 2025-09-14
+---
+
+I recently started reading through [AI Engineering by Chip Huyen](https://www.oreilly.com/library/view/ai-engineering/9781098166298/) to learn more about how to build applications on top of foundation models. As I finish each chapter, I’ll be writing posts on my top takeaways.
+
+This time I’m starting with the first chapter. First, I’ll note that it covers a variety of topics such as different use cases of AI models, how to train foundation models, and how to decide whether to build an AI application. Instead of covering each of these I’m going to focus on these topics I found interesting:
+
+- What AI engineering is and and how it differs from ML engineering.
+- What foundation models are.
+- The challenges associated with integrating foundation models in AI applications.
+
+## Contents
+
+## ML Engineering vs AI Engineering
+
+One of the goals of the first chapter is to draw a distinction between machine learning (ML) engineering and what is now known as artificial intelligence (AI) engineering.
+
+### ML Engineering
+
+Traditional ML engineering involves curating a dataset to train a model from scratch which can involve [feature engineering](https://en.wikipedia.org/wiki/Feature_engineering), doing evaluations on that model, and then deploying it in production. The challenge here is that gathering training data and training a model is both non-trivial and time consuming. Thus, ML engineering tends to be unfeasible if you lack the resources needed to create your own model.
+
+### AI Engineering
+
+In contrast, AI engineering focuses on taking general-purpose models, known as [foundation models](https://en.wikipedia.org/wiki/Foundation_model), and adapting them to specific use cases. The barrier to entry to get started on a project is lower as you don’t have to do the model development by yourself.
+
+However, foundation models come with their own challenges. It’s not always straightforward to evaluate their performance and they do require higher amounts of compute resources and infrastructure to operate. Before touching on these points, I’ll first dive into the basics of foundation models.
+
+## What Are Foundation Models?
+
+Chip Huyen provides a basic overview of foundation models and how they relate to [large language models (LLMs)](https://en.wikipedia.org/wiki/Large_language_model). I’ll give a summary here and go into more details on this topic in future posts as I read through the rest of the book.
+
+### Foundation Models
+
+The gist here is that foundation models, typically trained on very large quantities of data, are models that are suited for a wide variety of tasks. These include LLMs, multimodal models which can handle various data modalities (text, images, audio, and more), and other large pre-trained models.
+
+### Large Language Models
+
+LLMs capture statistical patterns of language. These models use what are called tokens as fundamental units of written language. For instance, a model may represent the word `tokenization` using the tokens `token` and `ization`. Here, the set of tokens a model can use represents the model's vocabulary.
+
+One thing to note here is that there are two types of language models. The first are known as masked language models, and these are trained to handle fill in the blank queries. The second type of language models are known as autoregressive models, which are trained to predict the next token when presented a sequence of tokens. These are the models used in generative AI applications for use cases such as summarizing documents, writing essays, or answering questions.
+
+## Integrating Foundation Models in Applications
+
+Successfully deploying foundation models in production requires addressing multiple technical and operational challenges.
+
+### Adapting Models to Specific Use Cases
+
+There are three common pathways to adapt AI models into applications. These include prompt engineering, retrieval-augmented generation, and fine-tuning.
+
+Prompt engineering involves providing the model a set of instructions and/or providing examples of what desired responses look like when the model receives a query. I understand that it's typically the first technique to try in most situations as it requires fewer resources.
+
+Retrieval-augmented generation requires providing the model additional context from a database of information that may be relevant to an incoming query. This technique is useful to enhance a model's performance when domain-specific knowledge is needed.
+
+Fine-tuning is the practice of updating the model's weights using a curated dataset to improve its performance. This may be worth trying to eke out even more performance especially when there are tight specific requirements on the quality of the model's output.
+
+### Evaluating Models
+
+While it's easy to get started with integrating a model in an application, it's hard to evaluate how well a model performs for your intended use case. Foundation models can suit a variety of open-ended use cases like making recipe suggestions, responding to customer queries, writing code, and more.
+
+Thus, it can be difficult to objectively evaluate a model's performance. That's the subject of evaluations (commonly abbreviated as evals) which will be covered in a later chapter in the book.
+
+### Optimizing Model Inference
+
+A related challenge is how to optimize the cost of running a model while maintaining performance. Every query that a model has respond to incurs a cost.
+
+Huyen highlights at a high level that there are additional techniques to optimize the cost of doing model inference such as distillation, quantization, and parallelism, which again will be covered in later chapters.
+
+## Final Thoughts
+
+My biggest takeaway from the first chapter is the distinction between ML engineering and AI engineering and the challenges associated with integrating an AI model in an application.
+
+As I read more chapters of this book I’ll be curious to learn more about how foundation models are evaluated and how to decide which models to pick given that more and more models are available on the market nowadays.

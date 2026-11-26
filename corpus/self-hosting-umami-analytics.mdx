@@ -1,0 +1,55 @@
+---
+title: "Self-Hosting Umami Analytics on a VPS"
+description: "Documenting my experience switching from Plausible to self-hosted Umami Analytics."
+metaDescription: "Documenting my experience switching from Plausible to self-hosted Umami Analytics."
+date: 2025-12-28
+tags: ["self-hosting", "umami", "analytics", "vps", "docker"]
+featured: false
+---
+
+Over the winter holiday break this year, I decided to self-host my web analytics platform for this website using [Umami](https://umami.is/). I've been using [Plausible Analytics](https://plausible.io/) for a few years now. But, I wanted to cut down on costs, take control of my data, and learn more about hosting services on a VPS.
+
+In this post, I'll share my experience setting up Umami on a VPS and what I've learned through this process. If you'd like to self-host Umami yourself, [check out this Github repository where I've documented my setup in more detail](https://github.com/photon-collider/selfhost-umami-analytics).
+
+## Why I switched to Umami
+
+At the time of this writing, the cheapest Plausible Cloud plan costs $90/year (billed annually). This plan includes: a data retention period of 3 years, up to 10,000 page views per month, and analytics tracking for one site.
+
+However, I'd like to retain my data for more than 3 years. Paying $90 per year also feels steep for my relatively low traffic site. I am also planning to create more websites in the future, and don't want to upgrade my plan so I can have analytics on these new sites.
+
+After researching alternatives, I opted to try Umami as it looked easier to self host compared to the [community edition of Plausible.](https://github.com/plausible/community-edition/)
+
+One tradeoff is that the self-hosted version of Umami uses Postgres for data persistence, which doesn't scale as well as other analytics services that use [ClickHouse](https://clickhouse.com), a database optimized for analytics workloads. Given that my traffic volume is quite low, I don't expect this to be an issue for me in the foreseeable future.
+
+Umami does also have a [nicer UI](https://umami.is/blog/umami-v3) and a few extra features compared to Plausible, which is a bonus.
+
+I briefly considered using the free tier on Umami Cloud, but that only offers 6 months of data retention. The next option would be to pay for the pro plan which costs $20 per month. Hence, I decided to self-host this service myself instead to minimize costs.
+
+## Building my self-hosted stack
+
+Aside from minimizing costs, I was also eager to learn how to self-host services for myself on a VPS. This felt intimidating at first, especially the networking aspects. But, it wasn't too difficult with the help of Claude.
+
+I learned how to provision my VPS, secure it with a firewall (using `ufw`) and SSH access, and point a subdomain to my server's IP address using DNS A records. One protip I learned is that you can add an entry like so in your `.ssh/config` file to simplify SSH access to your server:
+
+```ssh-config
+Host hetzner-umami
+  HostName <YOUR-SERVER-IP-ADDRESS>
+  User <your-username>
+  IdentityFile ~/.ssh/hetzner_ed25519
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+
+From here, you can simply run `ssh hetzner-umami` to connect to your server.
+
+The [official Umami documentation](https://umami.is/docs/install) also provided helpful guidance on setting things up using docker compose.
+
+My final setup is hosted on a Hetzner CAX11 (ARM-based VPS) for €4.45/month, which includes the cost of automatic daily backups. This was surprisingly affordable compared to other VPS providers like Digital Ocean.
+
+On this platform, I'm leveraging docker compose to run Umami together with a Postgres database, and [Caddy](https://caddyserver.com/) as a reverse proxy. Caddy here handles HTTPS automatically out of the box via Let's Encrypt.
+
+This may be overkill but I did also set up monthly backups of my Postgres database to AWS S3 Glacier using a cron job. I've been learning about AWS at work so this side project offered an opportunity to get some hands-on experience with S3.
+
+## Final Thoughts
+
+This took a few hours on a Saturday afternoon to set up. But, I'm quite happy I spent the time learning how to self-host a web service with the added bonus of saving some money in the long run. I'd definitely recommend giving this a try if you love tinkering and want to learn more about web hosting!

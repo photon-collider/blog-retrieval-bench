@@ -1,0 +1,140 @@
+---
+title: "Redesign: Version 5.0"
+date: 2026-02-27
+tags: ["site-update"]
+description: A review of the latest design changes I’ve made to my website.
+---
+
+import { websiteDetails } from "@/config";
+import { Picture } from "astro:assets";
+
+It's been almost a year since my [last redesign.](/blog/redesign-4/) With this redesign I wanted to trying something new with the typography and the page layouts.
+
+## Contents
+
+## New Font Stack
+
+I'm using these fonts now:
+
+- [**Space Grotesk**](https://fonts.google.com/specimen/Space+Grotesk). I love the techie and slightly quirky vibe of this font. Mainly using this in headers and some navigational elements.
+- [**FK Roman Standard**](https://fonts.floriankarsten.com/fk-roman-standard). Having previously used [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) for body text in the past I wanted to try something new and fresh. I discovered this font from reading articles on [_The Verge_](https://www.theverge.com/) and it just so happens to be designed by Florian Karsten, the same designer of Space Grotesk. I like how legible and slightly elegant this font is.
+- [**IBM Plex Mono**](https://fonts.google.com/specimen/IBM+Plex+Mono). This has been my go-to monospace font for sometime now. I mainly use this for code snippets, tags, and the byline in blog posts.
+
+## Moving Away from TailwindCSS
+
+[While I've good experiences working with TailwindCSS](/blog/simplifying-my-website-css-using-tailwind/), I no longer see it as a necessity for this project. Over the past year, I've grown more comfortable writing my own CSS especially since working through some exercises in [this short course on CSS layouts.](https://every-layout.dev) Removing TailwindCSS was relatively easy to do given that Astro components already support locally-scoped CSS styles in components.
+
+I now have my CSS in a few different files:
+
+- `base.css:` Base styles for the entire site, such as anti-aliasing and some CSS resets.
+- `prose.css:` Styles for prose content in blog posts, focusing mostly on typography.
+- `fonts.css:` Font-face declarations.
+- `tokens.css:` CSS variables for colors, spacing, and typography scales (generated using [utopia.fyi](https://utopia.fyi/)).
+- `cube.css:` Styles based on the [CUBE CSS approach.](https://cube.fyi/)
+- `utilities.css:` Miscellaneous reusable helper classes.
+
+I first encountered CUBE CSS in [this CSS course by Andy Bell](https://piccalil.li/complete-css/). I'm still learning the ins and outs of how to best use this in my current project.
+
+## Screenshots
+
+### Home
+
+I spent a lot of time in Figma trying to come up with a new layout for the home page. Here's where I landed after many days of experimentation.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/homepage.png`}
+  alt="New design of the home page layout"
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+One thing to note here is that the footer now contains a dropdown menu to toggle between light and dark mode.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/homepage-2.png`}
+  alt="New design of the home page layout. Part 2."
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### About
+
+Some modest changes here to the typography. Also added my portrait to the side.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/about.png`}
+  alt="New design of the about page layout"
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### Blog
+
+I've updated the sidebar here to include a list of blog post tags and a link to the new blog index page.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/blog-posts.png`}
+  alt="New design of the blog page layout"
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### Blog Index
+
+A new page where you can see all blog post tags and their associated posts in one place.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/blog-index.png`}
+  alt="The blog index page."
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### Blog Post
+
+The most notable change here is that I added some share buttons next to the intro paragraphs in the tablet/desktop layout. On mobile these just appear at the bottom of the article.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/blog-post-1.png`}
+  alt="New design of the blog page layout"
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### Links
+
+This is a new section I added to share links that I find interesting and helpful.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/links.png`}
+  alt="Design of the links page layout."
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>
+
+### Reading
+
+I switched to a staggered two-column layout for my reading list.
+
+<Picture
+  src={`${websiteDetails.imgHostRootURL}/article_images/redesign-5/reading.png`}
+  alt="New design of the Reading page layout."
+  inferSize={true}
+  widths={[600, 900, 1200, 1800]}
+  sizes="auto"
+  style="margin: 1em 0;"
+/>

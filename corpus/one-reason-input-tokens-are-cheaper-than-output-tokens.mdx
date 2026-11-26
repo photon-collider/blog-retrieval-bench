@@ -1,0 +1,162 @@
+---
+title: "One Reason Input Tokens Are Cheaper than Output Tokens"
+description: "I measured how fast a small model reads a prompt versus how fast it writes a response to understand how tokens are priced."
+date: 2026-10-25
+tags: ["llm", "inference"]
+---
+
+import Figure from "@components/Figure.astro";
+import LineChart from "@components/LineChart.astro";
+import prefillAndDecode from "@/assets/blog/prefill-vs-decode-on-my-laptop/prefill-and-decode.svg?raw";
+import waitTime from "@/assets/blog/prefill-vs-decode-on-my-laptop/wait-time.svg?raw";
+
+LLM APIs typically charge more for output tokens than input tokens. As of October 2026, I've found that output tokens for models by [Anthropic](https://platform.claude.com/docs/en/about-claude/pricing), [OpenAI](https://developers.openai.com/api/docs/pricing), and other providers are roughly 5× more expensive than input tokens. Why is that? I recently started learning about LLM inference and this seemed like an interesting question to dig into.
+
+I timed a small model on my laptop, measuring the time spent processing each input and output token. In this experiment, I found that one output token can take up to 29× more time than a single input token, which gave me insight into how tokens are priced.
+
+## Two Phases for Generating Text with LLMs
+
+LLM inference requires two stages: prefill and decode. In the prefill phase the user’s whole prompt is processed in one pass. This requires reading the model's weights just once. If you’re familiar with how the basic [attention mechanism](<https://en.wikipedia.org/wiki/Attention_(machine_learning)>) works, this is the stage where the key and value vectors are generated for the input tokens and stored in the [KV cache](https://huggingface.co/blog/not-lain/kv-caching).
+
+During the decode phase the LLM generates one new token at a time. Unlike the prefill phase, however, all the model's weights have to be reread each time the model generates a new token.
+
+Two metrics characterize these phases, which include the time to first token (TTFT) and the time per output token (TPOT). From a user’s perspective, the TTFT measures how long it takes before a response starts streaming into the chat window, whereas the TPOT measures how fast the streamed text is generated.
+
+<Figure
+  svg={prefillAndDecode}
+  alt="Diagram of LLM inference over time. The eight prompt tokens 'To be, or not to be,' go through a single prefill pass, which produces the first output token 'that'. Four decode steps follow, each producing one token: 'is', 'the', 'question', ':'. A bracket under the prefill pass marks the time to first token (TTFT), and a bracket under one decode step marks the time per output token (TPOT)."
+/>
+
+## Initial Setup
+
+For this exploration, I ran the [Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct) model (bfloat16) on my M2 MacBook Pro (16 GB) via PyTorch's MPS backend. I used the [`transformers` library from Hugging Face](https://huggingface.co/docs/transformers/index) to set this up:
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+name = "Qwen/Qwen2.5-0.5B-Instruct"
+tok = AutoTokenizer.from_pretrained(name)
+model = AutoModelForCausalLM.from_pretrained(name, dtype=torch.bfloat16).to("mps").eval()
+```
+
+These few lines load the model and set up a tokenizer that we can use to prepare inputs for the model.
+
+## Measuring the Prefill and Decoding Phases
+
+Models loaded this way offer a `generate` method you can use to generate outputs. However, this method doesn't report times for the prefill and decode phases so we have to compute those manually.
+
+We can start by writing a function to measure how long it takes to generate $n$ tokens:
+
+```python
+import time
+
+def timed_generate(ids, n):
+    torch.mps.synchronize()  # wait for any earlier GPU work to finish
+    t0 = time.perf_counter()
+    model.generate(ids, min_new_tokens=n, max_new_tokens=n, do_sample=False)
+    torch.mps.synchronize()  # wait for this call's GPU work to finish
+    return time.perf_counter() - t0
+```
+
+Here, we set `min_new_tokens=n` so the model can't stop early and `do_sample=False` for greedy decoding, meaning the model always selects the most probable token, so runs are repeatable.
+
+Measuring the time it takes to generate one new token roughly gives us the TTFT. However, getting the TPOT requires more effort. The time it takes to generate 101 new tokens roughly equals the TTFT + (100 tokens) × TPOT. From the total time, we can subtract the TTFT and divide by 100 tokens to obtain the TPOT.
+
+```python
+import statistics
+
+def ttft_tpot(ids, num_samples=5):
+    timed_generate(ids, 1)  # warm-up
+    ttft = statistics.median(timed_generate(ids, 1) for _ in range(num_samples))
+    total = statistics.median(timed_generate(ids, 101) for _ in range(num_samples))
+    return ttft, (total - ttft) / 100
+```
+
+In this function, we make a warm-up call first, then compute the median of 5 runs.
+
+Now, we can load a text file and use that to see how TTFT and TPOT vary with length of the input prompt:
+
+```python
+text = open("input.txt").read()
+all_ids = tok(text[:20_000], return_tensors="pt").input_ids.to("mps")
+
+for length in (16, 128, 512, 2048):
+    ttft, tpot = ttft_tpot(all_ids[:, :length])
+    print(length, ttft, tpot, length / ttft)
+```
+
+For this example, I used [this text file](https://github.com/karpathy/char-rnn/blob/master/data/tinyshakespeare/input.txt) containing the contents of some of Shakespeare’s plays. The inputs to the model are plain-text prompts cut from the start of this text file and include the first 16, 128, 512, and 2,048 tokens, respectively.
+
+## Results
+
+Each value in the table below represents the median of 5 runs.
+
+| Prompt (tokens) | TTFT (ms) | TPOT (ms) | Prefill throughput (tokens/s) | Decode throughput (tokens/s) |
+| --------------: | --------: | --------: | ----------------------------: | ---------------------------: |
+|              16 |      29.6 |      8.79 |                           540 |                          114 |
+|             128 |      68.1 |      9.09 |                         1,880 |                          110 |
+|             512 |       188 |      9.12 |                         2,720 |                          110 |
+|           2,048 |       711 |      10.1 |                         2,880 |                           99 |
+
+The data show that TTFT grows with the prompt, starting from 29.6 ms at 16 tokens to 711 ms at 2,048 (about 24× bigger for a prompt 128× longer). Prefill throughput (prompt length / TTFT) climbs from 540 to about 2,900 tokens/s, then levels off. At 16 tokens, there's probably some overhead in `generate()` which dominates TTFT, so the number is low.
+
+I was surprised to learn that TPOT barely moves. It varies from 8.8 ms to 10.1 ms over the same range. I would have thought that for larger inputs, the time to generate output tokens would significantly increase but this wasn't the case. Correspondingly, the decode throughput doesn't change much from 114 to 99 tokens/s.
+
+<LineChart
+  title="Token Throughput vs Prompt Length"
+  series={[
+    {
+      name: "Prefill throughput",
+      label: "Prefill",
+      points: [
+        [16, 540.4],
+        [128, 1880.1],
+        [512, 2721.1],
+        [2048, 2881.2],
+      ],
+    },
+    {
+      name: "Decode throughput",
+      label: "Decode",
+      points: [
+        [16, 113.8],
+        [128, 110.0],
+        [512, 109.6],
+        [2048, 98.7],
+      ],
+    },
+  ]}
+  xLabel="Prompt length (tokens)"
+  yLabel="tokens/s"
+  xScale="log2"
+  xUnit="tokens"
+  yUnit="tokens/s"
+  formatY={(y) => Math.round(y).toLocaleString("en-US")}
+  labels="last"
+  legend={false}
+  caption="Prefill throughput increases from 540 to 2,880 tokens/s as the prompt length increases. In contrast, decode throughput remains relatively flat at about 100 tokens/s throughout this range."
+/>
+
+There are of course some caveats with this measurement:
+
+- My batch size is just 1. In production settings, it's possible to batch multiple requests concurrently to increase decode throughput so the gap between prefill and decode throughput observed here would be much smaller.
+- The `transformers` library isn't exactly an optimized inference engine so these numbers have to be taken with a grain of salt.
+
+## What This All Means
+
+Let’s think about this in the scenario where a user submits a 128-token prompt and gets a 200-token answer. Output generation will start after about 68 ms and finish after about 1.9 s (68 + 199 × 9.09). Here, the decode phase takes roughly 96% of the wait. This means that for a typical chat like this the answer's length sets the wait time, not how long the question is.
+
+<Figure
+  svg={waitTime}
+  alt="A horizontal bar drawn to scale for a 128-token prompt and a 200-token answer. Prefill is a thin 68 ms sliver at the left. Decode, 199 tokens at 9.09 ms each, about 1.81 s, fills the rest of the bar, which ends at 1.88 s."
+/>
+
+I now have a clearer perspective on why LLM APIs charge more for output tokens. There's a cost to operating a GPU every second, which includes things like hardware costs and the price of electricity.
+
+LLM APIs bill per token, so what ultimately matters is the time spent per token. The prefill phase takes much less time per token since all of the input tokens are processed at once, unlike the decode process which generates one token at a time and requires reading all of the model weights each time. On my laptop, I measured that for an input prompt of 2,048 tokens, an output token uses 29× more time than an input token.
+
+So, charging more per output token makes sense from that perspective. The ~5:1 ratio between the pricing of output and input tokens by model providers leads me to believe that in production settings this 29× gap I observed would be smaller. But the point still stands.
+
+## One Question To Resolve Next Time
+
+One question I'd like to resolve next is: why is the TPOT roughly 10 ms per output token? All I know right now is that it has something to do with the fact that the process of generating one token is largely bound by memory bandwidth.

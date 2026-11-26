@@ -1,0 +1,217 @@
+---
+title: "A Straight Line Predicts How Fast My Laptop Generates LLM Tokens"
+description: "I went down a rabbit hole to see how memory bandwidth limits the rate at which LLMs generate tokens."
+date: 2026-11-13
+tags: ["llm", "inference"]
+---
+
+import Figure from "@components/Figure.astro";
+import ScatterFitChart from "@components/ScatterFitChart.astro";
+import memoryPath from "@/assets/blog/straight-line-predicts-how-fast-my-laptop-generates-llm-tokens/memory-path.svg?raw";
+import linearModel from "@/assets/blog/straight-line-predicts-how-fast-my-laptop-generates-llm-tokens/linear-model.svg?raw";
+
+[My previous post](/blog/one-reason-input-tokens-are-cheaper-than-output-tokens/) ended on a cliffhanger. For the model Qwen2.5-0.5B, I found that the time per output token (TPOT) was roughly 9 ms for different prompt sizes. But I didn’t have an explanation for why.
+
+I’ve since learned that in the decode phase for large language model (LLM) inference the primary bottleneck is memory bandwidth, the rate at which the GPU reads LLM model weights from RAM. To explore this, I measured the TPOT of six models of varying sizes on my laptop.
+
+## Contents
+
+## The Memory Bandwidth Bottleneck
+
+In LLM inference, the decode phase produces one token at a time. Each time, the weights have to be streamed from RAM to the GPU chip, where the next token is computed.
+
+In other words, to generate $N$ tokens, you'd have to re-read the model weights $N$ times. This is because the GPU chip has a limited amount of memory, on the order of kilobytes or megabytes depending on the hardware, so it can't hold all of the weights at once.
+
+<Figure
+  svg={memoryPath}
+  maxWidth="38rem"
+  bleedOnMobile
+  caption="On a MacBook, RAM is shared between the CPU and GPU. To generate output tokens, the weights are copied from disk to RAM once. Each time the system generates a token it streams all 988 MB from RAM to the GPU chip, which holds only a few MB at a time."
+  alt="The path model weights take on a MacBook from the disk, to RAM, and into the GPU chip."
+/>
+
+Memory bandwidth dictates the speed limit of this process:
+
+$$
+ \frac{\text{model size}}{\text{memory bandwidth}} \le \text{TPOT.}
+$$
+
+In other words, **the lowest possible TPOT is given by the model size divided by the memory bandwidth of our system.**
+
+For example, the weights for Qwen2.5-0.5B take ~988 MB of storage. As a result, on my MacBook Pro with the M2 Pro chip (16 GB) and a peak memory bandwidth of 200 GB/s, I can expect the lowest possible TPOT for this model to be 4.94 ms.
+
+We can characterize the relationship between model size and TPOT using a linear model
+
+$$
+ \text{fixed cost} + \frac{\text{model size}}{\text{memory bandwidth}} = \text{TPOT,}
+$$
+
+in which model size will be our independent variable and TPOT will be the dependent variable.
+
+<Figure
+  svg={linearModel}
+  bleedOnMobile
+  caption="Linear relationship between model size and time per output token (TPOT). Here, the fixed cost sets where the line starts, and the time to read each GB sets how steep it is."
+  alt="Sketch of the linear model, with TPOT on the vertical axis and model size on the horizontal axis. A dashed best-case line starts at the origin, for the full 200 GB/s and no overhead."
+/>
+
+The slope of this line captures the effective memory bandwidth. Although the peak bandwidth of my laptop is 200 GB/s, we can't expect to use all of it. This is partly because memory bandwidth is shared by the CPU, GPU, and laptop display. Thus, LLM inference gets whatever bandwidth is left over, which we can define as the effective bandwidth.
+
+In addition, the vertical offset of this line measures system overhead, which is treated as a fixed cost regardless of model size. I'd guess this fixed cost might include things like the time it takes for the GPU to start doing work, among other things.
+
+## TPOT vs Model Size
+
+Using models in the Qwen2.5, Qwen3, and Gemma 3 families, I measured TPOT vs model size on my MacBook Pro. I ran each of these in both `bfloat16` and `float32` precisions to have more data points in the plot.
+
+<ScatterFitChart
+  title="Time per Output Token vs Model Size"
+  points={[
+    [0.536, 7.09, "Gemma 3 270M, bfloat16"],
+    [1.072, 9.17, "Gemma 3 270M, float32"],
+    [0.988, 8.99, "Qwen2.5 0.5B, bfloat16"],
+    [1.976, 14.89, "Qwen2.5 0.5B, float32"],
+    [2.0, 17.61, "Gemma 3 1B, bfloat16"],
+    [4.0, 28.81, "Gemma 3 1B, float32"],
+    [3.087, 22.12, "Qwen2.5 1.5B, bfloat16"],
+    [6.175, 41.07, "Qwen2.5 1.5B, float32"],
+    [1.192, 12.92, "Qwen3 0.6B, bfloat16"],
+    [2.384, 19.81, "Qwen3 0.6B, float32"],
+    [3.441, 26.2, "Qwen3 1.7B, bfloat16"],
+    [6.882, 46.1, "Qwen3 1.7B, float32"],
+  ]}
+  fitLabel="Line fit"
+  fitEndLabel={(slope) => `${Math.round(1000 / slope)} GB/s`}
+  reference={{
+    label: "Ceiling at the 200 GB/s spec",
+    endLabel: "200 GB/s",
+    slope: 1000 / 200,
+  }}
+  xLabel="Model weights (GB)"
+  yLabel="TPOT (ms)"
+  xUnit="GB"
+  yUnit="ms"
+  caption="I used six models in this measurement, which include: Gemma 3 (270M, 1B), Qwen2.5 (0.5B, 1.5B), and Qwen3 (0.6B, 1.7B), each in bfloat16 and float32 for 12 data points."
+/>
+
+The dashed line here represents the best-case scenario where there's no fixed cost and the system uses the 200 GB/s peak bandwidth.
+
+I was able to measure an effective bandwidth of 163 GB/s and a fixed cost of 4.03 ms. I redid this linear fit without the result from the largest LLM, Qwen3 1.7B in float32 (6.88 GB), to check how well it captures the trend. In this case, the line predicted the TPOT for it within 0.2% (46.2 ms vs. 46.1 ms measured).
+
+In general, all points are within 1.6 ms of the line. The models that deviated the most from the trend were Qwen3 0.6B (bfloat16) and Gemma 3 270M (float32), which exhibited errors of 12.3% and 15.6%, respectively. The model exhibiting the most agreement was Qwen3 1.7B (float32), which had an error of 0.1%.
+
+As you can see in the table below, the general trend is that as the model size increases, the TPOT also increases as you'd expect.
+
+<div class="table-wrapper">
+
+| Model                  | Weights (GB) | Measured TPOT (ms) | Predicted TPOT (ms) | Fraction of time spent reading weights |
+| ---------------------- | ------------ | ------------------ | ------------------- | -------------------------------------- |
+| Gemma 3 270M, bfloat16 | 0.54         | 7.09               | 7.31                | 45%                                    |
+| Qwen2.5 0.5B, bfloat16 | 0.99         | 8.99               | 10.08               | 60%                                    |
+| Gemma 3 270M, float32  | 1.07         | 9.17               | 10.59               | 62%                                    |
+| Qwen3 0.6B, bfloat16   | 1.19         | 12.92              | 11.33               | 64%                                    |
+| Qwen2.5 0.5B, float32  | 1.98         | 14.89              | 16.12               | 75%                                    |
+| Gemma 3 1B, bfloat16   | 2.00         | 17.61              | 16.27               | 75%                                    |
+| Qwen3 0.6B, float32    | 2.38         | 19.81              | 18.62               | 78%                                    |
+| Qwen2.5 1.5B, bfloat16 | 3.09         | 22.12              | 22.92               | 82%                                    |
+| Qwen3 1.7B, bfloat16   | 3.44         | 26.20              | 25.09               | 84%                                    |
+| Gemma 3 1B, float32    | 4.00         | 28.81              | 28.51               | 86%                                    |
+| Qwen2.5 1.5B, float32  | 6.17         | 41.07              | 41.81               | 90%                                    |
+| Qwen3 1.7B, float32    | 6.88         | 46.10              | 46.14               | 91%                                    |
+
+</div>
+
+For each model, I calculated the fraction of time spent using two steps:
+
+1. Estimate the time spent reading weights by taking the model size and dividing that by the effective bandwidth (163 GB/s).
+2. Divide this read time by the predicted TPOT.
+
+We can see that system overhead takes up a larger fraction of the time needed to generate a new token for smaller models. For the smallest model my laptop spends roughly 45% of time reading weights, whereas for the largest model it spends 91%.
+
+## How I Measured This
+
+For each model, I measured TPOT using a similar [`ttft_tpot` function from my previous post](/blog/one-reason-input-tokens-are-cheaper-than-output-tokens/#measuring-the-prefill-and-decoding-phases) with the [MPS backend in PyTorch](https://docs.pytorch.org/docs/stable/notes/mps.html), which allows PyTorch to run code on my MacBook's integrated GPU.
+
+```python
+import statistics
+import time
+import torch
+
+def timed_generate(model, ids, n):
+    torch.mps.synchronize()  # wait for any earlier GPU work to finish
+    t0 = time.perf_counter()
+    model.generate(ids, min_new_tokens=n, max_new_tokens=n, do_sample=False)
+    torch.mps.synchronize()  # wait for this call's GPU work to finish
+    return time.perf_counter() - t0
+
+def ttft_tpot(model, ids, num_samples=5):
+    timed_generate(model, ids, 1)  # warm-up
+    ttft = statistics.median(timed_generate(model, ids, 1) for _ in range(num_samples))
+    total = statistics.median(timed_generate(model, ids, 101) for _ in range(num_samples))
+    return ttft, (total - ttft) / 100
+```
+
+Then I looped over the models:
+
+```python
+import gc
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+models = [
+    ("google/gemma-3-270m-it", torch.bfloat16),
+    ("google/gemma-3-270m-it", torch.float32),
+    ("Qwen/Qwen2.5-0.5B-Instruct", torch.bfloat16),
+    ("Qwen/Qwen2.5-0.5B-Instruct", torch.float32),
+    ("google/gemma-3-1b-it", torch.bfloat16),
+    ("google/gemma-3-1b-it", torch.float32),
+    ("Qwen/Qwen2.5-1.5B-Instruct", torch.bfloat16),
+    ("Qwen/Qwen2.5-1.5B-Instruct", torch.float32),
+    ("Qwen/Qwen3-0.6B", torch.bfloat16),
+    ("Qwen/Qwen3-0.6B", torch.float32),
+    ("Qwen/Qwen3-1.7B", torch.bfloat16),
+    ("Qwen/Qwen3-1.7B", torch.float32),
+]
+
+text = open("input.txt").read()
+rows = []  # (size in GB, TPOT in seconds)
+
+for name, dtype in models:
+    model = AutoModelForCausalLM.from_pretrained(name, dtype=dtype).to("mps").eval()
+    tok = AutoTokenizer.from_pretrained(name)
+    input_ids = tok(text[:20_000], return_tensors="pt").input_ids.to("mps")
+
+    size_gb = sum(p.numel() * p.element_size() for p in model.parameters()) / 1e9
+    _, tpot = ttft_tpot(model, input_ids[:, :128])
+    rows.append((size_gb, tpot))
+
+    del model
+    gc.collect()
+    torch.mps.empty_cache()
+```
+
+For each model, I used the first 128 tokens of the [Tiny Shakespeare text](https://github.com/karpathy/char-rnn/blob/master/data/tinyshakespeare/input.txt) as the input prompt.
+
+After gathering the data, doing the linear fit is as simple as:
+
+```python
+import numpy as np
+
+gb = [r[0] for r in rows]
+ms = [r[1] * 1000 for r in rows]  # seconds -> ms
+slope, intercept = np.polyfit(gb, ms, 1)  # ms per GB, ms
+```
+
+## Caveats of This Measurement
+
+This was just a quick experiment to get a feel for the numbers, and not a rigorous benchmark. With that being said, there are a few flaws to my approach I should call out.
+
+One peculiar aspect of the data is that a linear fit on just the Gemma 3 270M data points (bfloat16 and float32) implies a memory bandwidth of about 258 GB/s, which is far above the spec limit of 200 GB/s. I was able to reproduce similar results across multiple runs, which suggests to me that this isn't due to noise.
+
+I believe the simple conclusion is that fixed cost isn't always the same for each model. This is true even when considering the same model in either bfloat16 or float32. I don't yet fully know what the underlying cause is but I suspect it may have something to do with the model architecture.
+
+Another caveat is that I didn't run this using an optimized inference server, such as [vLLM](https://vllm.ai) or [llama.cpp](https://github.com/ggml-org/llama.cpp). I'd expect a more optimized setup would lower the fixed cost measured here but might not improve the bandwidth utilization as much given that there's probably not much headroom to do better. It might be interesting to try this experiment again with [`mlx-lm`, which offers optimized kernels for Apple silicon](https://github.com/ml-explore/mlx-lm), instead of PyTorch.
+
+## What I Took Away From This
+
+Now, let's get back to my original question: for Qwen2.5-0.5B why is TPOT ~9 ms? The linear fit predicts that for this model my laptop takes roughly 6.05 ms to read the weights plus a fixed cost of 4.03 ms, giving us a total of 10.08 ms. This is 12% higher than the 8.99 ms figure I measured but it does paint a picture of how time is spent generating each token.
+
+I'll admit I was surprised to see how well the data fit the expected linear trend. But now that I understand the mechanism behind this it all makes sense.

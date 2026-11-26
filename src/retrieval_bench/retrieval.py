@@ -10,7 +10,9 @@ import bm25s
 import Stemmer
 import yaml
 
-DEFAULT_BLOG = Path.home() / "Projects/personal-blog-astro/src/content/blog"
+# A snapshot of the blog's 44 published posts, as they were when the results in
+# results/ were generated. Pass --blog to run against another folder of MDX posts.
+DEFAULT_BLOG = Path(__file__).resolve().parents[2] / "corpus"
 
 # Lucene's classic English stopword list (33 words), the default in Lucene and
 # Elasticsearch. Note that it removes "no" and "not".

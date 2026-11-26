@@ -1,0 +1,25 @@
+---
+title: "Black October Made Me Switch From Ubuntu to Debian"
+description: "Debian patched a critical kernel CVE in a day but Ubuntu still hasn't."
+metaDescription: "Weeks after a critical kernel CVE was disclosed, Ubuntu LTS still hasn't shipped a patch. Debian had one the next day, so I switched my VPS over."
+date: 2026-11-03
+tags: ["self-hosting", "vps"]
+---
+
+import BlogPostScreenshot from "@components/BlogPostScreenshot.astro";
+
+[Yesterday, I was alarmed to learn](https://news.ycombinator.com/item?id=50337608) that LTS versions of Ubuntu are still lacking a critical security update to patch a [severe vulnerability that was first disclosed on October 15th.](https://www.cve.org/CVERecord?id=CVE-2026-98432) As of now, [all LTS versions](https://ubuntu.com/security/CVE-2026-98432) dating back to version 16.04 have this vulnerability.
+
+<BlogPostScreenshot
+  imgBucket="black-october-made-me-switch-from-ubuntu-to-debian"
+  imgName="ubuntu-lts-vuln.png"
+  imgAlt="Ubuntu's CVE status table for the linux package."
+  imgCaption="Ubuntu's security tracker indicates every release from 16.04 LTS to 26.10. is still vulnerable, two weeks after the CVE was disclosed."
+  variant="bordered"
+/>
+
+Until recently my Hetzner VPS ran Ubuntu. Even though it's unlikely that I would fall victim to this vulnerability, I find it unacceptable that Canonical are taking this long to ship a security patch. To be fair, [Canonical did recommend a mitigation](https://ubuntu.com/security/CVE-2026-98432#mitigation) for this but it only reduces the risk.
+
+My bigger worry is that we're starting to see more and more vulnerabilities being disclosed at a pace that's hard to keep up with. Last month alone was bad enough that it's now referred to as [Black October.](<https://en.wikipedia.org/wiki/Black_October_(information_security)>) Given that AI will only accelerate this trend, I'm finding that it's now more critical than ever to keep systems, like my VPS, up-to-date on the latest security patches as quickly as possible.
+
+So I reconfigured my VPS to run Debian instead, [which already received a security patch the day after the CVE was announced.](https://lists.debian.org/debian-security-announce/2026/msg00482.html) While this incident alone may not be proof that Debian will always have faster updates, it's been enough to tip me over the edge.
