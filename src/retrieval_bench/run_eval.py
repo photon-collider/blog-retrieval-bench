@@ -1,6 +1,6 @@
 """Run retrievers over the eval set and print their scores per question type.
 
-Usage: uv run run-eval [--file dataset/eval-set-v2-shortlist.yaml] [--blog PATH] [--paraphrase] [--save]
+Usage: uv run run-eval [--file dataset/eval-set.yaml] [--blog PATH] [--paraphrase] [--save]
 
 --paraphrase asks each question in its reworded form (the `paraphrase` field).
 --save also writes every result, rankings included, to results/{wording}.json

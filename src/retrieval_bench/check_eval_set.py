@@ -12,10 +12,9 @@ Deliberately reports nothing about how a retriever would do: this runs while
 questions are being written, and a number shown then would shape the wording.
 Retrieval analysis belongs in the notebook, after the questions are frozen.
 
-Items with a blank `question` are skipped, so the v2 workbook (eval-set-v2.yaml)
-can be checked too.
+Items with a blank `question` are skipped.
 
-Usage: uv run check-eval-set [--file dataset/eval-set-v2-shortlist.yaml] [--blog PATH]
+Usage: uv run check-eval-set [--file dataset/eval-set.yaml] [--blog PATH]
                              [--post-cap 3]
 """
 import argparse

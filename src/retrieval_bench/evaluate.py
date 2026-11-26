@@ -6,10 +6,9 @@ question's labels:
 
 - Hit@k:    is any source post in the top k?
 - MRR:      the mean of 1 / (rank of the first source post).
-- Recall@k: multi_post questions only. What share of the source posts is in
-            the top k? A question with 3 source posts can't reach 1.0 below
-            k = 3. For other types any one source post answers the question,
-            so Hit@k already says everything.
+
+Every question can be answered from one post, so finding any one source post is
+enough.
 
 Unanswerable questions are left out: with no source posts, there's nothing to
 find. Results are summarized per question type and over all questions, since
@@ -48,14 +47,6 @@ def get_highest_source_rank(
     return None
 
 
-def get_recall_at(
-    ranking: list[Slug], source_posts: list[Slug], ks: Sequence[int]
-) -> dict[int, float]:
-    """For each k, the share of `source_posts` in the top k of `ranking`."""
-    sources = set(source_posts)
-    return {k: len(sources & set(ranking[:k])) / len(sources) for k in ks}
-
-
 def score(
     retriever: str, q: Question, ranking: list[Slug], ks: Sequence[int] = KS
 ) -> QuestionResult:
@@ -67,9 +58,6 @@ def score(
     hit_at = {
         k: first_source_rank is not None and first_source_rank <= k for k in ks
     }
-    recall_at = (
-        get_recall_at(ranking, q.source_posts, ks) if q.type == "multi_post" else None
-    )
 
     return QuestionResult(
         retriever=retriever,
@@ -78,7 +66,6 @@ def score(
         ranking=ranking,
         first_source_rank=first_source_rank,
         hit_at=hit_at,
-        recall_at=recall_at,
     )
 
 
@@ -106,15 +93,6 @@ def _summary(retriever: str, group: str, results: list[QuestionResult]) -> Summa
 
     hit_at = {k: sum(r.hit_at[k] for r in results) / n for k in ks}
 
-    # Recall only if every result has it (a multi_post group). The "all" row
-    # mixes types, so it gets none.
-    recalls = [r.recall_at for r in results if r.recall_at is not None]
-    recall_at = (
-        {k: sum(rec[k] for rec in recalls) / n for k in ks}
-        if len(recalls) == n
-        else None
-    )
-
     mrr = sum(r.reciprocal_rank for r in results) / n
 
     return Summary(
@@ -122,7 +100,6 @@ def _summary(retriever: str, group: str, results: list[QuestionResult]) -> Summa
         group=group,
         n=n,
         hit_at=hit_at,
-        recall_at=recall_at,
         mrr=mrr,
     )
 
@@ -150,17 +127,12 @@ def print_summaries(summaries: list[Summary]) -> None:
     header = (
         f"{'retriever':22} {'group':14} {'n':>3}"
         + "".join(f" {'Hit@' + str(k):>7}" for k in ks)
-        + "".join(f" {'R@' + str(k):>6}" for k in ks)
         + f" {'MRR':>6}"
     )
     print(header)
     for s in summaries:
-        recall = (
-            f" {s.recall_at[k]:>6.2f}" if s.recall_at else f" {'-':>6}" for k in ks
-        )
         print(
             f"{s.retriever:22} {s.group:14} {s.n:>3}"
             + "".join(f" {s.hit_at[k]:>7.2f}" for k in ks)
-            + "".join(recall)
             + f" {s.mrr:>6.2f}"
         )

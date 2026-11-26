@@ -12,7 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
 Slug = str  # a post's filename without .mdx, e.g. "my-homelab"
 
-QuestionType = Literal["single_fact", "multi_post", "current_state", "opinion", "unanswerable"]
+QuestionType = Literal["single_fact", "current_state", "opinion", "unanswerable"]
 Topic = Literal["ai-llm", "ml-nlp", "backend", "web-design", "homelab", "self-hosting",
                 "computing", "personal", "writing-productivity", "cross-topic"]
 Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "near_miss",
@@ -22,7 +22,7 @@ Probe = Literal["vocab_mismatch", "lexical_collision", "sibling_confusion", "nea
 
 POST_FIELDS = ("source_posts", "superseded_posts", "related_posts")
 ROOT = Path(__file__).resolve().parents[2]  # project root (src/retrieval_bench/ is two levels down)
-EVAL_SET = ROOT / "dataset" / "eval-set-v2-shortlist.yaml"
+EVAL_SET = ROOT / "dataset" / "eval-set.yaml"
 RESULTS_DIR = ROOT / "results"  # run-eval --save writes here; the notebook reads it
 
 
@@ -49,11 +49,6 @@ class Question(BaseModel):
     key_facts: list[str] = []
     notes: str | None = None
     paraphrase: str | None = None  # the same question reworded; see paraphrased()
-
-    # Reference only; not used by any check
-    v1_question: str | None = None
-    v1_paraphrase: str | None = None
-    in_v1_subset: bool = False
 
 
 def load_items(path: str | Path) -> list[dict[str, Any]]:
@@ -109,8 +104,6 @@ class QuestionResult(BaseModel):
     ranking: list[Slug]               # the retriever's ranking, best first
     first_source_rank: int | None     # 1 = top; None if no source post was ranked
     hit_at: dict[int, bool]           # k -> is a source post in the top k?
-    recall_at: dict[int, float] | None  # k -> share of source posts in the top k;
-                                        # multi_post only, None for other types
 
     @property
     def reciprocal_rank(self) -> float:
@@ -126,7 +119,6 @@ class Summary(BaseModel):
     group: str                        # a question type, or "all"
     n: int                            # questions in the group
     hit_at: dict[int, float]          # k -> Hit@k: share of questions with a hit in the top k
-    recall_at: dict[int, float] | None  # k -> Recall@k, averaged; multi_post only
     mrr: float                        # mean reciprocal rank
 
 

@@ -54,8 +54,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -112,8 +111,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -170,8 +168,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -228,8 +225,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -286,8 +282,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -344,8 +339,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -402,8 +396,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -460,8 +453,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -518,8 +510,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -576,8 +567,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -634,8 +624,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -692,8 +681,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -750,8 +738,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -808,8 +795,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -866,8 +852,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -924,8 +909,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -982,8 +966,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1040,8 +1023,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1098,8 +1080,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1156,8 +1137,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1214,8 +1194,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1272,8 +1251,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1330,8 +1308,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1388,8 +1365,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1446,8 +1422,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1504,8 +1479,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1562,8 +1536,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1620,8 +1593,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1678,8 +1650,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1736,8 +1707,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1794,8 +1764,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1852,8 +1821,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1910,8 +1878,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -1968,8 +1935,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2026,8 +1992,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2084,8 +2049,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2142,8 +2106,7 @@
    "1": false,
    "3": false,
    "5": false
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2200,8 +2163,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2258,8 +2220,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2316,8 +2277,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2374,8 +2334,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2432,8 +2391,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2490,317 +2448,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "bm25",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "building-a-better-nas-for-my-homelab",
-   "my-homelab-setup",
-   "home-vpn-dynamic-dns",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "self-hosting-umami-analytics",
-   "making-the-most-of-my-solitude",
-   "my-first-visit-to-chicago",
-   "getting-things-done-with-things-3",
-   "configuring-tailwind-css-v4",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2020-in-review",
-   "fixing-claude-code-api-errors-pro-users",
-   "creating-simple-rest-api-elixir-phoenix",
-   "custom-celery-mongodb-backend",
-   "sagittarius-8-bay-nas-first-impressions",
-   "redesign-5",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "simplifying-my-website-css-using-tailwind",
-   "intro-to-algorithm-analysis",
-   "2022-in-review",
-   "redesign-3",
-   "my-first-steps-in-photography",
-   "insights-from-nand2tetris-part1",
-   "thinking-about-the-value-of-writing",
-   "redesign-2",
-   "autogen-weather-chatbot",
-   "building-a-simple-sentiment-classifier",
-   "redesign-4",
-   "first-elixir-program",
-   "how-sveltekit-dynamic-routes-work",
-   "sentiment-analysis-with-naive-bayes",
-   "2024-in-review",
-   "implementing-rate-limiter-fastapi-redis",
-   "shift-from-ml-to-ai-engineering",
-   "creating-sveltekit-sitemap",
-   "jev-by-example",
-   "ambiguity-fuels-creativity",
-   "pydantic-custom-dictionary-types",
-   "2023-in-review",
-   "takeaways-practical-ui-book",
-   "rethinking-my-relationship-with-instagram",
-   "stephen-king-lesson-failure",
-   "hello-world",
-   "just-write-more"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "bm25",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "configuring-tailwind-css-v4",
-   "redesign-5",
-   "2020-in-review",
-   "redesign-3",
-   "making-the-most-of-my-solitude",
-   "2024-in-review",
-   "stephen-king-lesson-failure",
-   "self-hosting-umami-analytics",
-   "my-first-visit-to-chicago",
-   "2022-in-review",
-   "home-vpn-dynamic-dns",
-   "redesign-2",
-   "redesign-4",
-   "2023-in-review",
-   "first-elixir-program",
-   "sagittarius-8-bay-nas-first-impressions",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "building-a-simple-sentiment-classifier",
-   "how-sveltekit-dynamic-routes-work",
-   "my-first-steps-in-photography",
-   "getting-things-done-with-things-3",
-   "sentiment-analysis-with-naive-bayes",
-   "building-a-better-nas-for-my-homelab",
-   "insights-from-nand2tetris-part1",
-   "my-homelab-setup",
-   "custom-celery-mongodb-backend",
-   "pydantic-custom-dictionary-types",
-   "implementing-rate-limiter-fastapi-redis",
-   "thinking-about-the-value-of-writing",
-   "ambiguity-fuels-creativity",
-   "creating-sveltekit-sitemap",
-   "rethinking-my-relationship-with-instagram",
-   "takeaways-practical-ui-book",
-   "hello-world",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "intro-to-algorithm-analysis",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "just-write-more",
-   "creating-simple-rest-api-elixir-phoenix",
-   "autogen-weather-chatbot",
-   "fixing-claude-code-api-errors-pro-users",
-   "shift-from-ml-to-ai-engineering",
-   "jev-by-example"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 1.0,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "bm25",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "my-homelab-setup",
-   "thinking-about-the-value-of-writing",
-   "2024-in-review",
-   "stephen-king-lesson-failure",
-   "rethinking-my-relationship-with-instagram",
-   "redesign-3",
-   "2020-in-review",
-   "custom-celery-mongodb-backend",
-   "sagittarius-8-bay-nas-first-impressions",
-   "redesign-2",
-   "my-first-steps-in-photography",
-   "first-elixir-program",
-   "2022-in-review",
-   "getting-things-done-with-things-3",
-   "my-first-visit-to-chicago",
-   "home-vpn-dynamic-dns",
-   "implementing-rate-limiter-fastapi-redis",
-   "just-write-more",
-   "creating-simple-rest-api-elixir-phoenix",
-   "jev-by-example",
-   "redesign-4",
-   "making-the-most-of-my-solitude",
-   "insights-from-nand2tetris-part1",
-   "building-a-better-nas-for-my-homelab",
-   "redesign-5",
-   "autogen-weather-chatbot",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "sentiment-analysis-with-naive-bayes",
-   "ambiguity-fuels-creativity",
-   "takeaways-practical-ui-book",
-   "self-hosting-umami-analytics",
-   "configuring-tailwind-css-v4",
-   "shift-from-ml-to-ai-engineering",
-   "intro-to-algorithm-analysis",
-   "creating-sveltekit-sitemap",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "2023-in-review",
-   "how-sveltekit-dynamic-routes-work",
-   "hello-world",
-   "building-a-simple-sentiment-classifier",
-   "simplifying-my-website-css-using-tailwind",
-   "fixing-claude-code-api-errors-pro-users",
-   "pydantic-custom-dictionary-types",
-   "black-october-made-me-switch-from-ubuntu-to-debian"
-  ],
-  "first_source_rank": 3,
-  "hit_at": {
-   "1": false,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.3333333333333333,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "bm25",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2020-in-review",
-   "2022-in-review",
-   "2023-in-review",
-   "my-first-steps-in-photography",
-   "redesign-5",
-   "my-first-visit-to-chicago",
-   "sentiment-analysis-with-naive-bayes",
-   "redesign-2",
-   "2024-in-review",
-   "how-sveltekit-dynamic-routes-work",
-   "making-the-most-of-my-solitude",
-   "self-hosting-umami-analytics",
-   "redesign-3",
-   "building-a-simple-sentiment-classifier",
-   "simplifying-my-website-css-using-tailwind",
-   "insights-from-nand2tetris-part1",
-   "thinking-about-the-value-of-writing",
-   "intro-to-algorithm-analysis",
-   "configuring-tailwind-css-v4",
-   "home-vpn-dynamic-dns",
-   "redesign-4",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "custom-celery-mongodb-backend",
-   "building-a-better-nas-for-my-homelab",
-   "first-elixir-program",
-   "stephen-king-lesson-failure",
-   "my-homelab-setup",
-   "autogen-weather-chatbot",
-   "sagittarius-8-bay-nas-first-impressions",
-   "implementing-rate-limiter-fastapi-redis",
-   "creating-simple-rest-api-elixir-phoenix",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "getting-things-done-with-things-3",
-   "fixing-claude-code-api-errors-pro-users",
-   "jev-by-example",
-   "ambiguity-fuels-creativity",
-   "rethinking-my-relationship-with-instagram",
-   "creating-sveltekit-sitemap",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "shift-from-ml-to-ai-engineering",
-   "takeaways-practical-ui-book",
-   "hello-world",
-   "pydantic-custom-dictionary-types",
-   "just-write-more"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 0.75
-  }
- },
- {
-  "retriever": "bm25",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-2",
-   "just-write-more",
-   "2020-in-review",
-   "insights-from-nand2tetris-part1",
-   "shift-from-ml-to-ai-engineering",
-   "2024-in-review",
-   "2023-in-review",
-   "building-a-simple-sentiment-classifier",
-   "first-elixir-program",
-   "sentiment-analysis-with-naive-bayes",
-   "sagittarius-8-bay-nas-first-impressions",
-   "jev-by-example",
-   "intro-to-algorithm-analysis",
-   "ambiguity-fuels-creativity",
-   "building-a-better-nas-for-my-homelab",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "my-first-steps-in-photography",
-   "thinking-about-the-value-of-writing",
-   "autogen-weather-chatbot",
-   "redesign-4",
-   "2022-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "making-the-most-of-my-solitude",
-   "hello-world",
-   "home-vpn-dynamic-dns",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "redesign-3",
-   "my-first-visit-to-chicago",
-   "redesign-5",
-   "self-hosting-umami-analytics",
-   "creating-simple-rest-api-elixir-phoenix",
-   "custom-celery-mongodb-backend",
-   "pydantic-custom-dictionary-types",
-   "takeaways-practical-ui-book",
-   "implementing-rate-limiter-fastapi-redis",
-   "my-homelab-setup",
-   "fixing-claude-code-api-errors-pro-users",
-   "getting-things-done-with-things-3",
-   "configuring-tailwind-css-v4",
-   "stephen-king-lesson-failure",
-   "black-october-made-me-switch-from-ubuntu-to-debian"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
   }
  },
  {
@@ -2858,8 +2505,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2916,8 +2562,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -2974,8 +2619,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -3032,8 +2676,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -3090,8 +2733,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bm25",
@@ -3148,8 +2790,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3206,8 +2847,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3264,8 +2904,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3322,8 +2961,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3380,8 +3018,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3438,8 +3075,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3496,8 +3132,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3554,8 +3189,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3612,8 +3246,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3670,8 +3303,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3728,8 +3360,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3786,8 +3417,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3844,8 +3474,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3902,8 +3531,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -3960,8 +3588,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4018,8 +3645,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4076,8 +3702,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4134,8 +3759,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4192,8 +3816,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4250,8 +3873,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4308,8 +3930,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4366,8 +3987,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4424,8 +4044,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4482,8 +4101,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4540,8 +4158,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4598,8 +4215,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4656,8 +4272,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4714,8 +4329,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4772,8 +4386,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4830,8 +4443,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4888,8 +4500,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -4946,8 +4557,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5004,8 +4614,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5062,8 +4671,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5120,8 +4728,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5178,8 +4785,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5236,8 +4842,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5294,8 +4899,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5352,8 +4956,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5410,8 +5013,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5468,8 +5070,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5526,8 +5127,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5584,8 +5184,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -5642,317 +5241,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "bge-m3",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "2020-in-review",
-   "2022-in-review",
-   "my-homelab-setup",
-   "building-a-better-nas-for-my-homelab",
-   "2023-in-review",
-   "2024-in-review",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "making-the-most-of-my-solitude",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "sagittarius-8-bay-nas-first-impressions",
-   "home-vpn-dynamic-dns",
-   "sentiment-analysis-with-naive-bayes",
-   "building-a-simple-sentiment-classifier",
-   "intro-to-algorithm-analysis",
-   "redesign-5",
-   "redesign-2",
-   "redesign-4",
-   "rethinking-my-relationship-with-instagram",
-   "implementing-rate-limiter-fastapi-redis",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "redesign-3",
-   "self-hosting-umami-analytics",
-   "autogen-weather-chatbot",
-   "my-first-steps-in-photography",
-   "configuring-tailwind-css-v4",
-   "insights-from-nand2tetris-part1",
-   "shift-from-ml-to-ai-engineering",
-   "how-sveltekit-dynamic-routes-work",
-   "getting-things-done-with-things-3",
-   "stephen-king-lesson-failure",
-   "pydantic-custom-dictionary-types",
-   "jev-by-example",
-   "simplifying-my-website-css-using-tailwind",
-   "hello-world",
-   "first-elixir-program",
-   "creating-simple-rest-api-elixir-phoenix",
-   "custom-celery-mongodb-backend",
-   "just-write-more",
-   "takeaways-practical-ui-book",
-   "ambiguity-fuels-creativity",
-   "my-first-visit-to-chicago",
-   "fixing-claude-code-api-errors-pro-users",
-   "thinking-about-the-value-of-writing",
-   "creating-sveltekit-sitemap"
-  ],
-  "first_source_rank": 3,
-  "hit_at": {
-   "1": false,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.3333333333333333,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "bge-m3",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-3",
-   "configuring-tailwind-css-v4",
-   "redesign-5",
-   "redesign-2",
-   "takeaways-practical-ui-book",
-   "redesign-4",
-   "2020-in-review",
-   "making-the-most-of-my-solitude",
-   "stephen-king-lesson-failure",
-   "rethinking-my-relationship-with-instagram",
-   "hello-world",
-   "building-a-simple-sentiment-classifier",
-   "2024-in-review",
-   "how-sveltekit-dynamic-routes-work",
-   "2022-in-review",
-   "2023-in-review",
-   "first-elixir-program",
-   "home-vpn-dynamic-dns",
-   "creating-sveltekit-sitemap",
-   "autogen-weather-chatbot",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "pydantic-custom-dictionary-types",
-   "self-hosting-umami-analytics",
-   "getting-things-done-with-things-3",
-   "just-write-more",
-   "building-a-better-nas-for-my-homelab",
-   "shift-from-ml-to-ai-engineering",
-   "my-first-steps-in-photography",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "my-homelab-setup",
-   "custom-celery-mongodb-backend",
-   "intro-to-algorithm-analysis",
-   "ambiguity-fuels-creativity",
-   "creating-simple-rest-api-elixir-phoenix",
-   "implementing-rate-limiter-fastapi-redis",
-   "sagittarius-8-bay-nas-first-impressions",
-   "thinking-about-the-value-of-writing",
-   "my-first-visit-to-chicago",
-   "sentiment-analysis-with-naive-bayes",
-   "jev-by-example",
-   "fixing-claude-code-api-errors-pro-users",
-   "insights-from-nand2tetris-part1",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "bge-m3",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "my-first-steps-in-photography",
-   "rethinking-my-relationship-with-instagram",
-   "2020-in-review",
-   "2022-in-review",
-   "making-the-most-of-my-solitude",
-   "first-elixir-program",
-   "my-homelab-setup",
-   "2024-in-review",
-   "hello-world",
-   "my-first-visit-to-chicago",
-   "building-a-simple-sentiment-classifier",
-   "configuring-tailwind-css-v4",
-   "redesign-5",
-   "redesign-2",
-   "2023-in-review",
-   "getting-things-done-with-things-3",
-   "just-write-more",
-   "redesign-3",
-   "creating-simple-rest-api-elixir-phoenix",
-   "pydantic-custom-dictionary-types",
-   "redesign-4",
-   "sentiment-analysis-with-naive-bayes",
-   "sagittarius-8-bay-nas-first-impressions",
-   "stephen-king-lesson-failure",
-   "implementing-rate-limiter-fastapi-redis",
-   "simplifying-my-website-css-using-tailwind",
-   "custom-celery-mongodb-backend",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "takeaways-practical-ui-book",
-   "self-hosting-umami-analytics",
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "jev-by-example",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "building-a-better-nas-for-my-homelab",
-   "home-vpn-dynamic-dns",
-   "ambiguity-fuels-creativity",
-   "autogen-weather-chatbot",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "thinking-about-the-value-of-writing",
-   "fixing-claude-code-api-errors-pro-users",
-   "shift-from-ml-to-ai-engineering",
-   "intro-to-algorithm-analysis",
-   "insights-from-nand2tetris-part1"
-  ],
-  "first_source_rank": 8,
-  "hit_at": {
-   "1": false,
-   "3": false,
-   "5": false
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.0,
-   "5": 0.0
-  }
- },
- {
-  "retriever": "bge-m3",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "2020-in-review",
-   "stephen-king-lesson-failure",
-   "building-a-simple-sentiment-classifier",
-   "2023-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "making-the-most-of-my-solitude",
-   "2024-in-review",
-   "building-a-better-nas-for-my-homelab",
-   "intro-to-algorithm-analysis",
-   "just-write-more",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "autogen-weather-chatbot",
-   "sentiment-analysis-with-naive-bayes",
-   "my-first-steps-in-photography",
-   "redesign-3",
-   "thinking-about-the-value-of-writing",
-   "my-first-visit-to-chicago",
-   "first-elixir-program",
-   "hello-world",
-   "configuring-tailwind-css-v4",
-   "shift-from-ml-to-ai-engineering",
-   "home-vpn-dynamic-dns",
-   "sagittarius-8-bay-nas-first-impressions",
-   "redesign-4",
-   "pydantic-custom-dictionary-types",
-   "redesign-2",
-   "redesign-5",
-   "jev-by-example",
-   "simplifying-my-website-css-using-tailwind",
-   "ambiguity-fuels-creativity",
-   "getting-things-done-with-things-3",
-   "creating-simple-rest-api-elixir-phoenix",
-   "insights-from-nand2tetris-part1",
-   "implementing-rate-limiter-fastapi-redis",
-   "my-homelab-setup",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "how-sveltekit-dynamic-routes-work",
-   "takeaways-practical-ui-book",
-   "custom-celery-mongodb-backend",
-   "self-hosting-umami-analytics",
-   "fixing-claude-code-api-errors-pro-users",
-   "creating-sveltekit-sitemap"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.5,
-   "5": 0.75
-  }
- },
- {
-  "retriever": "bge-m3",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "how-sveltekit-dynamic-routes-work",
-   "creating-sveltekit-sitemap",
-   "redesign-2",
-   "building-a-simple-sentiment-classifier",
-   "stephen-king-lesson-failure",
-   "simplifying-my-website-css-using-tailwind",
-   "hello-world",
-   "2023-in-review",
-   "my-homelab-setup",
-   "2024-in-review",
-   "2020-in-review",
-   "making-the-most-of-my-solitude",
-   "building-a-better-nas-for-my-homelab",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2022-in-review",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "rethinking-my-relationship-with-instagram",
-   "sentiment-analysis-with-naive-bayes",
-   "sagittarius-8-bay-nas-first-impressions",
-   "creating-simple-rest-api-elixir-phoenix",
-   "insights-from-nand2tetris-part1",
-   "autogen-weather-chatbot",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "getting-things-done-with-things-3",
-   "thinking-about-the-value-of-writing",
-   "implementing-rate-limiter-fastapi-redis",
-   "redesign-5",
-   "first-elixir-program",
-   "jev-by-example",
-   "intro-to-algorithm-analysis",
-   "configuring-tailwind-css-v4",
-   "pydantic-custom-dictionary-types",
-   "just-write-more",
-   "redesign-3",
-   "self-hosting-umami-analytics",
-   "custom-celery-mongodb-backend",
-   "takeaways-practical-ui-book",
-   "home-vpn-dynamic-dns",
-   "redesign-4",
-   "ambiguity-fuels-creativity",
-   "my-first-steps-in-photography",
-   "shift-from-ml-to-ai-engineering",
-   "fixing-claude-code-api-errors-pro-users",
-   "my-first-visit-to-chicago"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 0.75
   }
  },
  {
@@ -6010,8 +5298,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -6068,8 +5355,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -6126,8 +5412,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -6184,8 +5469,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -6242,8 +5526,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "bge-m3",
@@ -6300,8 +5583,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6358,8 +5640,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6416,8 +5697,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6474,8 +5754,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6532,8 +5811,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6590,8 +5868,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6648,8 +5925,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6706,8 +5982,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6764,8 +6039,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6822,8 +6096,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6880,8 +6153,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6938,8 +6210,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -6996,8 +6267,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7054,8 +6324,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7112,8 +6381,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7170,8 +6438,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7228,8 +6495,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7286,8 +6552,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7344,8 +6609,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7402,8 +6666,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7460,8 +6723,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7518,8 +6780,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7576,8 +6837,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7634,8 +6894,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7692,8 +6951,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7750,8 +7008,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7808,8 +7065,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7866,8 +7122,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7924,8 +7179,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -7982,8 +7236,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8040,8 +7293,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8098,8 +7350,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8156,8 +7407,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8214,8 +7464,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8272,8 +7521,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8330,8 +7578,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8388,8 +7635,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8446,8 +7692,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8504,8 +7749,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8562,8 +7806,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8620,8 +7863,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8678,8 +7920,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8736,8 +7977,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -8794,317 +8034,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "gemma2",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "my-homelab-setup",
-   "building-a-better-nas-for-my-homelab",
-   "home-vpn-dynamic-dns",
-   "2024-in-review",
-   "self-hosting-umami-analytics",
-   "2022-in-review",
-   "2023-in-review",
-   "2020-in-review",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "sagittarius-8-bay-nas-first-impressions",
-   "first-elixir-program",
-   "redesign-5",
-   "redesign-2",
-   "insights-from-nand2tetris-part1",
-   "making-the-most-of-my-solitude",
-   "how-sveltekit-dynamic-routes-work",
-   "redesign-4",
-   "simplifying-my-website-css-using-tailwind",
-   "creating-simple-rest-api-elixir-phoenix",
-   "redesign-3",
-   "configuring-tailwind-css-v4",
-   "rethinking-my-relationship-with-instagram",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "intro-to-algorithm-analysis",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "autogen-weather-chatbot",
-   "custom-celery-mongodb-backend",
-   "jev-by-example",
-   "getting-things-done-with-things-3",
-   "shift-from-ml-to-ai-engineering",
-   "pydantic-custom-dictionary-types",
-   "fixing-claude-code-api-errors-pro-users",
-   "implementing-rate-limiter-fastapi-redis",
-   "sentiment-analysis-with-naive-bayes",
-   "hello-world",
-   "my-first-steps-in-photography",
-   "building-a-simple-sentiment-classifier",
-   "my-first-visit-to-chicago",
-   "ambiguity-fuels-creativity",
-   "creating-sveltekit-sitemap",
-   "just-write-more",
-   "stephen-king-lesson-failure",
-   "takeaways-practical-ui-book",
-   "thinking-about-the-value-of-writing"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "gemma2",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-3",
-   "redesign-5",
-   "redesign-4",
-   "redesign-2",
-   "configuring-tailwind-css-v4",
-   "takeaways-practical-ui-book",
-   "rethinking-my-relationship-with-instagram",
-   "2024-in-review",
-   "2023-in-review",
-   "2020-in-review",
-   "2022-in-review",
-   "making-the-most-of-my-solitude",
-   "home-vpn-dynamic-dns",
-   "self-hosting-umami-analytics",
-   "intro-to-algorithm-analysis",
-   "first-elixir-program",
-   "how-sveltekit-dynamic-routes-work",
-   "my-homelab-setup",
-   "ambiguity-fuels-creativity",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "just-write-more",
-   "stephen-king-lesson-failure",
-   "hello-world",
-   "my-first-steps-in-photography",
-   "pydantic-custom-dictionary-types",
-   "creating-simple-rest-api-elixir-phoenix",
-   "getting-things-done-with-things-3",
-   "insights-from-nand2tetris-part1",
-   "building-a-better-nas-for-my-homelab",
-   "custom-celery-mongodb-backend",
-   "fixing-claude-code-api-errors-pro-users",
-   "creating-sveltekit-sitemap",
-   "sentiment-analysis-with-naive-bayes",
-   "jev-by-example",
-   "building-a-simple-sentiment-classifier",
-   "sagittarius-8-bay-nas-first-impressions",
-   "shift-from-ml-to-ai-engineering",
-   "implementing-rate-limiter-fastapi-redis",
-   "autogen-weather-chatbot",
-   "thinking-about-the-value-of-writing",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "my-first-visit-to-chicago",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "gemma2",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "2024-in-review",
-   "making-the-most-of-my-solitude",
-   "rethinking-my-relationship-with-instagram",
-   "2020-in-review",
-   "just-write-more",
-   "my-first-steps-in-photography",
-   "redesign-2",
-   "first-elixir-program",
-   "my-homelab-setup",
-   "my-first-visit-to-chicago",
-   "self-hosting-umami-analytics",
-   "2023-in-review",
-   "how-sveltekit-dynamic-routes-work",
-   "custom-celery-mongodb-backend",
-   "configuring-tailwind-css-v4",
-   "simplifying-my-website-css-using-tailwind",
-   "pydantic-custom-dictionary-types",
-   "sagittarius-8-bay-nas-first-impressions",
-   "redesign-3",
-   "building-a-better-nas-for-my-homelab",
-   "autogen-weather-chatbot",
-   "creating-simple-rest-api-elixir-phoenix",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "redesign-5",
-   "getting-things-done-with-things-3",
-   "home-vpn-dynamic-dns",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "building-a-simple-sentiment-classifier",
-   "redesign-4",
-   "stephen-king-lesson-failure",
-   "hello-world",
-   "implementing-rate-limiter-fastapi-redis",
-   "sentiment-analysis-with-naive-bayes",
-   "thinking-about-the-value-of-writing",
-   "creating-sveltekit-sitemap",
-   "intro-to-algorithm-analysis",
-   "insights-from-nand2tetris-part1",
-   "jev-by-example",
-   "fixing-claude-code-api-errors-pro-users",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "shift-from-ml-to-ai-engineering",
-   "ambiguity-fuels-creativity",
-   "takeaways-practical-ui-book"
-  ],
-  "first_source_rank": 2,
-  "hit_at": {
-   "1": false,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.3333333333333333,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "gemma2",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "2020-in-review",
-   "2024-in-review",
-   "2023-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "intro-to-algorithm-analysis",
-   "redesign-3",
-   "my-first-steps-in-photography",
-   "making-the-most-of-my-solitude",
-   "redesign-4",
-   "stephen-king-lesson-failure",
-   "redesign-5",
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-2",
-   "first-elixir-program",
-   "shift-from-ml-to-ai-engineering",
-   "just-write-more",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "home-vpn-dynamic-dns",
-   "ambiguity-fuels-creativity",
-   "configuring-tailwind-css-v4",
-   "pydantic-custom-dictionary-types",
-   "thinking-about-the-value-of-writing",
-   "my-first-visit-to-chicago",
-   "my-homelab-setup",
-   "creating-simple-rest-api-elixir-phoenix",
-   "custom-celery-mongodb-backend",
-   "self-hosting-umami-analytics",
-   "building-a-simple-sentiment-classifier",
-   "insights-from-nand2tetris-part1",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "how-sveltekit-dynamic-routes-work",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "sentiment-analysis-with-naive-bayes",
-   "hello-world",
-   "takeaways-practical-ui-book",
-   "fixing-claude-code-api-errors-pro-users",
-   "building-a-better-nas-for-my-homelab",
-   "autogen-weather-chatbot",
-   "jev-by-example",
-   "implementing-rate-limiter-fastapi-redis",
-   "sagittarius-8-bay-nas-first-impressions",
-   "getting-things-done-with-things-3",
-   "creating-sveltekit-sitemap"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "gemma2",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "how-sveltekit-dynamic-routes-work",
-   "creating-sveltekit-sitemap",
-   "redesign-2",
-   "2024-in-review",
-   "configuring-tailwind-css-v4",
-   "redesign-5",
-   "2020-in-review",
-   "2022-in-review",
-   "2023-in-review",
-   "intro-to-algorithm-analysis",
-   "redesign-4",
-   "rethinking-my-relationship-with-instagram",
-   "hello-world",
-   "pydantic-custom-dictionary-types",
-   "redesign-3",
-   "first-elixir-program",
-   "jev-by-example",
-   "creating-simple-rest-api-elixir-phoenix",
-   "my-homelab-setup",
-   "stephen-king-lesson-failure",
-   "making-the-most-of-my-solitude",
-   "getting-things-done-with-things-3",
-   "insights-from-nand2tetris-part1",
-   "takeaways-practical-ui-book",
-   "shift-from-ml-to-ai-engineering",
-   "custom-celery-mongodb-backend",
-   "sentiment-analysis-with-naive-bayes",
-   "self-hosting-umami-analytics",
-   "implementing-rate-limiter-fastapi-redis",
-   "home-vpn-dynamic-dns",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "ambiguity-fuels-creativity",
-   "building-a-simple-sentiment-classifier",
-   "just-write-more",
-   "autogen-weather-chatbot",
-   "thinking-about-the-value-of-writing",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "building-a-better-nas-for-my-homelab",
-   "sagittarius-8-bay-nas-first-impressions",
-   "fixing-claude-code-api-errors-pro-users",
-   "my-first-steps-in-photography",
-   "my-first-visit-to-chicago"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
   }
  },
  {
@@ -9162,8 +8091,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -9220,8 +8148,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -9278,8 +8205,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -9336,8 +8262,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -9394,8 +8319,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "gemma2",
@@ -9452,8 +8376,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9510,8 +8433,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9568,8 +8490,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9626,8 +8547,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9684,8 +8604,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9742,8 +8661,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9800,8 +8718,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9858,8 +8775,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9916,8 +8832,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -9974,8 +8889,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10032,8 +8946,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10090,8 +9003,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10148,8 +9060,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10206,8 +9117,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10264,8 +9174,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10322,8 +9231,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10380,8 +9288,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10438,8 +9345,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10496,8 +9402,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10554,8 +9459,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10612,8 +9516,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10670,8 +9573,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10728,8 +9630,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10786,8 +9687,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10844,8 +9744,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10902,8 +9801,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -10960,8 +9858,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11018,8 +9915,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11076,8 +9972,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11134,8 +10029,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11192,8 +10086,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11250,8 +10143,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11308,8 +10200,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11366,8 +10257,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11424,8 +10314,7 @@
    "1": false,
    "3": false,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11482,8 +10371,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11540,8 +10428,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11598,8 +10485,7 @@
    "1": false,
    "3": false,
    "5": false
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11656,8 +10542,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11714,8 +10599,7 @@
    "1": false,
    "3": false,
    "5": false
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11772,8 +10656,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11830,8 +10713,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11888,8 +10770,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -11946,317 +10827,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "qwen3-0.6b",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "my-homelab-setup",
-   "2022-in-review",
-   "home-vpn-dynamic-dns",
-   "building-a-better-nas-for-my-homelab",
-   "making-the-most-of-my-solitude",
-   "sagittarius-8-bay-nas-first-impressions",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2020-in-review",
-   "2024-in-review",
-   "redesign-2",
-   "self-hosting-umami-analytics",
-   "redesign-5",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "redesign-3",
-   "2023-in-review",
-   "hello-world",
-   "redesign-4",
-   "fixing-claude-code-api-errors-pro-users",
-   "getting-things-done-with-things-3",
-   "insights-from-nand2tetris-part1",
-   "jev-by-example",
-   "building-a-simple-sentiment-classifier",
-   "ambiguity-fuels-creativity",
-   "first-elixir-program",
-   "sentiment-analysis-with-naive-bayes",
-   "configuring-tailwind-css-v4",
-   "my-first-steps-in-photography",
-   "rethinking-my-relationship-with-instagram",
-   "shift-from-ml-to-ai-engineering",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "autogen-weather-chatbot",
-   "takeaways-practical-ui-book",
-   "my-first-visit-to-chicago",
-   "thinking-about-the-value-of-writing",
-   "simplifying-my-website-css-using-tailwind",
-   "stephen-king-lesson-failure",
-   "creating-simple-rest-api-elixir-phoenix",
-   "creating-sveltekit-sitemap",
-   "just-write-more",
-   "intro-to-algorithm-analysis",
-   "how-sveltekit-dynamic-routes-work",
-   "custom-celery-mongodb-backend",
-   "pydantic-custom-dictionary-types",
-   "implementing-rate-limiter-fastapi-redis"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.3333333333333333,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "qwen3-0.6b",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-5",
-   "redesign-2",
-   "redesign-3",
-   "redesign-4",
-   "configuring-tailwind-css-v4",
-   "takeaways-practical-ui-book",
-   "hello-world",
-   "2024-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "2022-in-review",
-   "making-the-most-of-my-solitude",
-   "2023-in-review",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2020-in-review",
-   "ambiguity-fuels-creativity",
-   "fixing-claude-code-api-errors-pro-users",
-   "self-hosting-umami-analytics",
-   "stephen-king-lesson-failure",
-   "home-vpn-dynamic-dns",
-   "just-write-more",
-   "my-first-visit-to-chicago",
-   "getting-things-done-with-things-3",
-   "intro-to-algorithm-analysis",
-   "sagittarius-8-bay-nas-first-impressions",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "creating-sveltekit-sitemap",
-   "my-first-steps-in-photography",
-   "insights-from-nand2tetris-part1",
-   "thinking-about-the-value-of-writing",
-   "jev-by-example",
-   "building-a-better-nas-for-my-homelab",
-   "my-homelab-setup",
-   "sentiment-analysis-with-naive-bayes",
-   "first-elixir-program",
-   "building-a-simple-sentiment-classifier",
-   "how-sveltekit-dynamic-routes-work",
-   "creating-simple-rest-api-elixir-phoenix",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "shift-from-ml-to-ai-engineering",
-   "custom-celery-mongodb-backend",
-   "autogen-weather-chatbot",
-   "implementing-rate-limiter-fastapi-redis",
-   "pydantic-custom-dictionary-types"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "qwen3-0.6b",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "my-first-steps-in-photography",
-   "2020-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "2024-in-review",
-   "redesign-2",
-   "redesign-3",
-   "hello-world",
-   "redesign-4",
-   "making-the-most-of-my-solitude",
-   "how-sveltekit-dynamic-routes-work",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "jev-by-example",
-   "redesign-5",
-   "creating-sveltekit-sitemap",
-   "first-elixir-program",
-   "fixing-claude-code-api-errors-pro-users",
-   "self-hosting-umami-analytics",
-   "my-first-visit-to-chicago",
-   "building-a-simple-sentiment-classifier",
-   "sagittarius-8-bay-nas-first-impressions",
-   "stephen-king-lesson-failure",
-   "getting-things-done-with-things-3",
-   "just-write-more",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "home-vpn-dynamic-dns",
-   "my-homelab-setup",
-   "2023-in-review",
-   "ambiguity-fuels-creativity",
-   "simplifying-my-website-css-using-tailwind",
-   "creating-simple-rest-api-elixir-phoenix",
-   "autogen-weather-chatbot",
-   "configuring-tailwind-css-v4",
-   "custom-celery-mongodb-backend",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "sentiment-analysis-with-naive-bayes",
-   "takeaways-practical-ui-book",
-   "thinking-about-the-value-of-writing",
-   "implementing-rate-limiter-fastapi-redis",
-   "shift-from-ml-to-ai-engineering",
-   "intro-to-algorithm-analysis",
-   "building-a-better-nas-for-my-homelab",
-   "insights-from-nand2tetris-part1",
-   "pydantic-custom-dictionary-types"
-  ],
-  "first_source_rank": 5,
-  "hit_at": {
-   "1": false,
-   "3": false,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.0,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "qwen3-0.6b",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "making-the-most-of-my-solitude",
-   "2020-in-review",
-   "2023-in-review",
-   "redesign-3",
-   "rethinking-my-relationship-with-instagram",
-   "redesign-2",
-   "ambiguity-fuels-creativity",
-   "2024-in-review",
-   "just-write-more",
-   "redesign-4",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "fixing-claude-code-api-errors-pro-users",
-   "redesign-5",
-   "stephen-king-lesson-failure",
-   "my-first-steps-in-photography",
-   "home-vpn-dynamic-dns",
-   "my-first-visit-to-chicago",
-   "hello-world",
-   "thinking-about-the-value-of-writing",
-   "getting-things-done-with-things-3",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "jev-by-example",
-   "sagittarius-8-bay-nas-first-impressions",
-   "configuring-tailwind-css-v4",
-   "insights-from-nand2tetris-part1",
-   "self-hosting-umami-analytics",
-   "my-homelab-setup",
-   "intro-to-algorithm-analysis",
-   "sentiment-analysis-with-naive-bayes",
-   "building-a-simple-sentiment-classifier",
-   "simplifying-my-website-css-using-tailwind",
-   "takeaways-practical-ui-book",
-   "first-elixir-program",
-   "shift-from-ml-to-ai-engineering",
-   "creating-simple-rest-api-elixir-phoenix",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "autogen-weather-chatbot",
-   "building-a-better-nas-for-my-homelab",
-   "pydantic-custom-dictionary-types",
-   "custom-celery-mongodb-backend",
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "implementing-rate-limiter-fastapi-redis"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.5,
-   "5": 0.75
-  }
- },
- {
-  "retriever": "qwen3-0.6b",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "redesign-2",
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "2024-in-review",
-   "redesign-5",
-   "hello-world",
-   "simplifying-my-website-css-using-tailwind",
-   "jev-by-example",
-   "redesign-4",
-   "2023-in-review",
-   "configuring-tailwind-css-v4",
-   "redesign-3",
-   "making-the-most-of-my-solitude",
-   "creating-simple-rest-api-elixir-phoenix",
-   "sagittarius-8-bay-nas-first-impressions",
-   "fixing-claude-code-api-errors-pro-users",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "2022-in-review",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "self-hosting-umami-analytics",
-   "ambiguity-fuels-creativity",
-   "stephen-king-lesson-failure",
-   "takeaways-practical-ui-book",
-   "2020-in-review",
-   "getting-things-done-with-things-3",
-   "thinking-about-the-value-of-writing",
-   "building-a-simple-sentiment-classifier",
-   "my-homelab-setup",
-   "just-write-more",
-   "autogen-weather-chatbot",
-   "first-elixir-program",
-   "intro-to-algorithm-analysis",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "implementing-rate-limiter-fastapi-redis",
-   "insights-from-nand2tetris-part1",
-   "shift-from-ml-to-ai-engineering",
-   "rethinking-my-relationship-with-instagram",
-   "sentiment-analysis-with-naive-bayes",
-   "building-a-better-nas-for-my-homelab",
-   "pydantic-custom-dictionary-types",
-   "my-first-visit-to-chicago",
-   "my-first-steps-in-photography",
-   "home-vpn-dynamic-dns",
-   "custom-celery-mongodb-backend"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 0.75
   }
  },
  {
@@ -12314,8 +10884,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -12372,8 +10941,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -12430,8 +10998,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -12488,8 +11055,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -12546,8 +11112,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "qwen3-0.6b",
@@ -12604,8 +11169,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12662,8 +11226,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12720,8 +11283,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12778,8 +11340,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12836,8 +11397,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12894,8 +11454,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -12952,8 +11511,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13010,8 +11568,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13068,8 +11625,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13126,8 +11682,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13184,8 +11739,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13242,8 +11796,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13300,8 +11853,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13358,8 +11910,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13416,8 +11967,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13474,8 +12024,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13532,8 +12081,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13590,8 +12138,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13648,8 +12195,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13706,8 +12252,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13764,8 +12309,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13822,8 +12366,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13880,8 +12423,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13938,8 +12480,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -13996,8 +12537,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14054,8 +12594,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14112,8 +12651,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14170,8 +12708,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14228,8 +12765,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14286,8 +12822,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14344,8 +12879,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14402,8 +12936,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14460,8 +12993,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14518,8 +13050,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14576,8 +13107,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14634,8 +13164,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14692,8 +13221,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14750,8 +13278,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14808,8 +13335,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14866,8 +13392,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14924,8 +13449,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -14982,8 +13506,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15040,8 +13563,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15098,317 +13620,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "rrf(bm25+bge-m3)",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "building-a-better-nas-for-my-homelab",
-   "my-homelab-setup",
-   "2020-in-review",
-   "home-vpn-dynamic-dns",
-   "making-the-most-of-my-solitude",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2022-in-review",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "sagittarius-8-bay-nas-first-impressions",
-   "self-hosting-umami-analytics",
-   "redesign-5",
-   "configuring-tailwind-css-v4",
-   "intro-to-algorithm-analysis",
-   "2024-in-review",
-   "getting-things-done-with-things-3",
-   "2023-in-review",
-   "building-a-simple-sentiment-classifier",
-   "redesign-2",
-   "sentiment-analysis-with-naive-bayes",
-   "my-first-visit-to-chicago",
-   "redesign-3",
-   "redesign-4",
-   "creating-simple-rest-api-elixir-phoenix",
-   "my-first-steps-in-photography",
-   "custom-celery-mongodb-backend",
-   "fixing-claude-code-api-errors-pro-users",
-   "insights-from-nand2tetris-part1",
-   "autogen-weather-chatbot",
-   "simplifying-my-website-css-using-tailwind",
-   "implementing-rate-limiter-fastapi-redis",
-   "rethinking-my-relationship-with-instagram",
-   "how-sveltekit-dynamic-routes-work",
-   "shift-from-ml-to-ai-engineering",
-   "first-elixir-program",
-   "thinking-about-the-value-of-writing",
-   "jev-by-example",
-   "pydantic-custom-dictionary-types",
-   "stephen-king-lesson-failure",
-   "hello-world",
-   "ambiguity-fuels-creativity",
-   "creating-sveltekit-sitemap",
-   "takeaways-practical-ui-book",
-   "just-write-more"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "rrf(bm25+bge-m3)",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "configuring-tailwind-css-v4",
-   "redesign-3",
-   "redesign-5",
-   "2020-in-review",
-   "making-the-most-of-my-solitude",
-   "redesign-2",
-   "stephen-king-lesson-failure",
-   "2024-in-review",
-   "redesign-4",
-   "2022-in-review",
-   "home-vpn-dynamic-dns",
-   "self-hosting-umami-analytics",
-   "building-a-simple-sentiment-classifier",
-   "2023-in-review",
-   "first-elixir-program",
-   "how-sveltekit-dynamic-routes-work",
-   "takeaways-practical-ui-book",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "rethinking-my-relationship-with-instagram",
-   "hello-world",
-   "my-first-visit-to-chicago",
-   "getting-things-done-with-things-3",
-   "my-first-steps-in-photography",
-   "pydantic-custom-dictionary-types",
-   "building-a-better-nas-for-my-homelab",
-   "creating-sveltekit-sitemap",
-   "sagittarius-8-bay-nas-first-impressions",
-   "my-homelab-setup",
-   "custom-celery-mongodb-backend",
-   "autogen-weather-chatbot",
-   "sentiment-analysis-with-naive-bayes",
-   "just-write-more",
-   "implementing-rate-limiter-fastapi-redis",
-   "ambiguity-fuels-creativity",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "insights-from-nand2tetris-part1",
-   "thinking-about-the-value-of-writing",
-   "shift-from-ml-to-ai-engineering",
-   "intro-to-algorithm-analysis",
-   "creating-simple-rest-api-elixir-phoenix",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "fixing-claude-code-api-errors-pro-users",
-   "jev-by-example"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "rrf(bm25+bge-m3)",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "rethinking-my-relationship-with-instagram",
-   "my-homelab-setup",
-   "2020-in-review",
-   "2024-in-review",
-   "my-first-steps-in-photography",
-   "2022-in-review",
-   "first-elixir-program",
-   "redesign-3",
-   "redesign-2",
-   "my-first-visit-to-chicago",
-   "making-the-most-of-my-solitude",
-   "stephen-king-lesson-failure",
-   "getting-things-done-with-things-3",
-   "sagittarius-8-bay-nas-first-impressions",
-   "custom-celery-mongodb-backend",
-   "thinking-about-the-value-of-writing",
-   "just-write-more",
-   "redesign-5",
-   "creating-simple-rest-api-elixir-phoenix",
-   "configuring-tailwind-css-v4",
-   "implementing-rate-limiter-fastapi-redis",
-   "redesign-4",
-   "hello-world",
-   "building-a-simple-sentiment-classifier",
-   "2023-in-review",
-   "home-vpn-dynamic-dns",
-   "sentiment-analysis-with-naive-bayes",
-   "jev-by-example",
-   "building-a-better-nas-for-my-homelab",
-   "takeaways-practical-ui-book",
-   "pydantic-custom-dictionary-types",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "self-hosting-umami-analytics",
-   "autogen-weather-chatbot",
-   "insights-from-nand2tetris-part1",
-   "ambiguity-fuels-creativity",
-   "simplifying-my-website-css-using-tailwind",
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "shift-from-ml-to-ai-engineering",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "intro-to-algorithm-analysis",
-   "fixing-claude-code-api-errors-pro-users"
-  ],
-  "first_source_rank": 4,
-  "hit_at": {
-   "1": false,
-   "3": false,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.0,
-   "3": 0.0,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "rrf(bm25+bge-m3)",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2020-in-review",
-   "2022-in-review",
-   "2023-in-review",
-   "2024-in-review",
-   "building-a-simple-sentiment-classifier",
-   "making-the-most-of-my-solitude",
-   "my-first-steps-in-photography",
-   "sentiment-analysis-with-naive-bayes",
-   "my-first-visit-to-chicago",
-   "stephen-king-lesson-failure",
-   "intro-to-algorithm-analysis",
-   "redesign-3",
-   "redesign-5",
-   "building-a-better-nas-for-my-homelab",
-   "redesign-2",
-   "thinking-about-the-value-of-writing",
-   "rethinking-my-relationship-with-instagram",
-   "autogen-weather-chatbot",
-   "configuring-tailwind-css-v4",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "home-vpn-dynamic-dns",
-   "how-sveltekit-dynamic-routes-work",
-   "simplifying-my-website-css-using-tailwind",
-   "first-elixir-program",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "redesign-4",
-   "just-write-more",
-   "self-hosting-umami-analytics",
-   "insights-from-nand2tetris-part1",
-   "sagittarius-8-bay-nas-first-impressions",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "hello-world",
-   "shift-from-ml-to-ai-engineering",
-   "custom-celery-mongodb-backend",
-   "my-homelab-setup",
-   "jev-by-example",
-   "creating-simple-rest-api-elixir-phoenix",
-   "implementing-rate-limiter-fastapi-redis",
-   "getting-things-done-with-things-3",
-   "ambiguity-fuels-creativity",
-   "pydantic-custom-dictionary-types",
-   "fixing-claude-code-api-errors-pro-users",
-   "takeaways-practical-ui-book",
-   "creating-sveltekit-sitemap"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "rrf(bm25+bge-m3)",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "creating-sveltekit-sitemap",
-   "how-sveltekit-dynamic-routes-work",
-   "redesign-2",
-   "simplifying-my-website-css-using-tailwind",
-   "building-a-simple-sentiment-classifier",
-   "2020-in-review",
-   "2023-in-review",
-   "2024-in-review",
-   "insights-from-nand2tetris-part1",
-   "sentiment-analysis-with-naive-bayes",
-   "building-a-better-nas-for-my-homelab",
-   "hello-world",
-   "sagittarius-8-bay-nas-first-impressions",
-   "just-write-more",
-   "making-the-most-of-my-solitude",
-   "first-elixir-program",
-   "2022-in-review",
-   "stephen-king-lesson-failure",
-   "rethinking-my-relationship-with-instagram",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "my-homelab-setup",
-   "jev-by-example",
-   "shift-from-ml-to-ai-engineering",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "autogen-weather-chatbot",
-   "intro-to-algorithm-analysis",
-   "thinking-about-the-value-of-writing",
-   "creating-simple-rest-api-elixir-phoenix",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "ambiguity-fuels-creativity",
-   "my-first-steps-in-photography",
-   "redesign-5",
-   "redesign-4",
-   "implementing-rate-limiter-fastapi-redis",
-   "getting-things-done-with-things-3",
-   "redesign-3",
-   "home-vpn-dynamic-dns",
-   "pydantic-custom-dictionary-types",
-   "self-hosting-umami-analytics",
-   "custom-celery-mongodb-backend",
-   "configuring-tailwind-css-v4",
-   "takeaways-practical-ui-book",
-   "my-first-visit-to-chicago",
-   "fixing-claude-code-api-errors-pro-users"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
   }
  },
  {
@@ -15466,8 +13677,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15524,8 +13734,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15582,8 +13791,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15640,8 +13848,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15698,8 +13905,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+bge-m3)",
@@ -15756,8 +13962,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -15814,8 +14019,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -15872,8 +14076,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -15930,8 +14133,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -15988,8 +14190,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16046,8 +14247,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16104,8 +14304,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16162,8 +14361,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16220,8 +14418,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16278,8 +14475,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16336,8 +14532,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16394,8 +14589,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16452,8 +14646,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16510,8 +14703,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16568,8 +14760,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16626,8 +14817,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16684,8 +14874,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16742,8 +14931,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16800,8 +14988,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16858,8 +15045,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16916,8 +15102,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -16974,8 +15159,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17032,8 +15216,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17090,8 +15273,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17148,8 +15330,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17206,8 +15387,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17264,8 +15444,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17322,8 +15501,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17380,8 +15558,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17438,8 +15615,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17496,8 +15672,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17554,8 +15729,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17612,8 +15786,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17670,8 +15843,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17728,8 +15900,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17786,8 +15957,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17844,8 +16014,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17902,8 +16071,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -17960,8 +16128,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18018,8 +16185,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18076,8 +16242,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18134,8 +16299,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18192,8 +16356,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18250,317 +16413,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "rrf(bm25+gemma2)",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "building-a-better-nas-for-my-homelab",
-   "my-homelab-setup",
-   "home-vpn-dynamic-dns",
-   "self-hosting-umami-analytics",
-   "2020-in-review",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "making-the-most-of-my-solitude",
-   "2022-in-review",
-   "sagittarius-8-bay-nas-first-impressions",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "redesign-5",
-   "configuring-tailwind-css-v4",
-   "2024-in-review",
-   "creating-simple-rest-api-elixir-phoenix",
-   "getting-things-done-with-things-3",
-   "simplifying-my-website-css-using-tailwind",
-   "insights-from-nand2tetris-part1",
-   "redesign-2",
-   "first-elixir-program",
-   "my-first-visit-to-chicago",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "2023-in-review",
-   "custom-celery-mongodb-backend",
-   "redesign-3",
-   "fixing-claude-code-api-errors-pro-users",
-   "intro-to-algorithm-analysis",
-   "redesign-4",
-   "how-sveltekit-dynamic-routes-work",
-   "autogen-weather-chatbot",
-   "my-first-steps-in-photography",
-   "rethinking-my-relationship-with-instagram",
-   "building-a-simple-sentiment-classifier",
-   "jev-by-example",
-   "shift-from-ml-to-ai-engineering",
-   "sentiment-analysis-with-naive-bayes",
-   "thinking-about-the-value-of-writing",
-   "implementing-rate-limiter-fastapi-redis",
-   "pydantic-custom-dictionary-types",
-   "creating-sveltekit-sitemap",
-   "ambiguity-fuels-creativity",
-   "hello-world",
-   "takeaways-practical-ui-book",
-   "stephen-king-lesson-failure",
-   "just-write-more"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "rrf(bm25+gemma2)",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-5",
-   "redesign-3",
-   "configuring-tailwind-css-v4",
-   "2020-in-review",
-   "2024-in-review",
-   "redesign-4",
-   "redesign-2",
-   "making-the-most-of-my-solitude",
-   "2022-in-review",
-   "self-hosting-umami-analytics",
-   "2023-in-review",
-   "home-vpn-dynamic-dns",
-   "stephen-king-lesson-failure",
-   "first-elixir-program",
-   "takeaways-practical-ui-book",
-   "rethinking-my-relationship-with-instagram",
-   "how-sveltekit-dynamic-routes-work",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "my-homelab-setup",
-   "my-first-steps-in-photography",
-   "my-first-visit-to-chicago",
-   "getting-things-done-with-things-3",
-   "ambiguity-fuels-creativity",
-   "intro-to-algorithm-analysis",
-   "sagittarius-8-bay-nas-first-impressions",
-   "building-a-simple-sentiment-classifier",
-   "building-a-better-nas-for-my-homelab",
-   "insights-from-nand2tetris-part1",
-   "pydantic-custom-dictionary-types",
-   "sentiment-analysis-with-naive-bayes",
-   "custom-celery-mongodb-backend",
-   "hello-world",
-   "just-write-more",
-   "creating-sveltekit-sitemap",
-   "creating-simple-rest-api-elixir-phoenix",
-   "implementing-rate-limiter-fastapi-redis",
-   "thinking-about-the-value-of-writing",
-   "fixing-claude-code-api-errors-pro-users",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "jev-by-example",
-   "shift-from-ml-to-ai-engineering",
-   "autogen-weather-chatbot",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "rrf(bm25+gemma2)",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "2024-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "my-homelab-setup",
-   "2020-in-review",
-   "2022-in-review",
-   "my-first-steps-in-photography",
-   "redesign-2",
-   "first-elixir-program",
-   "making-the-most-of-my-solitude",
-   "custom-celery-mongodb-backend",
-   "just-write-more",
-   "redesign-3",
-   "my-first-visit-to-chicago",
-   "sagittarius-8-bay-nas-first-impressions",
-   "thinking-about-the-value-of-writing",
-   "stephen-king-lesson-failure",
-   "getting-things-done-with-things-3",
-   "self-hosting-umami-analytics",
-   "creating-simple-rest-api-elixir-phoenix",
-   "home-vpn-dynamic-dns",
-   "building-a-better-nas-for-my-homelab",
-   "configuring-tailwind-css-v4",
-   "2023-in-review",
-   "autogen-weather-chatbot",
-   "implementing-rate-limiter-fastapi-redis",
-   "how-sveltekit-dynamic-routes-work",
-   "redesign-5",
-   "redesign-4",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "simplifying-my-website-css-using-tailwind",
-   "jev-by-example",
-   "pydantic-custom-dictionary-types",
-   "insights-from-nand2tetris-part1",
-   "sentiment-analysis-with-naive-bayes",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "building-a-simple-sentiment-classifier",
-   "hello-world",
-   "intro-to-algorithm-analysis",
-   "ambiguity-fuels-creativity",
-   "creating-sveltekit-sitemap",
-   "takeaways-practical-ui-book",
-   "shift-from-ml-to-ai-engineering",
-   "fixing-claude-code-api-errors-pro-users",
-   "black-october-made-me-switch-from-ubuntu-to-debian"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.3333333333333333,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "rrf(bm25+gemma2)",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2020-in-review",
-   "2022-in-review",
-   "2023-in-review",
-   "2024-in-review",
-   "my-first-steps-in-photography",
-   "redesign-5",
-   "redesign-3",
-   "making-the-most-of-my-solitude",
-   "redesign-2",
-   "intro-to-algorithm-analysis",
-   "my-first-visit-to-chicago",
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-4",
-   "stephen-king-lesson-failure",
-   "rethinking-my-relationship-with-instagram",
-   "sentiment-analysis-with-naive-bayes",
-   "self-hosting-umami-analytics",
-   "home-vpn-dynamic-dns",
-   "how-sveltekit-dynamic-routes-work",
-   "first-elixir-program",
-   "thinking-about-the-value-of-writing",
-   "configuring-tailwind-css-v4",
-   "building-a-simple-sentiment-classifier",
-   "insights-from-nand2tetris-part1",
-   "custom-celery-mongodb-backend",
-   "my-homelab-setup",
-   "shift-from-ml-to-ai-engineering",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "ambiguity-fuels-creativity",
-   "creating-simple-rest-api-elixir-phoenix",
-   "just-write-more",
-   "building-a-better-nas-for-my-homelab",
-   "pydantic-custom-dictionary-types",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "autogen-weather-chatbot",
-   "sagittarius-8-bay-nas-first-impressions",
-   "implementing-rate-limiter-fastapi-redis",
-   "fixing-claude-code-api-errors-pro-users",
-   "jev-by-example",
-   "getting-things-done-with-things-3",
-   "hello-world",
-   "takeaways-practical-ui-book",
-   "creating-sveltekit-sitemap"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "rrf(bm25+gemma2)",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "creating-sveltekit-sitemap",
-   "simplifying-my-website-css-using-tailwind",
-   "how-sveltekit-dynamic-routes-work",
-   "redesign-2",
-   "2024-in-review",
-   "2020-in-review",
-   "2023-in-review",
-   "intro-to-algorithm-analysis",
-   "first-elixir-program",
-   "insights-from-nand2tetris-part1",
-   "2022-in-review",
-   "shift-from-ml-to-ai-engineering",
-   "jev-by-example",
-   "redesign-4",
-   "just-write-more",
-   "redesign-5",
-   "rethinking-my-relationship-with-instagram",
-   "sentiment-analysis-with-naive-bayes",
-   "hello-world",
-   "configuring-tailwind-css-v4",
-   "building-a-simple-sentiment-classifier",
-   "redesign-3",
-   "making-the-most-of-my-solitude",
-   "pydantic-custom-dictionary-types",
-   "ambiguity-fuels-creativity",
-   "sagittarius-8-bay-nas-first-impressions",
-   "creating-simple-rest-api-elixir-phoenix",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "building-a-better-nas-for-my-homelab",
-   "thinking-about-the-value-of-writing",
-   "autogen-weather-chatbot",
-   "my-homelab-setup",
-   "home-vpn-dynamic-dns",
-   "my-first-steps-in-photography",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "takeaways-practical-ui-book",
-   "stephen-king-lesson-failure",
-   "custom-celery-mongodb-backend",
-   "self-hosting-umami-analytics",
-   "getting-things-done-with-things-3",
-   "implementing-rate-limiter-fastapi-redis",
-   "my-first-visit-to-chicago",
-   "fixing-claude-code-api-errors-pro-users",
-   "black-october-made-me-switch-from-ubuntu-to-debian"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
   }
  },
  {
@@ -18618,8 +16470,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18676,8 +16527,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18734,8 +16584,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18792,8 +16641,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18850,8 +16698,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+gemma2)",
@@ -18908,8 +16755,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -18966,8 +16812,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19024,8 +16869,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19082,8 +16926,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19140,8 +16983,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19198,8 +17040,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19256,8 +17097,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19314,8 +17154,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19372,8 +17211,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19430,8 +17268,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19488,8 +17325,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19546,8 +17382,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19604,8 +17439,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19662,8 +17496,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19720,8 +17553,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19778,8 +17610,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19836,8 +17667,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19894,8 +17724,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -19952,8 +17781,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20010,8 +17838,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20068,8 +17895,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20126,8 +17952,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20184,8 +18009,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20242,8 +18066,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20300,8 +18123,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20358,8 +18180,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20416,8 +18237,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20474,8 +18294,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20532,8 +18351,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20590,8 +18408,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20648,8 +18465,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20706,8 +18522,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20764,8 +18579,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20822,8 +18636,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20880,8 +18693,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20938,8 +18750,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -20996,8 +18807,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21054,8 +18864,7 @@
    "1": false,
    "3": false,
    "5": false
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21112,8 +18921,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21170,8 +18978,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21228,8 +19035,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21286,8 +19092,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21344,8 +19149,7 @@
    "1": false,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21402,317 +19206,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
- },
- {
-  "retriever": "rrf(bm25+qwen3-0.6b)",
-  "question_id": "mp01",
-  "type": "multi_post",
-  "ranking": [
-   "my-homelab-setup",
-   "building-a-better-nas-for-my-homelab",
-   "home-vpn-dynamic-dns",
-   "making-the-most-of-my-solitude",
-   "self-hosting-umami-analytics",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "2020-in-review",
-   "2022-in-review",
-   "sagittarius-8-bay-nas-first-impressions",
-   "getting-things-done-with-things-3",
-   "redesign-5",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "fixing-claude-code-api-errors-pro-users",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "configuring-tailwind-css-v4",
-   "redesign-2",
-   "redesign-3",
-   "my-first-visit-to-chicago",
-   "2024-in-review",
-   "insights-from-nand2tetris-part1",
-   "redesign-4",
-   "creating-simple-rest-api-elixir-phoenix",
-   "my-first-steps-in-photography",
-   "building-a-simple-sentiment-classifier",
-   "2023-in-review",
-   "simplifying-my-website-css-using-tailwind",
-   "custom-celery-mongodb-backend",
-   "first-elixir-program",
-   "hello-world",
-   "jev-by-example",
-   "sentiment-analysis-with-naive-bayes",
-   "intro-to-algorithm-analysis",
-   "autogen-weather-chatbot",
-   "thinking-about-the-value-of-writing",
-   "ambiguity-fuels-creativity",
-   "shift-from-ml-to-ai-engineering",
-   "rethinking-my-relationship-with-instagram",
-   "how-sveltekit-dynamic-routes-work",
-   "takeaways-practical-ui-book",
-   "creating-sveltekit-sitemap",
-   "implementing-rate-limiter-fastapi-redis",
-   "stephen-king-lesson-failure",
-   "pydantic-custom-dictionary-types",
-   "just-write-more"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.6666666666666666,
-   "5": 0.6666666666666666
-  }
- },
- {
-  "retriever": "rrf(bm25+qwen3-0.6b)",
-  "question_id": "mp03",
-  "type": "multi_post",
-  "ranking": [
-   "simplifying-my-website-css-using-tailwind",
-   "redesign-5",
-   "configuring-tailwind-css-v4",
-   "redesign-3",
-   "redesign-2",
-   "2024-in-review",
-   "making-the-most-of-my-solitude",
-   "2020-in-review",
-   "redesign-4",
-   "2022-in-review",
-   "stephen-king-lesson-failure",
-   "self-hosting-umami-analytics",
-   "2023-in-review",
-   "my-first-visit-to-chicago",
-   "home-vpn-dynamic-dns",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "takeaways-practical-ui-book",
-   "hello-world",
-   "rethinking-my-relationship-with-instagram",
-   "sagittarius-8-bay-nas-first-impressions",
-   "getting-things-done-with-things-3",
-   "ambiguity-fuels-creativity",
-   "my-first-steps-in-photography",
-   "first-elixir-program",
-   "building-a-simple-sentiment-classifier",
-   "insights-from-nand2tetris-part1",
-   "how-sveltekit-dynamic-routes-work",
-   "fixing-claude-code-api-errors-pro-users",
-   "building-a-better-nas-for-my-homelab",
-   "sentiment-analysis-with-naive-bayes",
-   "just-write-more",
-   "my-homelab-setup",
-   "creating-sveltekit-sitemap",
-   "thinking-about-the-value-of-writing",
-   "intro-to-algorithm-analysis",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "custom-celery-mongodb-backend",
-   "pydantic-custom-dictionary-types",
-   "implementing-rate-limiter-fastapi-redis",
-   "jev-by-example",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "creating-simple-rest-api-elixir-phoenix",
-   "shift-from-ml-to-ai-engineering",
-   "autogen-weather-chatbot"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 1.0,
-   "5": 1.0
-  }
- },
- {
-  "retriever": "rrf(bm25+qwen3-0.6b)",
-  "question_id": "mp08",
-  "type": "multi_post",
-  "ranking": [
-   "2024-in-review",
-   "rethinking-my-relationship-with-instagram",
-   "2020-in-review",
-   "my-first-steps-in-photography",
-   "2022-in-review",
-   "redesign-3",
-   "redesign-2",
-   "my-homelab-setup",
-   "stephen-king-lesson-failure",
-   "first-elixir-program",
-   "sagittarius-8-bay-nas-first-impressions",
-   "redesign-4",
-   "making-the-most-of-my-solitude",
-   "thinking-about-the-value-of-writing",
-   "jev-by-example",
-   "my-first-visit-to-chicago",
-   "getting-things-done-with-things-3",
-   "custom-celery-mongodb-backend",
-   "redesign-5",
-   "hello-world",
-   "home-vpn-dynamic-dns",
-   "just-write-more",
-   "how-sveltekit-dynamic-routes-work",
-   "creating-sveltekit-sitemap",
-   "self-hosting-umami-analytics",
-   "creating-simple-rest-api-elixir-phoenix",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "implementing-rate-limiter-fastapi-redis",
-   "fixing-claude-code-api-errors-pro-users",
-   "building-a-simple-sentiment-classifier",
-   "autogen-weather-chatbot",
-   "ambiguity-fuels-creativity",
-   "sentiment-analysis-with-naive-bayes",
-   "insights-from-nand2tetris-part1",
-   "building-a-better-nas-for-my-homelab",
-   "2023-in-review",
-   "configuring-tailwind-css-v4",
-   "takeaways-practical-ui-book",
-   "simplifying-my-website-css-using-tailwind",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "shift-from-ml-to-ai-engineering",
-   "intro-to-algorithm-analysis",
-   "pydantic-custom-dictionary-types"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.3333333333333333,
-   "3": 0.3333333333333333,
-   "5": 0.3333333333333333
-  }
- },
- {
-  "retriever": "rrf(bm25+qwen3-0.6b)",
-  "question_id": "mp14",
-  "type": "multi_post",
-  "ranking": [
-   "2022-in-review",
-   "2020-in-review",
-   "2023-in-review",
-   "making-the-most-of-my-solitude",
-   "redesign-2",
-   "redesign-3",
-   "2024-in-review",
-   "redesign-5",
-   "my-first-steps-in-photography",
-   "my-first-visit-to-chicago",
-   "redesign-4",
-   "sentiment-analysis-with-naive-bayes",
-   "thinking-about-the-value-of-writing",
-   "home-vpn-dynamic-dns",
-   "rethinking-my-relationship-with-instagram",
-   "self-hosting-umami-analytics",
-   "ambiguity-fuels-creativity",
-   "stephen-king-lesson-failure",
-   "insights-from-nand2tetris-part1",
-   "building-a-simple-sentiment-classifier",
-   "configuring-tailwind-css-v4",
-   "fixing-claude-code-api-errors-pro-users",
-   "simplifying-my-website-css-using-tailwind",
-   "intro-to-algorithm-analysis",
-   "how-sveltekit-dynamic-routes-work",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "just-write-more",
-   "sagittarius-8-bay-nas-first-impressions",
-   "getting-things-done-with-things-3",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "my-homelab-setup",
-   "jev-by-example",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "hello-world",
-   "first-elixir-program",
-   "building-a-better-nas-for-my-homelab",
-   "custom-celery-mongodb-backend",
-   "autogen-weather-chatbot",
-   "creating-simple-rest-api-elixir-phoenix",
-   "implementing-rate-limiter-fastapi-redis",
-   "takeaways-practical-ui-book",
-   "shift-from-ml-to-ai-engineering",
-   "creating-sveltekit-sitemap",
-   "pydantic-custom-dictionary-types"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 0.75
-  }
- },
- {
-  "retriever": "rrf(bm25+qwen3-0.6b)",
-  "question_id": "mp17",
-  "type": "multi_post",
-  "ranking": [
-   "creating-sveltekit-sitemap",
-   "redesign-2",
-   "how-sveltekit-dynamic-routes-work",
-   "simplifying-my-website-css-using-tailwind",
-   "2024-in-review",
-   "2023-in-review",
-   "jev-by-example",
-   "2020-in-review",
-   "sagittarius-8-bay-nas-first-impressions",
-   "hello-world",
-   "just-write-more",
-   "redesign-4",
-   "redesign-5",
-   "building-a-simple-sentiment-classifier",
-   "insights-from-nand2tetris-part1",
-   "ambiguity-fuels-creativity",
-   "making-the-most-of-my-solitude",
-   "shift-from-ml-to-ai-engineering",
-   "redesign-3",
-   "first-elixir-program",
-   "2022-in-review",
-   "straight-line-predicts-how-fast-my-laptop-generates-llm-tokens",
-   "creating-simple-rest-api-elixir-phoenix",
-   "intro-to-algorithm-analysis",
-   "thinking-about-the-value-of-writing",
-   "sentiment-analysis-with-naive-bayes",
-   "configuring-tailwind-css-v4",
-   "one-reason-input-tokens-are-cheaper-than-output-tokens",
-   "autogen-weather-chatbot",
-   "self-hosting-umami-analytics",
-   "fixing-claude-code-api-errors-pro-users",
-   "building-a-better-nas-for-my-homelab",
-   "takeaways-practical-ui-book",
-   "my-first-steps-in-photography",
-   "black-october-made-me-switch-from-ubuntu-to-debian",
-   "rethinking-my-relationship-with-instagram",
-   "stephen-king-lesson-failure",
-   "getting-things-done-with-things-3",
-   "my-homelab-setup",
-   "home-vpn-dynamic-dns",
-   "my-first-visit-to-chicago",
-   "implementing-rate-limiter-fastapi-redis",
-   "pydantic-custom-dictionary-types",
-   "custom-celery-mongodb-backend"
-  ],
-  "first_source_rank": 1,
-  "hit_at": {
-   "1": true,
-   "3": true,
-   "5": true
-  },
-  "recall_at": {
-   "1": 0.25,
-   "3": 0.75,
-   "5": 1.0
   }
  },
  {
@@ -21770,8 +19263,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21828,8 +19320,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21886,8 +19377,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -21944,8 +19434,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -22002,8 +19491,7 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  },
  {
   "retriever": "rrf(bm25+qwen3-0.6b)",
@@ -22060,7 +19548,6 @@
    "1": true,
    "3": true,
    "5": true
-  },
-  "recall_at": null
+  }
  }
 ]
