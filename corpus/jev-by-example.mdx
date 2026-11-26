@@ -1,0 +1,229 @@
+---
+title: "Jev by Example"
+tags: ["llm", "machine-learning", "ai-engineering", "nlp"]
+description: "Exploring Jev, TypeSafe AI’s new AI model that returns probabilities instead of prose."
+date: 2026-09-26
+featured: false
+imgBucket: "jev-by-example"
+imgName: "jevs-kitchen.png"
+imgCaption: "Is butter sweet? Jev sure seems to think so."
+imgAlt: "The Jev's Kitchen app classifying unsalted butter's dominant taste as sweet and showing likelihoods for five basic tastes."
+---
+
+Recently, [TypeSafe AI introduced a new frontier AI model called Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev). What's unique about this model is that it specializes as a zero-shot classifier.
+
+In other words, you can give Jev a question and a fixed set of answer choices and it will tell you which answer choices it thinks are most likely to be correct. You get all of this out of the box without having to fine-tune or train the model on a representative set of examples.
+
+Jev is not designed to be a generative model, so it doesn't output one text token at a time in formulating a response. This means that Jev is no good for tasks like summarizing an email or writing documentation. In contrast, it's well-suited for tasks like triaging a support ticket, scoring the severity of a bug, or deciding whether an incoming request should be escalated to a human operator.
+
+While it's true that other LLMs can perform these tasks, Jev is built to perform them more efficiently at a lower cost. TypeSafe currently charges [$0.042 per million input tokens and nothing for output tokens](https://typesafe.ai/blog/introducing-system-one-models-and-jev).
+
+To explore how Jev works, I vibecoded an app called [Jev's Kitchen](https://github.com/photon-collider/jevs-kitchen) that answers questions about food. The examples shared in this post come from this app.
+
+## Contents
+
+## How Jev Differs From a Typical LLM
+
+TypeSafe AI refers to Jev as a [System One model](https://docs.typesafe.ai/introduction). This name is a callback to Daniel Kahneman's book [_Thinking, Fast and Slow_](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow), which refers to System One thinking as the way the human brain performs fast, intuitive judgments as opposed to the slower, more deliberate System Two thinking. In this framing, Jev is positioned as a model for making snap decisions in contrast to other frontier models that are capable of performing multi-step reasoning.
+
+A Jev request has two main parts:
+
+- `state`: contextual information the model should consider in outputting decisions
+- `questions`: a set of typed judgments the model should make conditioned upon the provided `state`
+
+Requests support three kinds of `questions`:
+
+- `choice` selects the most plausible option from a fixed set of answer choices.
+- `noul` returns the probability that a yes-or-no statement is true.
+- `score` selects a rating on an ordered scale.
+
+Each response is constrained by the inputs we provide. For instance, a response to a `choice` question will only include options provided in the initial input. This guarantees that the output shape is predictable, and the returned probabilities give our code a way to account for uncertainty.
+
+## Examples
+
+Jev's Kitchen asks three questions about food, with each one corresponding to a different question type:
+
+| Example                  | Question                                                      | Question Type |
+| ------------------------ | ------------------------------------------------------------- | ------------- |
+| Dominant Taste           | Which of the five basic tastes is most prominent?             | `choice`      |
+| Ingredient Compatibility | Is an ingredient typical in a conventional version of a dish? | `noul`        |
+| Spice Meter              | How spicy would a dish taste to a typical diner?              | `score`       |
+
+You can follow along by installing TypeSafe AI's JavaScript SDK:
+
+```sh
+npm install @typesafe-ai/sdk
+```
+
+Next, set `TYPESAFE_API_KEY` in your environment and create a client. The examples below will all use this `client` and the helper functions `choice`, `noul`, and `score`:
+
+```js
+import { TypeSafeClient, choice, noul, score } from "@typesafe-ai/sdk";
+
+const client = new TypeSafeClient();
+```
+
+### Choosing a Dominant Taste
+
+The first question asks Jev to decide on the dominant taste of a food or dish [given the five basic tastes](https://en.wikipedia.org/wiki/Taste), which are sweet, salty, sour, bitter, and umami.
+
+Each answer choice comes with a criterion to provide Jev more context on which answer to select:
+
+```js
+const tasteCriteria = {
+  Sweet:
+    "Sweet taste produced primarily by sugars and other compounds that activate sweet taste receptors (T1R2/T1R3), as in sugar, honey, and ripe fruit",
+  Sour: "Sour taste produced by acids, especially hydrogen ions (H+), as in citrus, vinegar, fermented foods, and cultured dairy",
+  Salty:
+    "Salty taste produced primarily by dissolved sodium ions and other salts, as in table salt, brines, and cured foods",
+  Bitter:
+    "Bitter taste produced by diverse compounds that activate bitter taste receptors (T2Rs), as in coffee, cocoa, bitter greens, and citrus peel",
+  Umami:
+    "Umami taste produced primarily by glutamate and enhanced by nucleotides such as inosinate and guanylate, as in meat, mushrooms, tomatoes, aged cheese, and fermented foods",
+};
+```
+
+Using these criteria, we can ask Jev, for instance, about the dominant taste of soy sauce:
+
+```js
+const response = await client.systemOne({
+  state: { food_or_dish: "soy sauce" },
+  questions: {
+    dominant_taste: choice(
+      "Which of the five basic tastes is most dominant in a typical version of `food_or_dish`? Judge perceived taste, not aroma, richness, temperature, or capsaicin heat. Choose the taste that leads even when several are present.",
+      tasteCriteria,
+    ),
+  },
+});
+```
+
+In this example, `choice` restricts the answer to one of the five labels in `tasteCriteria`. Jev also returns the probability assigned to each option, which Jev's Kitchen displays as a ranked list.
+
+```js
+const answer = response.answers.dominant_taste;
+
+console.log(answer.choice); // "Salty"
+console.log(answer.confidence); // 0.58
+console.log(answer.probabilities);
+// { Salty: 0.67, Umami: 0.33, Sweet: 0, Sour: 0, Bitter: 0 }
+```
+
+Soy sauce is indeed known to have both saltiness and umami tastes. Since we've forced Jev to pick only one answer, it has decided to choose `Salty`.
+
+[According to the official documentation](https://docs.typesafe.ai/confidence), `confidence` is a number between 0 and 1 that is computed based on the probability distribution of the answer choices. It's a measure of how much the probability is concentrated on a single answer. Jev's confidence is 0.58, which means it's showing uncertainty regarding its answer choice as it has assigned a 33% probability to `Umami`.
+
+### Evaluating Ingredient Compatibility
+
+The second question asks Jev to judge whether an ingredient conventionally belongs in a dish:
+
+```js
+async function isTypical(dish, ingredient) {
+  const response = await client.systemOne({
+    state: { dish, ingredient },
+    questions: {
+      is_typical: noul(
+        "Is `ingredient` typical or appropriate in a conventional version of `dish`? Judge common convention, not whether the ingredient is objectively authentic or whether a creative variation could taste good.",
+        {
+          true: "The ingredient is commonly expected, conventional, or an appropriate standard variation for the dish",
+          false: "The ingredient is unusual for a conventional version of the dish",
+        },
+      ),
+    },
+  });
+
+  return response.answers.is_typical.noul;
+}
+```
+
+Here, we use `noul` to have Jev provide the probability that an ingredient is conventionally used to prepare [carbonara, an Italian dish](https://en.wikipedia.org/wiki/Carbonara). Let's try three ingredients:
+
+```js
+console.log(await isTypical("carbonara", "eggs")); // 0.98
+console.log(await isTypical("carbonara", "pineapple")); // 0.02
+console.log(await isTypical("carbonara", "heavy cream")); // 0.35
+```
+
+As you'd expect, Jev assigns a 98% probability to eggs and just 2% to pineapple. What's interesting here is that heavy cream lands in between these extremes at 35%. My hunch is that this reflects the fact that some modern recipes recommend adding heavy cream while older recipes typically leave it out.
+
+### Scoring Expected Heat
+
+In the final question, we ask Jev to rate how spicy a dish is given its ingredients. Here, the criteria define five levels ranging from no perceptible heat to extremely hot:
+
+```js
+const spiceCriteria = [
+  "No perceptible heat for a typical diner; no spicy ingredients",
+  "Mild; gentle warmth from black pepper or a little chili that most diners find easy",
+  "Medium; clearly spicy with sustained heat that a typical diner notices but finds comfortable",
+  "Hot; intense chili heat that many typical diners find challenging",
+  "Extremely hot; dominant, punishing heat from very hot chilies or extracts",
+];
+
+async function rateSpiciness(dish, ingredients) {
+  const response = await client.systemOne({
+    state: { dish, ingredients },
+    questions: {
+      spiciness: score(
+        "How much capsaicin-style heat would a typical diner expect from `dish` made with `ingredients`? Judge heat, not aromatic spice, seasoning, temperature, or flavor intensity.",
+        spiceCriteria,
+      ),
+    },
+  });
+
+  return response.answers.spiciness;
+}
+```
+
+Let's compare two dishes we expect to be at opposite ends of the scale. Gingerbread is full of aromatic spices but has no spicy peppers, while [pad kra pao](https://en.wikipedia.org/wiki/Phat_kaphrao) is a Thai stir-fry dish made with chili peppers:
+
+```js
+const gingerbread = await rateSpiciness(
+  "gingerbread",
+  "Flour, molasses, brown sugar, butter, egg, ground ginger, cinnamon, cloves, nutmeg",
+);
+
+console.log(gingerbread.score); // 0.03
+console.log(gingerbread.confidence); // 0.97
+console.log(gingerbread.probabilities);
+// { 0: 0.97, 1: 0.03, 2: 0, 3: 0, 4: 0 }
+
+const padKraPao = await rateSpiciness(
+  "pad kra pao",
+  "Ground pork, holy basil, garlic, 5 Thai bird's eye chilies, fish sauce, oyster sauce, soy sauce, sugar, fried egg",
+);
+
+console.log(padKraPao.score); // 2.88
+console.log(padKraPao.confidence); // 0.83
+console.log(padKraPao.probabilities);
+// { 0: 0, 1: 0, 2: 0.16, 3: 0.8, 4: 0.04 }
+```
+
+In the output `probabilities`, the levels are numbered by their position in `spiceCriteria`, from `0` through `4`, with `0` corresponding to no spiciness and `4` corresponding to extreme heat. Also, the score that Jev provides is the expected value based on these probabilities.
+
+This means that with a score of 2.88, Jev thinks that pad kra pao's spiciness is closer to Hot than it is to Medium. In contrast, gingerbread has a score of 0.03 at a confidence of 0.97, which means that Jev is confident that it isn't going to be spicy at all.
+
+## Try It Yourself
+
+I've shared the code for [Jev's Kitchen](https://github.com/photon-collider/jevs-kitchen) on GitHub. You can set it up and run these examples yourself.
+
+```sh
+# Clone the repo and install dependencies
+git clone https://github.com/photon-collider/jevs-kitchen.git
+cd jevs-kitchen
+pnpm install
+
+# Create a .env file (optional: add your TYPESAFE_API_KEY here)
+cp .env.example .env
+
+# Start the dev server, then open the local URL Vite prints
+pnpm dev
+```
+
+If you don't have an API key to access Jev, the app will provide mock responses to each request. To get live answers from Jev, set up an account first at [console.typesafe.ai](https://console.typesafe.ai) to get a key, then add it to `.env` as `TYPESAFE_API_KEY`.
+
+## Final Thoughts
+
+While it's amazing that Jev can handle these queries without additional training or fine-tuning, it is still a black box. It gives us probabilities for the choices it makes, but it can't explain them.
+
+For example, there's no way of knowing why it gave heavy cream a 35% chance of belonging in a conventional carbonara recipe. Why wouldn't this probability be higher or lower?
+
+Ultimately, the burden remains upon us to define the criteria Jev uses, evaluate its behavior in a representative set of cases, and decide what level of authority we're comfortable giving it.

@@ -1,0 +1,92 @@
+---
+title: "Fix Claude Code Credential Errors for Pro Users by Switching to Sonnet"
+tags: ["claude", "troubleshooting"]
+description: "Configure Claude Code to use the Sonnet model instead
+  of Opus to fix Pro user API authentication in CLI
+  and GitHub workflows."
+date: 2025-09-27
+metaDescription: "Learn how to fix recent Claude Code API 400 errors for Pro users by configuring the Sonnet model instead of Opus in both CLI and GitHub Actions workflows."
+featured: false
+---
+
+import Callout from "../../components/Callout.astro";
+
+<Callout variant="warning" title="OpenCode Users: This Won't Help">
+  This post addresses an old issue (now solved) occuring for Pro-tier users when
+  Opus 4.1 was released for Claude Code. You won't be able to use your Claude
+  Pro or Max credentials with OpenCode or another coding agent tool due to a
+  recent change by Anthropic. [See here for details.](https://github.com/anomalyco/opencode/issues/10937)
+
+</Callout>
+
+I recently encountered this error when using Claude Code and my Claude Code GitHub Actions:
+
+```
+API Error: 400
+This credential is only authorized for use with Claude Code
+and cannot be used for other API requests.
+```
+
+This was puzzling given that I had followed the [official setup instructions](https://docs.claude.com/en/docs/claude-code/setup) to get started. After some investigation, I discovered [this affects Pro-tier users specifically](https://github.com/anthropics/claude-code/issues/8046).
+
+What's the root cause? Claude Code's default configuration uses the `Opus` model, [which Pro-tier users don't have access to](https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan#h_50f6dec29dAn). You can upgrade to the Max-tier if you'd like to use the `Opus` model. However, a workaround solution is to configure Claude Code to use the `Sonnet` model instead.
+
+## Contents
+
+## Fixing the CLI Configuration
+
+The quickest fix is to use the `/model` command in Claude Code to select Sonnet as your model:
+
+```
+> /model
+╭────────────────────────────────────────────────────────────────────────╮
+│                                                                        │
+│  Select model                                                          │
+│  Switch between Claude models. Applies to this session and future      │
+│  Claude Code sessions. For custom model names, specify with --model.   │
+│                                                                        │
+│     1. Default (recommended)   Opus 4.1 for up to 50% of usage         │
+│                                limits, then use Sonnet 4               │
+│     2. Opus                    Opus 4.1 for complex tasks · Reaches    │
+│                                usage limits faster                     │
+│   ❯ 3. Sonnet                  Sonnet 4 for daily use ✔                │
+│     4. Opus Plan Mode          Use Opus 4.1 in plan mode, Sonnet 4     │
+│                                otherwise                               │
+│                                                                        │
+╰────────────────────────────────────────────────────────────────────────╯
+```
+
+Select option 3 (Sonnet) to resolve the API credential issue. This setting will persist across future Claude Code sessions.
+
+## Fixing GitHub Actions
+
+If you're using Claude Code in GitHub Actions, you'll need to update your workflow files to specify the Sonnet model.
+
+### Updating claude.yml
+
+In your `claude.yml` file, add the `claude_args` parameter with the `--model sonnet` flag:
+
+```yaml
+# .github/workflows/claude.yml
+- name: Run Claude Code
+  id: claude
+  uses: anthropics/claude-code-action@v1
+  with:
+    claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+    additional_permissions: |
+      actions: read
+    claude_args: "--model sonnet" //[!code highlight]
+```
+
+The key addition is the `claude_args: "--model sonnet"` line at the bottom of the step configuration.
+
+### Updating claude-code-review.yml
+
+For the code review workflow update the existing `claude_args` parameter to include the model specification:
+
+```yaml
+# github/workflows/claude-code-review.yml
+claude_args: '--model sonnet --allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+```
+
+Simply add `--model sonnet` at the beginning of the existing `claude_args` string.

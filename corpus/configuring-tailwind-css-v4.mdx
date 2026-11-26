@@ -1,0 +1,101 @@
+---
+title: "A First Look at Setting Up Tailwind CSS v4.0"
+tags: ["css"]
+description: How Tailwind CSS v4.0 simplifies design token configuration.
+date: 2025-01-26
+imgBucket: "configuring-tailwind-css-v4"
+imgName: "overlooking_waimea_1800w.jpg"
+imgCaption: "Waimea Canyon's Layered Cliffs."
+imgAlt: "Dramatic aerial view of steep, striated cliffs at Waimea Canyon, showing reddish-brown rock faces contrasting with dense green forest along the ridgetops."
+ogImgName: "og_image.jpg"
+featured: false
+---
+
+Just three days ago, [Tailwind CSS released v4.0](https://tailwindcss.com/blog/tailwindcss-v4) which introduces major changes to how we configure and manage design tokens with this framework.
+
+[As someone who uses Tailwind CSS extensively](/blog/simplifying-my-website-css-using-tailwind/) for both personal and professional work, I immediately migrated my personal website to test the new system.
+
+In this post, I'll share my experience migrating to TailwindCSS v4, focusing on the new `@theme` directive and how it simplifies design token management. You'll see how the new approach eliminates the need for a separate JavaScript configuration file and makes working with CSS variables more straightforward.
+
+## Contents
+
+## The Old Way to Configure Tailwind CSS With CSS Variables
+
+Previous versions of Tailwind CSS have supported a clunky setup for integrating CSS variables. All config settings have to be kept in a JavaScript (JS) config file `tailwind.config.mjs` found in the project’s root directory.
+
+For instance, I typically define CSS variables for a custom color palette like this one below:
+
+```css
+:root {
+  --primary-color: hsl(49, 100%, 7%);
+  --link-color: hsl(49, 100%, 7%);
+  --line-color: hsl(49, 23%, 90%);
+  --tag-color: hsl(49, 22%, 88%);
+}
+```
+
+A common way to integrate these in the Tailwind CSS system has been to set up the JS config file like so:
+
+```javascript
+export default {
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  theme: {
+    extend: {
+      colors: {
+        primary: "var(--primary-color)",
+        link: "var(--primary-link-color)",
+        line: "var(--line-color)",
+        tag: "var(--tag-color)",
+      },
+    },
+  },
+  plugins: [],
+};
+```
+
+One motivation for this approach is that it's straightforward to implement light and dark themes. To implement a light/dark mode toggle button you could write some Javascript to toggle the values of the color CSS variables. I prefer this method over the recommended workflow which [requires you to add more styles to components.](https://tailwindcss.com/docs/dark-mode)
+
+The downside of this approach is that adding a new color requires creating a new CSS variable for the color in `:root` and a corresponding entry in the JS config file. Fortunately, the newest release of tailwind provides a more optimal solution.
+
+## Introducing the New Config Workflow
+
+Tailwind CSS v4 allows you to configure all of your CSS in a single CSS file, without having to maintain a Javascript config file. Taking the example setup introduced in the last section, this is how it would look in the new system:
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-primary: hsl(49, 100%, 7%);
+  --color-link: hsl(49, 100%, 7%);
+  --color-line: hsl(49, 23%, 90%);
+  --color-tag: hsl(49, 22%, 88%);
+}
+```
+
+That’s it! In addition, you no longer need to include the boilerplate found in the old JS config file.
+
+The tailwind compiler will do the following:
+
+- Add these CSS variables to `:root`
+- Generate utility classes such as `bg-primary`, `text-primary`, and `color-link`.
+
+In other words, CSS variables that have the namespace `--color-*` will be used to generate new color utility classes.
+
+I’ve sometimes found it tricky to figure out how to use the other namespaces that have been introduced, [as you can see here](https://tailwindcss.com/docs/theme#theme-variable-namespaces).
+
+For instance, if you want to create a custom utility class named `max-w-large-page`, you’d have to add `--container-large-page: 2500px;` to your `@theme`. This would generate the desired utility class `max-w-large-page` in addition to other classes such as `min-w-large-page`.
+
+I love this new system because it means I no longer need to context switch between my CSS and JS files when editing design tokens. Everything lives in one CSS file.
+
+## Migration Experience
+
+As I refactored my website’s CSS, the migration process itself was surprisingly smooth. Since the new `@theme` system maps directly to the old configuration approach, I mainly needed to:
+
+1. Update my astro config to use the new `@tailwindcss/vite` plugin. [Here's the official guide on how to do that.](https://tailwindcss.com/docs/installation/framework-guides/astro)
+2. Move my design tokens from `tailwind.config.mjs` to my CSS file.
+3. Update the variable naming to match the new namespace conventions.
+4. Remove the now-unnecessary JavaScript configuration.
+
+## Conclusion
+
+Overall, I'm happy with the new version of Tailwind CSS. The main learning curve I’ve identified is in learning which namespaces to use for CSS variables. Nonetheless, I find it even easier than before to set up a design system.

@@ -1,0 +1,116 @@
+---
+title: "Custom Dictionary Types in Pydantic"
+description: A quick primer on leveraging custom root types for this task.
+date: 2024-06-19
+tags: ["python", "pydantic"]
+metaDescription: "Create custom dictionary types in Pydantic using root models and Enums. Learn a scalable approach for defining complex data structures in Python."
+imgBucket: "pydantic-custom-dictionary-types"
+imgName: "big_sur_1800w.jpg"
+imgCaption: "McWay Falls shrouded in coastal fog."
+imgAlt: "Foggy view of a secluded beach cove, turquoise waters, and rocky cliffs along a rugged coastline."
+ogImgName: "big_sur_og_image.jpg"
+featured: true
+---
+
+In one of my projects at work, I wanted to define a custom dictionary type using [Pydantic](https://github.com/pydantic/pydantic). The aim was to define the keys using an `Enum` class and values using a model type.
+
+It wasn’t obvious at first how to approach this task. But, after some troubleshooting, I found a reasonable long-term solution.
+
+## Contents
+
+## The Problem
+
+I had already defined the `Enum` and model types, which I used throughout the codebase. For example, the types looked like these:
+
+```python
+from enum import Enum
+from pydantic import BaseModel
+
+class AnimalSpecies(str, Enum):
+	LION = "lion"
+	DOLPHIN = "dolphin"
+	ZEBRA = "zebra"
+
+class AnimalData(BaseModel):
+	habitat: str
+	diet: str
+```
+
+Here, we have an `Enum` type containing different animal species and a model containing data about a given species.
+
+What if we want to create a dictionary with keys defined by `AnimalSpecies` and values defined by `AnimalData`?
+
+## Brute-force Approach
+
+A quick way to do this would be to write
+
+```python
+class AnimalDict(BaseModel):
+	lion: AnimalData
+	dolphin: AnimalData
+	zebra: AnimalData
+
+```
+
+This would work but it may lead to bugs later if someone added a new field to `AnimalSpecies` without adding a corresponding field to `AnimalDict`. I wanted to find an easier way to do this.
+
+## Final Solution
+
+After digging through the documentation, I discovered that I could achieve my goals using [custom root types](https://docs.pydantic.dev/latest/concepts/models/#rootmodel-and-custom-root-types).
+
+Using the `RootModel` class, we can rewrite the `AnimalDict` class as follows:
+
+```python
+from pydantic import RootModel
+from typing import Dict
+
+class AnimalDict(RootModel):
+    root: Dict[AnimalSpecies, AnimalData]
+
+    def __getitem__(self, key: AnimalSpecies):
+        return self.root[key]
+
+    def __setitem__(self, key: AnimalSpecies, value: AnimalData):
+        self.root[key] = value
+
+    @model_validator(mode="after")
+    def check_dictionary_types(self) -> Self:
+        keys = self.root.keys()
+        for key in keys:
+            if not isinstance(key, AnimalSpecies):
+                raise TypeError(f"Dictionary key {key} isn't of type AnimalSpecies")
+
+            value = self.root[key]
+            if not isinstance(value, AnimalData):
+                raise TypeError(
+                    f"The object {value} bound to key {key} isn't of type AnimalData"
+                )
+
+        return self
+
+```
+
+Here’s how to use this class in practice:
+
+```python
+animals = AnimalDict({})
+animals[AnimalSpecies.LION] = AnimalData(
+    habitat="cave", diet="meat")
+```
+
+The model validator function `check_dictionary_types` allows the `model_validate` method to ensure that the root object obeys the schema. This function will trigger a type error if either a key or a value isn’t of the appropriate type.
+
+Here’s an example:
+
+```python
+example = AnimalDict({})
+example["o"] = {"b": 2}
+# ⚠️ This line below will trigger an error ⚠️
+AnimalDict.model_validate(example)
+```
+
+## Conclusion
+
+Pydantic’s custom root types provide a flexible solution to define and validate complex types that might be challenging to express using other methods. By leveraging the `RootModel` class, I created a dictionary type for my specific use case.
+
+This approach provides a scalable way to validate custom dictionary types throughout my codebase.
